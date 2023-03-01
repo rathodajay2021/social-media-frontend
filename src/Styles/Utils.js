@@ -1,5 +1,15 @@
 import { createGlobalStyle } from 'styled-components';
-import { BASE_FONT_SIZE, responsive } from './Constants';
+import { BASE_FONT_SIZE, FONTS, responsive } from './Constants';
+
+//FONTS
+import SignikaRegular from 'Assets/Fonts/Signika_Negative/SignikaNegative-Regular.ttf'
+import SignikaLight from 'Assets/Fonts/Signika_Negative/SignikaNegative-Light.ttf'
+import SignikaMedium from 'Assets/Fonts/Signika_Negative/SignikaNegative-Medium.ttf'
+import SignikaSemiBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-SemiBold.ttf'
+import SignikaBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-Bold.ttf'
+
+import { isIEBrowser } from 'Helpers/Utils';
+const isIE = isIEBrowser();
 
 export const UtilityStyles = createGlobalStyle`
     * {
@@ -125,5 +135,51 @@ export const UtilityStyles = createGlobalStyle`
 
     .text-uppercase {
         text-transform: uppercase;
+    }
+
+    //fonts
+    @font-face {
+        font-family: ${FONTS.PRIMARY};
+        font-style: normal;
+        font-weight: normal;
+        /* src: ; */
+        src: url(${SignikaRegular}) format('truetype');
+        ${isIE && `src: url(${SignikaRegular}) format('truetype');`}
+    }
+
+    @font-face {
+        font-family: ${FONTS.PRIMARY_LIGHT};
+        font-style: normal;
+        font-weight: normal;
+        /* src: ; */
+        src: url(${SignikaLight}) format('truetype');
+        ${isIE && `src: url(${SignikaLight}) format('truetype');`}
+    }
+
+    @font-face {
+        font-family: ${FONTS.PRIMARY_Medium};
+        font-style: normal;
+        font-weight: normal;
+        /* src: ; */
+        src: url(${SignikaMedium}) format('truetype');
+        ${isIE && `src: url(${SignikaMedium}) format('truetype');`}
+    }
+    
+    @font-face {
+        font-family: ${FONTS.PRIMARY_Semi_Bold};
+        font-style: normal;
+        font-weight: normal;
+        /* src: ; */
+        src: url(${SignikaSemiBold}) format('truetype');
+        ${isIE && `src: url(${SignikaSemiBold}) format('truetype');`}
+    }
+
+    @font-face {
+        font-family: ${FONTS.PRIMARY_Bold};
+        font-style: normal;
+        font-weight: normal;
+        /* src: ; */
+        src: url(${SignikaBold}) format('truetype');
+        ${isIE && `src: url(${SignikaBold}) format('truetype');`}
     }
 `;

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { URL_LOGIN } from 'Helpers/Paths';
+import { URL_WELCOME_PAGE } from 'Helpers/Paths';
 import { useSelector } from 'react-redux';
 import { Box } from '@mui/material';
 
@@ -10,7 +10,7 @@ const ProtectedRoute = (props) => {
 
     return (
         <Box style={{ height: 'inherit' }}>
-            {!isLoggedIn ? <Navigate replace to={URL_LOGIN} /> : <Fragment>{props.children}</Fragment>}
+            {!isLoggedIn ? <Navigate replace to={URL_WELCOME_PAGE} /> : <Fragment>{props.children}</Fragment>}
         </Box>
     );
 }

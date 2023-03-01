@@ -1,5 +1,22 @@
 import { css } from "styled-components";
 
+export const COLORS = {
+  PRIMARY: '#4f67d8',
+  PRIMARY_LIGHT: '#7a73e7',
+  PRIMARY_DARK: '#203f81',
+
+  WHITE: '#fff',
+  BLACK: '#000',
+}
+
+export const FONTS = {
+  PRIMARY: 'Signika Regular',
+  PRIMARY_LIGHT: 'Signika Light',
+  PRIMARY_Medium: 'Signika Medium',
+  PRIMARY_Semi_Bold: 'Signika Semi Bold',
+  PRIMARY_Bold: 'Signika Bold',
+}
+
 // BREAKPOINTS
 export const BREAKPOINTS_VALUE = {
   DISPLAY: 1750,
@@ -62,27 +79,6 @@ export const BREAKPOINTS = {
   MOBILE_376: `${BREAKPOINTS_VALUE.MOBILE_376 - 1}px`, // x_small
   MOBILE_340: `${BREAKPOINTS_VALUE.MOBILE_340 - 1}px`, // x_small
   MOBILE_325: `${BREAKPOINTS_VALUE.MOBILE_325 - 1}px`, // x_small
-};
-
-//Fonts
-
-export const FONTS = {
-  PRIMARY: "Jost Regular",
-  PRIMARY_BOLD: "Jost Bold",
-  PRIMARY_SEMI_BOLD: "Jost Semi Bold",
-  PRIMARY_LIGHT: "Jost Thin",
-  PRIMARY_MEDIUM: "Jost Medium",
-  PRIMARY_ITALIC: "Jost Bold Italic",
-
-  SECONDARY: "Cormorant Regular",
-  SECONDARY_BOLD: "Cormorant Bold",
-  SECONDARY_SEMI_BOLD: "Cormorant Semi Bold",
-
-  TERTIARY: "Lato Regular",
-  TERTIARY_BOLD: "Lato Bold",
-  TERTIARY_SEMI_BOLD: "Lato Semi Bold",
-
-  QUATERNARY: "Poppins Regular",
 };
 
 export const BASE_FONT_SIZE = 13;
