@@ -1,5 +1,5 @@
 //CORE
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Box,
     Button,
@@ -10,6 +10,7 @@ import {
     Typography
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -19,7 +20,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //CUSTOM
 import { ResetPasswordWrapper } from './ResetPassword.style';
-import { URL_LOGIN } from 'Helpers/Paths';
+import { API_URL, URL_LOGIN } from 'Helpers/Paths';
+import { PASSWORD_REGEX } from 'Helpers/Constants';
+import Api from 'Helpers/ApiHandler';
+import CODES from 'Helpers/StatusCodes';
+import { showToast } from 'Redux/App/Actions';
 
 const formOneInitValue = {
     email: ''
@@ -40,7 +45,7 @@ const formTwoValidationSchema = Yup.object({
     password: Yup.string()
         .required('Please enter your password')
         .matches(
-            /(?=[A-Za-z0-9@#$%^&+!=\\/\]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[#?!@$%^&<>*~.:+`-])(?=.{10,}).*$/g,
+            PASSWORD_REGEX,
             'Password must contain one upper case, one lowercase, one special character, one digit and must be of 10 characters'
         ),
     confirmPassword: Yup.string()
@@ -49,15 +54,40 @@ const formTwoValidationSchema = Yup.object({
 });
 
 const ResetPassword = () => {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const API = useMemo(() => new Api(), []);
 
     const [formOrder, setFormOrder] = useState(true);
+    const [userEmail, setUserEmail] = useState('');
     const [passwordVisibility, setPasswordVisibility] = useState(false);
     const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
 
-    const handleFormOneSubmit = (values) => {
-        console.log('🚀 ~ file: ResetPassword.jsx:17 ~ handleFormOneSubmit ~ values:', values);
-        setFormOrder((prev) => !prev);
+    const handleFormOneSubmit = async (values) => {
+        const response = await API.post(API_URL.VALIDATE_USER_URL, {
+            data: values
+        });
+        console.log('🚀 ~ file: ResetPassword.jsx:17 ~ handleFormOneSubmit ~ values:', response);
+        if (response.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+            setUserEmail(values.email);
+            setFormOrder((prev) => !prev);
+        }
+    };
+
+    const handleFormTwoSubmit = async (values) => {
+        const reqBody = {
+            email: userEmail,
+            password: values.password
+        };
+        const response = await API.put(API_URL.RESET_PASSWORD_URL, {
+            data: reqBody
+        });
+        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+            dispatch(showToast(response?.data?.message));
+            navigate(URL_LOGIN);
+            return;
+        }
+        dispatch(showToast(response?.data?.message));
     };
 
     return (
@@ -113,7 +143,7 @@ const ResetPassword = () => {
                     <Formik
                         initialValues={formTwoInitValue}
                         validationSchema={formTwoValidationSchema}
-                        onSubmit={handleFormOneSubmit}>
+                        onSubmit={handleFormTwoSubmit}>
                         {({
                             values,
                             errors,
@@ -204,7 +234,7 @@ const ResetPassword = () => {
                 )}
                 <Box className="login-container flex f-h-center">
                     Already have an account?{' '}
-                    <Box className="login-text" onClick={() => Navigate(URL_LOGIN)}>
+                    <Box className="login-text" onClick={() => navigate(URL_LOGIN)}>
                         login
                     </Box>
                 </Box>

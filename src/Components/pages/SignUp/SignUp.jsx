@@ -1,5 +1,5 @@
 //CORE
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Box,
     Button,
@@ -12,6 +12,7 @@ import {
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 //ICON
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -19,7 +20,12 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //CUSTOM
 import { SignUpWrapper } from './SignUp.style';
-import { URL_LOGIN } from 'Helpers/Paths';
+import { API_URL, URL_HOME_PAGE, URL_LOGIN } from 'Helpers/Paths';
+import Api from 'Helpers/ApiHandler';
+import CODES from 'Helpers/StatusCodes';
+import { loginUser } from 'Redux/Auth/Actions';
+import { PASSWORD_REGEX } from 'Helpers/Constants';
+import { showToast } from 'Redux/App/Actions';
 
 const SignUpInitValue = {
     firstName: '',
@@ -38,7 +44,7 @@ const validationSchema = Yup.object({
     password: Yup.string()
         .required('Please enter your password')
         .matches(
-            /(?=[A-Za-z0-9@#$%^&+!=\\/\]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[#?!@$%^&<>*~.:+`-])(?=.{10,}).*$/g,
+            PASSWORD_REGEX,
             'Password must contain one upper case, one lowercase, one special character, one digit and must be of 10 characters'
         ),
     confirmPassword: Yup.string()
@@ -47,12 +53,26 @@ const validationSchema = Yup.object({
 });
 
 const SignUp = () => {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const API = useMemo(() => new Api(), []);
+
     const [passwordVisibility, setPasswordVisibility] = useState(false);
     const [confirmPasswordVisibility, setConfirmPasswordVisibility] = useState(false);
 
-    const handleSubmit = (values) => {
-        console.log('🚀 ~ file: SignUp.jsx:19 ~ handleSubmit ~ values:', values);
+    const handleSubmit = async (values) => {
+        let reqBody = { ...values };
+        delete reqBody.confirmPassword;
+        const response = await API.post(API_URL.SIGN_UP_URL, {
+            data: reqBody
+        });
+
+        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+            dispatch(loginUser(response?.data));
+            dispatch(showToast('New user created successfully'));
+            navigate(URL_HOME_PAGE);
+            return;
+        }
     };
 
     return (
@@ -206,7 +226,7 @@ const SignUp = () => {
                             </Button>
                             <Box className="login-container flex f-h-center">
                                 Already have an account?{' '}
-                                <Box className="login-text" onClick={() => Navigate(URL_LOGIN)}>
+                                <Box className="login-text" onClick={() => navigate(URL_LOGIN)}>
                                     login
                                 </Box>
                             </Box>

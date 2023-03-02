@@ -7,7 +7,6 @@ import { Snackbar } from '@mui/material';
 export const SnackbarContentWrapper = styled(SnackbarContent)`
     &.themed {
         padding: 0;
-        border-radius: 12px;
 
         .notification-message {
             color: #000;
@@ -32,7 +31,6 @@ export const SnackbarContentWrapper = styled(SnackbarContent)`
     .alert-root {
         padding: 8px;
         max-width: 400px;
-        border-radius: 12px;
 
         ${responsive.PHABLET`
             max-width: 100%;

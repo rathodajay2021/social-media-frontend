@@ -1,5 +1,5 @@
 //CORE
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,6 +11,7 @@ import {
     TextField,
     Typography
 } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 //ICON
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -18,14 +19,24 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //CUSTOM
 import { LoginWrapper } from './Login.style';
-import { URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers/Paths';
+import { API_URL, URL_HOME_PAGE, URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers/Paths';
 import { useNavigate } from 'react-router-dom';
+import Api from 'Helpers/ApiHandler';
+import { loginUser } from 'Redux/Auth/Actions';
+import { showToast } from 'Redux/App/Actions';
+import CODES from 'Helpers/StatusCodes';
+import { PASSWORD_REGEX } from 'Helpers/Constants';
 
 const validationSchema = Yup.object({
     email: Yup.string()
         .required('Please enter your email address')
         .email('Please enter valid email address'),
-    password: Yup.string().required('Please enter your password')
+    password: Yup.string()
+        .required('Please enter your password')
+        .matches(
+            PASSWORD_REGEX,
+            'Password must contain one upper case, one lowercase, one special character, one digit and must be of 10 characters'
+        )
 });
 
 const loginFormInitialValues = {
@@ -34,11 +45,26 @@ const loginFormInitialValues = {
 };
 
 const Login = () => {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const API = useMemo(() => new Api(), []);
+
     const [passwordVisibility, setPasswordVisibility] = useState(false);
 
-    const handleSubmit = (values, { resetField }) => {
-        console.log('🚀 ~ file: Login.jsx:38 ~ handleSubmit ~ values:', values);
+    const handleSubmit = async (values) => {
+        const response = await API.post(API_URL.LOGIN_URL, {
+            data: values
+        });
+
+        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+            dispatch(loginUser(response?.data));
+            navigate(URL_HOME_PAGE);
+        }
+
+        if (response?.status === CODES.SUCCESS && response?.data?.message) {
+            dispatch(showToast(response?.data?.message, 'warning'));
+        }
+        return;
     };
 
     return (
@@ -114,12 +140,12 @@ const Login = () => {
                             <Box className="msg-section flex f-v-center f-column">
                                 <Typography
                                     className="password-msg"
-                                    onClick={() => Navigate(URL_RESET_PASSWORD)}>
+                                    onClick={() => navigate(URL_RESET_PASSWORD)}>
                                     forgot password?
                                 </Typography>
                                 <Box className="sign-up-container flex">
                                     Don't have an account?{' '}
-                                    <Box className="sign-up" onClick={() => Navigate(URL_SIGN_UP)}>
+                                    <Box className="sign-up" onClick={() => navigate(URL_SIGN_UP)}>
                                         Sign Up
                                     </Box>
                                 </Box>

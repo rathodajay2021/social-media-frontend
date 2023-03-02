@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import { THEME_SETTINGS } from "themeSettings";
 import { UtilityStyles } from "Styles/Utils";
 import Website from "Components/Website";
-import { store } from "redux/store";
+import { store } from "Redux/store";
 
 const theme = createTheme(THEME_SETTINGS);
 
