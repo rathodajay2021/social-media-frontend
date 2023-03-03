@@ -20,11 +20,6 @@ import {
     URL_PROFILE_PAGE
 } from 'Helpers/Paths';
 
-const AVATAR_DIMENSION = {
-    height: 35,
-    width: 35
-};
-
 const BOTTOM_NAVIGATION_BAR = {
     height: 60
 };
@@ -85,8 +80,6 @@ const BottomBar = () => {
                     <Avatar
                         {...stringAvatar(
                             CreateUserName(userDetails?.firstName, userDetails?.lastName),
-                            AVATAR_DIMENSION.height,
-                            AVATAR_DIMENSION.width,
                             userDetails?.profilePic
                         )}
                     />

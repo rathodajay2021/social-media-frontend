@@ -36,7 +36,7 @@ export const stringToColor = (string) => {
     return color;
 };
 
-export const stringAvatar = (name, height = 25, width = 25 , imgUrl = '') => {
+export const stringAvatar = (name, imgUrl = '', height = 35, width = 35) => {
     if (imgUrl) {
         return { src: imgUrl };
     } else {
@@ -46,11 +46,11 @@ export const stringAvatar = (name, height = 25, width = 25 , imgUrl = '') => {
                 height,
                 width
             },
-            children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`
+            children: `${name.toUpperCase().split(' ')[0][0]}${name.toUpperCase().split(' ')[1][0]}`
         };
     }
 };
 
-export const CreateUserName = (firstName, LastName) => {
+export const CreateUserName = (firstName, LastName) => {    
     return firstName + ' ' + LastName;
 };

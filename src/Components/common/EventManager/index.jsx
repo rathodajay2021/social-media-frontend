@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 
-import Toast from 'Components/common/Toast/Toast';
+import Toast from 'Components/common/Toast';
 import { hideToast } from 'Redux/App/Actions';
 
 const EventManager = (props) => {
