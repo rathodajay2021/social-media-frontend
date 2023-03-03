@@ -11,6 +11,6 @@ export const ContentWrapper = styled.div`
   overflow: hidden;
   height: ${(props) =>
     props?.$showBottomBar
-      ? `calc(${props?.$windowHeight}px - 70px)`
+      ? `calc(${props?.$windowHeight}px - 60px)`
       : `${props?.$windowHeight}px`};
 `;

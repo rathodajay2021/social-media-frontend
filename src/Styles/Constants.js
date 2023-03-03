@@ -7,6 +7,13 @@ export const COLORS = {
 
   WHITE: '#fff',
   BLACK: '#000',
+
+  GREY_TEXT_COLOR         : "#707070",
+
+  LIGHT_GREY              : "#e8e8e8",
+  LIGHT_GREY_SECONDARY    : "#f2f2f2",
+  MEDIUM_GREY             : "#848484",
+  NEUTRAL_GREY            : "#0f172a",
 }
 
 export const FONTS = {

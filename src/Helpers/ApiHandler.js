@@ -14,7 +14,7 @@ const METHOD = {
   DELETE: "delete",
 };
 
-const BASEURL = "http://192.168.3.163:5000/openxcell/social-media";
+const BASEURL = "http://localhost:5000/openxcell/social-media";
 
 // const BASEURL =
 //     process.env.REACT_APP_SERVER !== 'local'

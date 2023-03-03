@@ -5,9 +5,11 @@ import { ContentWrapper, WebsiteWrapper } from './Website.style';
 import { getWindowDimensions } from 'Helpers/Utils.js';
 import Route from 'Routes/Route';
 import EventManager from 'Components/common/EventManager/EventManager';
+import BottomBar from './common/BottomBar/BottomBar';
 
 const Website = () => {
     const isLoggedIn = useSelector((state) => state.Auth.isLoggedIn);
+    const showBottomBar = useSelector((state) => state.BottomNavBar.showBottomBar);
 
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -24,9 +26,12 @@ const Website = () => {
 
     return (
         <WebsiteWrapper>
-            <ContentWrapper $showBottomBar={isLoggedIn} $windowHeight={windowDimensions.height}>
+            <ContentWrapper
+                $showBottomBar={isLoggedIn && showBottomBar}
+                $windowHeight={windowDimensions.height}>
                 <Route />
             </ContentWrapper>
+            {isLoggedIn && showBottomBar && <BottomBar />}
             <EventManager />
         </WebsiteWrapper>
     );

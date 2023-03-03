@@ -6,6 +6,9 @@ export const URL_WELCOME_PAGE = '/';
 
 //LOGIN PATH
 export const URL_HOME_PAGE = '/post';
+export const URL_PROFILE_PAGE = '/profile';
+export const URL_FRIEND_PAGE = '/friends';
+export const URL_NOTIFICATION_PAGE = '/notification';
 
 export const API_URL = {
     LOGIN_URL: '/login',
