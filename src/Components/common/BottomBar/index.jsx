@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 //icon
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
 
 //CUSTOM
 import { CreateUserName, getWindowDimensions, stringAvatar } from 'Helpers/Utils';
@@ -16,7 +16,7 @@ import { BREAKPOINTS_VALUE, COLORS } from 'Styles/Constants';
 import {
     URL_FRIEND_PAGE,
     URL_HOME_PAGE,
-    URL_NOTIFICATION_PAGE,
+    // URL_NOTIFICATION_PAGE,
     URL_PROFILE_PAGE
 } from 'Helpers/Paths';
 
@@ -68,11 +68,11 @@ const BottomBar = () => {
                 onClick={() => navigate(URL_FRIEND_PAGE)}
                 icon={<GroupIcon />}
             />
-            <BottomNavigationAction
+            {/* <BottomNavigationAction
                 label="Notification"
                 onClick={() => navigate(URL_NOTIFICATION_PAGE)}
                 icon={<NotificationsIcon />}
-            />
+            /> */}
             <BottomNavigationAction
                 label="Profile"
                 onClick={() => navigate(URL_PROFILE_PAGE)}
