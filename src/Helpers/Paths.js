@@ -15,4 +15,5 @@ export const API_URL = {
     SIGN_UP_URL: '/sign-up',
     VALIDATE_USER_URL: '/validate-user',
     RESET_PASSWORD_URL: '/reset-password',
+    ADD_POST_URL: '/add-post',
 };

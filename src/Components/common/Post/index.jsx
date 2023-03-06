@@ -57,7 +57,7 @@ const Post = ({ postData }) => {
                                         className="background-video-div"
                                         component={'video'}
                                         src={item.url}
-                                        autoPlay
+                                        // autoPlay
                                         controls
                                     />
                                 )}

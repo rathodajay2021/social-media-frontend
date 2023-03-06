@@ -67,11 +67,11 @@ const ResetPassword = () => {
         const response = await API.post(API_URL.VALIDATE_USER_URL, {
             data: values
         });
-        console.log('🚀 ~ file: ResetPassword.jsx:17 ~ handleFormOneSubmit ~ values:', response);
         if (response.status === CODES.SUCCESS && response?.data?.isUserVerified) {
             setUserEmail(values.email);
             setFormOrder((prev) => !prev);
         }
+        dispatch(showToast(response?.data?.message, 'warning'));
     };
 
     const handleFormTwoSubmit = async (values) => {
