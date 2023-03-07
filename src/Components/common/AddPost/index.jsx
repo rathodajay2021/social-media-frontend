@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Box,
     Button,
+    CardMedia,
     FormHelperText,
     IconButton,
     TextField,
@@ -22,24 +23,55 @@ import { showToast } from 'Redux/App/Actions';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import CODES from 'Helpers/StatusCodes';
+import { ImageBox } from 'Styles/CommonStyle';
+
+const ACCEPT_FILE_TYPE =
+    'image/png, image/jpeg, image/jpg, video/mp4, video/webm, audio/ogg, video/x-msvideo, video/x-matroska';
+
+const IMAGE_TYPE_FILE = ['image/png', 'image/jpeg', 'image/jpg'];
 
 const AddPost = ({ onClose, onConfirm }) => {
     const fileUpload = useRef(null);
     const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
 
-    const [selectedImages, setSelectedImages] = useState([]);
-    const [imgFiles, setImgFiles] = useState([]);
+    const [selectedMediaUrls, setSelectedMediaUrls] = useState([]);
+    console.log('🚀 ~ file: index.jsx:38 ~ AddPost ~ selectedMediaUrls:', selectedMediaUrls);
+    const [selectedMediaFiles, setSelectedMediaFiles] = useState([]);
+    // console.log('🚀 ~ file: index.jsx:37 ~ AddPost ~ selectedMediaFiles:', selectedMediaFiles);
     const [description, setDescription] = useState('');
     const [userDetails, setUserDetails] = useState({});
 
     const handleFileHandler = (e) => {
         const selectedFiles = e.target.files;
         const selectedFilesArray = Array.from(selectedFiles);
-        const imgArray = selectedFilesArray.map((file) => URL.createObjectURL(file));
 
-        setImgFiles(selectedFilesArray);
-        setSelectedImages(imgArray);
+        selectedFilesArray.forEach((element) => {
+            setSelectedMediaUrls((prev) => {
+                return [...prev, { url: URL.createObjectURL(element), mediaType: element.type }];
+            });
+        });
+
+        setSelectedMediaFiles(selectedFilesArray);
+    };
+
+    const handleDeleteMedia = (media, index) => {
+        const tempMediaFiles = [...selectedMediaFiles];
+        tempMediaFiles.splice(index, 1);
+        setSelectedMediaFiles(tempMediaFiles);
+        setSelectedMediaUrls((prev) => prev.filter((e) => e !== media));
+    };
+
+    const DeleteMediaUi = (mediaUrl, index) => {
+        return (
+            <Tooltip title="Delete" placement="top">
+                <IconButton
+                    className="delete-img-icon-btn"
+                    onClick={() => handleDeleteMedia(mediaUrl, index)}>
+                    <DeleteIcon />
+                </IconButton>
+            </Tooltip>
+        );
     };
 
     const handleFileUploadClick = () => {
@@ -47,7 +79,7 @@ const AddPost = ({ onClose, onConfirm }) => {
     };
 
     const handleSubmit = async () => {
-        if (!(!!description.length || !!selectedImages.length)) {
+        if (!(!!description.length || !!selectedMediaUrls.length)) {
             dispatch(
                 showToast(
                     'You need to select at least one img or need to write a description',
@@ -58,8 +90,8 @@ const AddPost = ({ onClose, onConfirm }) => {
         }
 
         const formData = new FormData();
-        for (let i = 0; i < imgFiles.length; i++) {
-            formData.append(`mediaData`, imgFiles[i]);
+        for (let i = 0; i < selectedMediaFiles.length; i++) {
+            formData.append(`mediaData`, selectedMediaFiles[i]);
         }
         formData.append('description', description);
 
@@ -70,8 +102,8 @@ const AddPost = ({ onClose, onConfirm }) => {
         });
 
         if (response?.status === CODES.SUCCESS && response?.data?.isSuccess) {
-            dispatch(showToast(response?.data?.message))
-            onConfirm()
+            dispatch(showToast(response?.data?.message));
+            onConfirm();
         }
     };
 
@@ -116,53 +148,51 @@ const AddPost = ({ onClose, onConfirm }) => {
                 </Box>
                 <Box className="field-wrapper">
                     <Typography className="form-label">Media</Typography>
-                    <Box className="flex img-selector-wrapper flex f-wrap">
-                        {!!selectedImages.length &&
-                            selectedImages.map((image) => (
-                                <Box
-                                    key={image}
-                                    className="img-display flex f-v-center f-h-center"
-                                    style={{
-                                        backgroundImage: `url(${image})`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center'
-                                    }}>
-                                    <Tooltip title="Delete" placement="top">
-                                        <IconButton
-                                            className="delete-img-icon-btn"
-                                            onClick={() =>
-                                                setSelectedImages((prev) =>
-                                                    prev.filter((e) => e !== image)
-                                                )
-                                            }>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </Box>
+                    <Box className="flex media-selector-wrapper flex f-wrap">
+                        {!!selectedMediaUrls.length &&
+                            selectedMediaUrls.map((mediaDetails, index) => (
+                                <React.Fragment key={mediaDetails.url}>
+                                    {IMAGE_TYPE_FILE.includes(mediaDetails.mediaType) ? (
+                                        <ImageBox
+                                            className="img-display flex f-v-center f-h-center"
+                                            $coverPic={mediaDetails.url}>
+                                            {DeleteMediaUi(mediaDetails, index)}
+                                        </ImageBox>
+                                    ) : (
+                                        <Box className="video-wrapper">
+                                            <CardMedia
+                                                className="video-display flex f-v-center f-h-center"
+                                                component={'video'}
+                                                src={mediaDetails.url}
+                                                controls
+                                            />
+                                            {DeleteMediaUi(mediaDetails, index)}
+                                        </Box>
+                                    )}
+                                </React.Fragment>
                             ))}
-                        {selectedImages.length < MEDIA_LIMIT && (
+                        {selectedMediaUrls.length < MEDIA_LIMIT && (
                             <Box
                                 className="add-file flex f-v-center f-h-center f-column hover"
                                 onClick={handleFileUploadClick}>
-                                <Typography className="add-img">+ Add Images</Typography>
+                                <Typography className="add-media">+ Add Media</Typography>
                                 <Typography className="limit">
                                     {`up to ${MEDIA_LIMIT} media files`}
                                 </Typography>
                             </Box>
                         )}
                     </Box>
-                    {selectedImages.length > MEDIA_LIMIT && (
+                    {selectedMediaUrls.length > MEDIA_LIMIT && (
                         <FormHelperText
-                            error>{`You can't upload images more than ${MEDIA_LIMIT}, Please delete ${
-                            selectedImages.length - MEDIA_LIMIT
-                        } images`}</FormHelperText>
+                            error>{`You can't upload media files more than ${MEDIA_LIMIT}, Please delete ${
+                            selectedMediaUrls.length - MEDIA_LIMIT
+                        } media file`}</FormHelperText>
                     )}
                     <input
                         className="file-selector"
                         type="file"
                         name="mediaData"
-                        accept="image/png, image/jpeg, image/jpg"
+                        accept={ACCEPT_FILE_TYPE}
                         ref={fileUpload}
                         onChange={handleFileHandler}
                         multiple
@@ -171,7 +201,7 @@ const AddPost = ({ onClose, onConfirm }) => {
                 <Button
                     className="add-post-btn"
                     onClick={handleSubmit}
-                    disabled={selectedImages.length > MEDIA_LIMIT}>
+                    disabled={selectedMediaUrls.length > MEDIA_LIMIT}>
                     Add Post
                 </Button>
             </Box>

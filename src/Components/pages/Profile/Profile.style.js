@@ -22,7 +22,7 @@ export const ProfileWrapper = styled.div`
             .user-name{
                 text-transform: capitalize;
                 font-size: 24px;
-                font-style: ${FONTS.PRIMARY_Semi_Bold};
+                font-style: ${FONTS.PRIMARY_SEMI_BOLD};
                 margin: 0 0 10px 0;
             }
 
@@ -40,8 +40,7 @@ export const ProfileWrapper = styled.div`
     .user-status{
         height: 200px;
         padding: 0 15%;
-        border-bottom: 1px solid ${COLORS.LIGHT_GREY};
-        border-top: 1px solid ${COLORS.LIGHT_GREY};
+        background: ${COLORS.LIGHT_GREY};
 
         .user-record{
             min-width: 50px;
@@ -61,5 +60,19 @@ export const ProfileWrapper = styled.div`
     .users-post-list {
         gap: 30px;
         padding: 20px;
+    }
+
+    .no-post{
+        height: 250px;
+        
+        .no-post-icon{
+            height: 40px;
+            width: 40px;
+        }
+
+        .no-post-text{
+            font-family: ${FONTS.PRIMARY_SEMI_BOLD};
+            font-size: 20px;
+        }
     }
 `;

@@ -11,7 +11,7 @@ export const AddPostWrapper = styled(Dialog)`
         border-bottom: 1px solid ${COLORS.LIGHT_GREY_SECONDARY};
 
         .add-post-title {
-            font-family: ${FONTS.PRIMARY_Semi_Bold};
+            font-family: ${FONTS.PRIMARY_SEMI_BOLD};
             font-size: 24px;
         }
     }
@@ -43,7 +43,7 @@ export const AddPostWrapper = styled(Dialog)`
                 display: none;
             }
 
-            .img-selector-wrapper {
+            .media-selector-wrapper {
                 gap: 10px;
 
                 .add-file,
@@ -53,12 +53,36 @@ export const AddPostWrapper = styled(Dialog)`
                     border: 2px dashed ${COLORS.GREY_TEXT_COLOR};
                     border-radius: 10px;
 
-                    .add-img,
+                    .add-media,
                     .limit {
                         font-size: 16px;
                     }
 
                     .delete-img-icon-btn {
+                        background: ${COLORS.TRANSPARENT_BLACK};
+                        color: ${COLORS.WHITE};
+                    }
+                }
+
+                .video-wrapper {
+                    position: relative;
+                    width: 150px;
+                    height: 150px;
+                    border: 2px dashed ${COLORS.GREY_TEXT_COLOR};
+                    border-radius: 10px;
+                    overflow: hidden;
+
+                    .video-display {
+                        width: inherit;
+                        height: inherit;
+                        border-radius: 10px;
+                    }
+
+                    .delete-img-icon-btn {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
                         background: ${COLORS.TRANSPARENT_BLACK};
                         color: ${COLORS.WHITE};
                     }

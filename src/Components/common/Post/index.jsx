@@ -35,6 +35,7 @@ const Post = ({
 }) => {
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
+    console.log(postData, userLastName);
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const removePopId = deleteMenu ? 'simple-popover' : undefined;
@@ -45,7 +46,7 @@ const Post = ({
 
         if (response) {
             dispatch(showToast(response.data.message, 'success'));
-            onDelete()
+            onDelete();
         }
     };
 
@@ -125,7 +126,7 @@ const Post = ({
                     vertical: 'bottom',
                     horizontal: 'left'
                 }}>
-                <Typography className="delete-text" onClick={handlePostDelete}>
+                <Typography className="delete-text hover" onClick={handlePostDelete}>
                     Delete
                 </Typography>
             </CustomPopOver>

@@ -1,6 +1,6 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography, Avatar, IconButton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 //CUSTOM
@@ -11,6 +11,9 @@ import Post from 'Components/common/Post';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { ImageBox } from 'Styles/CommonStyle';
+
+//ICON
+import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 
 const TEMP_BIO =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad.';
@@ -49,6 +52,7 @@ const Profile = () => {
 
         return () => dispatch(hideNavBar());
     }, [dispatch]);
+
     return (
         <ProfileWrapper>
             <Box className="user-basic-details">
@@ -83,6 +87,7 @@ const Profile = () => {
                     <Typography className="data-label flex f-h-center">Posts</Typography>
                 </Box>
             </Box>
+            {/* {false ? ( */}
             {userPostData?.post_data && !!userPostData?.post_data.length ? (
                 <Box className="users-post-list flex f-column">
                     {userPostData?.post_data.map((item) => (
@@ -98,8 +103,11 @@ const Profile = () => {
                     ))}
                 </Box>
             ) : (
-                <Box className='no-post'>
-                    <Typography className='no-post-text'>No post yet</Typography>
+                <Box className="no-post flex f-column f-v-center f-h-center">
+                    <IconButton className='icon-btn'>
+                        <PhotoCameraOutlinedIcon className='no-post-icon' />
+                    </IconButton>
+                    <Typography className="no-post-text">No posts yet</Typography>
                 </Box>
             )}
         </ProfileWrapper>

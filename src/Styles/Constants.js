@@ -24,8 +24,8 @@ export const COLORS = {
 export const FONTS = {
     PRIMARY: 'Signika Regular',
     PRIMARY_LIGHT: 'Signika Light',
-    PRIMARY_Medium: 'Signika Medium',
-    PRIMARY_Semi_Bold: 'Signika Semi Bold',
+    PRIMARY_MEDIUM: 'Signika Medium',
+    PRIMARY_SEMI_BOLD: 'Signika Semi Bold',
     PRIMARY_Bold: 'Signika Bold'
 };
 

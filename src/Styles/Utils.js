@@ -166,7 +166,7 @@ export const UtilityStyles = createGlobalStyle`
     }
     
     @font-face {
-        font-family: ${FONTS.PRIMARY_Semi_Bold};
+        font-family: ${FONTS.PRIMARY_SEMI_BOLD};
         font-style: normal;
         font-weight: normal;
         /* src: ; */

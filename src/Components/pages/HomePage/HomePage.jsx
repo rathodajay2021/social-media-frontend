@@ -42,8 +42,8 @@ const HomePage = () => {
                         key={item.postId}
                         postData={item}
                         userFirstName={item?.user?.firstName}
-                        userLastName={postData?.user?.lastName}
-                        userProfilePic={postData?.user?.profilePic}
+                        userLastName={item?.user?.lastName}
+                        userProfilePic={item?.user?.profilePic}
                         allowDelete={false}
                     />
                 ))}
