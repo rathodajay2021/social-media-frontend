@@ -28,7 +28,8 @@ const NavBar = () => {
     };
 
     const handleAddPost = () => {
-        console.log('handleAddPost running ');
+        
+        setAddPostDialog(false)
     };
 
     return (

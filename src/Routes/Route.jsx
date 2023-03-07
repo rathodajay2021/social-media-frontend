@@ -14,6 +14,7 @@ import { WelcomePage } from 'Components/pages/WelcomePage';
 import ProtectedRoute from './ProtectedRoute';
 import RoutesList from './RouteList';
 import { ResetPassword } from 'Components/pages/ResetPassword';
+import WrongPath from 'Components/common/NoPageFound/WrongPath';
 
 const BEFORE_LOGIN_ACCESSIBLE_PATHS = [
     URL_LOGIN,
@@ -56,6 +57,7 @@ const Route = () => {
                     )}
                 </React.Fragment>
             ))}
+            <ReactRoute path='*' element={<WrongPath />} />
         </Routes>
     );
 };

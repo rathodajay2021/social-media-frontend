@@ -5,16 +5,20 @@ export const COLORS = {
     PRIMARY_LIGHT: '#7a73e7',
     PRIMARY_DARK: '#203f81',
 
-    WHITE: '#fff',
-    BLACK: '#000',
-    TRANSPARENT_BLACK: '#00000085',
+    ALERT_BG: '#fdeded',
+    ALERT_TEXT: '#5f2120',
 
+    //GREY
     GREY_TEXT_COLOR: '#707070',
-
     LIGHT_GREY: '#e8e8e8',
     LIGHT_GREY_SECONDARY: '#f2f2f2',
     MEDIUM_GREY: '#848484',
-    NEUTRAL_GREY: '#0f172a'
+    NEUTRAL_GREY: '#0f172a',
+    
+    //WHITE & BLACK
+    TRANSPARENT_BLACK: '#00000085',
+    WHITE: '#fff',
+    BLACK: '#000',
 };
 
 export const FONTS = {

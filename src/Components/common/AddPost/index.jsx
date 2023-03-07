@@ -21,8 +21,9 @@ import { MEDIA_LIMIT } from 'Helpers/Constants';
 import { showToast } from 'Redux/App/Actions';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
+import CODES from 'Helpers/StatusCodes';
 
-const AddPost = ({ onClose }) => {
+const AddPost = ({ onClose, onConfirm }) => {
     const fileUpload = useRef(null);
     const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
@@ -68,8 +69,9 @@ const AddPost = ({ onClose }) => {
             isMultipart: true
         });
 
-        if (response) {
-            console.log('🚀 ~ file: index.jsx:79 ~ handleSubmit ~ response:', response);
+        if (response?.status === CODES.SUCCESS && response?.data?.isSuccess) {
+            dispatch(showToast(response?.data?.message))
+            onConfirm()
         }
     };
 

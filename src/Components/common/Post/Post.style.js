@@ -1,6 +1,6 @@
-import { Paper } from '@mui/material';
+import { Paper, Popover } from '@mui/material';
 import styled from 'styled-components';
-import { FONTS, responsive } from 'Styles/Constants';
+import { COLORS, FONTS, responsive } from 'Styles/Constants';
 
 export const PostWrapper = styled(Paper)`
     padding: 10px;
@@ -10,17 +10,19 @@ export const PostWrapper = styled(Paper)`
         box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
     }
 
-    .user {
-        gap: 15px;
+    .post-header {
+        .user {
+            gap: 15px;
 
-        .user-details {
-            .user-name {
-                font-family: ${FONTS.PRIMARY_Medium};
-                text-transform: capitalize;
-            }
+            .user-details {
+                .user-name {
+                    font-family: ${FONTS.PRIMARY_Medium};
+                    text-transform: capitalize;
+                }
 
-            .post-create-date {
-                font-family: ${FONTS.PRIMARY};
+                .post-create-date {
+                    font-family: ${FONTS.PRIMARY};
+                }
             }
         }
     }
@@ -66,6 +68,19 @@ export const PostWrapper = styled(Paper)`
             &.more-line-description {
                 -webkit-line-clamp: 10;
             }
+        }
+    }
+`;
+
+export const CustomPopOver = styled(Popover)`
+    .popover-paper {
+        padding: 5px;
+        background: ${COLORS.ALERT_BG};
+
+        .delete-text{
+            color: ${COLORS.ALERT_TEXT};
+            font-style: ${FONTS.PRIMARY_Medium};
+            font-size: 18px;
         }
     }
 `;

@@ -16,4 +16,7 @@ export const API_URL = {
     VALIDATE_USER_URL: '/validate-user',
     RESET_PASSWORD_URL: '/reset-password',
     ADD_POST_URL: '/add-post',
+    DELETE_POST_URL: '/delete-post',
+    GET_ALL_POST_URL: '/get-all-post',
+    GET_USER_POST_URL: '/get-user-post',
 };
