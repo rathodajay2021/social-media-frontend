@@ -175,7 +175,7 @@ export const UtilityStyles = createGlobalStyle`
     }
 
     @font-face {
-        font-family: ${FONTS.PRIMARY_Bold};
+        font-family: ${FONTS.PRIMARY_BOLD};
         font-style: normal;
         font-weight: normal;
         /* src: ; */

@@ -42,5 +42,6 @@ const NoPostWrapper = styled(Box)`
     .no-post-text {
         font-family: ${FONTS.PRIMARY_SEMI_BOLD};
         font-size: 20px;
+        text-transform: capitalize;
     }
 `;

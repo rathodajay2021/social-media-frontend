@@ -26,7 +26,7 @@ export const FONTS = {
     PRIMARY_LIGHT: 'Signika Light',
     PRIMARY_MEDIUM: 'Signika Medium',
     PRIMARY_SEMI_BOLD: 'Signika Semi Bold',
-    PRIMARY_Bold: 'Signika Bold'
+    PRIMARY_BOLD: 'Signika Bold'
 };
 
 // BREAKPOINTS

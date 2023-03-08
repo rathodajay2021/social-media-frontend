@@ -47,12 +47,12 @@ export const ProfileWrapper = styled.div`
 
             .data {
                 font-size: 26px;
-                font-style: ${FONTS.PRIMARY_Bold};
+                font-style: ${FONTS.PRIMARY_BOLD};
             }
 
             .data-label {
                 font-size: 24px;
-                font-style: ${FONTS.PRIMARY_Bold};
+                font-style: ${FONTS.PRIMARY_BOLD};
             }
         }
     }

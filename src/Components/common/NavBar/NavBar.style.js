@@ -6,8 +6,8 @@ export const NavBarWrapper = styled.div`
     border-bottom: 1px solid ${COLORS.LIGHT_GREY_SECONDARY};
     padding: 0 15px;
 
-    .nav-title{
-        font-family: ${FONTS.PRIMARY_Bold};
+    .nav-title {
+        font-family: ${FONTS.PRIMARY_BOLD};
         font-size: 25px;
     }
 `;
