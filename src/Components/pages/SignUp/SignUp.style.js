@@ -69,15 +69,6 @@ export const SignUpWrapper = styled.div`
             }
         }
 
-        .sign-up-btn {
-            background: ${COLORS.PRIMARY_DARK};
-            color: ${COLORS.WHITE};
-            box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
-            font-family: ${FONTS.PRIMARY_Medium};
-            font-size: 20px;
-            border-radius: 35px;
-        }
-
         .login-container {
             .login-text {
                 margin: 0 0 0 5px;

@@ -44,26 +44,6 @@ export const WelcomePageWrapper = styled.div`
 
         .btn-section {
             gap: 20px;
-            height: 120px;
-            
-            .btn {
-                background: ${COLORS.PRIMARY_DARK};
-                color: ${COLORS.WHITE};
-                box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
-                font-family: ${FONTS.PRIMARY_Medium};
-                font-size: 20px;
-                border-radius: 35px;
-
-                &:hover{
-                    background: ${COLORS.WHITE};
-                    border: 2px solid ${COLORS.PRIMARY_DARK};
-                    color: ${COLORS.PRIMARY_DARK};
-                }
-
-                &.sign-up-btn{
-                    margin: auto 0 0 0;
-                }
-            }
         }
     }
 `;

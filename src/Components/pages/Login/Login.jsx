@@ -4,7 +4,6 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
     Box,
-    Button,
     FormHelperText,
     IconButton,
     InputAdornment,
@@ -26,6 +25,7 @@ import { loginUser } from 'Redux/Auth/Actions';
 import { showToast } from 'Redux/App/Actions';
 import CODES from 'Helpers/StatusCodes';
 import { PASSWORD_REGEX } from 'Helpers/Constants';
+import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const validationSchema = Yup.object({
     email: Yup.string()
@@ -134,9 +134,12 @@ const Login = () => {
                                     {touched?.password && errors?.password}
                                 </FormHelperText>
                             </Box>
-                            <Button onClick={handleSubmit} className="login-btn">
+                            <CustomButton
+                                onClick={handleSubmit}
+                                btnSize="btn-large"
+                                btnRounder={true}>
                                 Login
-                            </Button>
+                            </CustomButton>
                             <Box className="msg-section flex f-v-center f-column">
                                 <Typography
                                     className="password-msg"

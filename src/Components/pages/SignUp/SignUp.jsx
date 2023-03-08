@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from 'react';
 import {
     Box,
-    Button,
     FormHelperText,
     IconButton,
     InputAdornment,
@@ -26,6 +25,7 @@ import CODES from 'Helpers/StatusCodes';
 import { loginUser } from 'Redux/Auth/Actions';
 import { PASSWORD_REGEX } from 'Helpers/Constants';
 import { showToast } from 'Redux/App/Actions';
+import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const SignUpInitValue = {
     firstName: '',
@@ -221,9 +221,12 @@ const SignUp = () => {
                                     {touched?.confirmPassword && errors?.confirmPassword}
                                 </FormHelperText>
                             </Box>
-                            <Button className="sign-up-btn" onClick={handleSubmit}>
+                            <CustomButton
+                                btnSize="btn-large"
+                                btnRounder={true}
+                                onClick={handleSubmit}>
                                 Sign up
-                            </Button>
+                            </CustomButton>
                             <Box className="login-container flex f-h-center">
                                 Already have an account?{' '}
                                 <Box className="login-text" onClick={() => navigate(URL_LOGIN)}>

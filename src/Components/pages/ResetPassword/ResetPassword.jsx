@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from 'react';
 import {
     Box,
-    Button,
     FormHelperText,
     IconButton,
     InputAdornment,
@@ -25,6 +24,7 @@ import { PASSWORD_REGEX } from 'Helpers/Constants';
 import Api from 'Helpers/ApiHandler';
 import CODES from 'Helpers/StatusCodes';
 import { showToast } from 'Redux/App/Actions';
+import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const formOneInitValue = {
     email: ''
@@ -132,9 +132,12 @@ const ResetPassword = () => {
                                         {touched?.email && errors?.email}
                                     </FormHelperText>
                                 </Box>
-                                <Button className="submit-btn" onClick={handleSubmit}>
+                                <CustomButton
+                                    btnSize="btn-large"
+                                    btnRounder={true}
+                                    onClick={handleSubmit}>
                                     Continue
-                                </Button>
+                                </CustomButton>
                             </Box>
                         )}
                     </Formik>
@@ -225,9 +228,12 @@ const ResetPassword = () => {
                                         {touched?.confirmPassword && errors?.confirmPassword}
                                     </FormHelperText>
                                 </Box>
-                                <Button className="submit-btn" onClick={handleSubmit}>
+                                <CustomButton
+                                    btnSize="btn-large"
+                                    btnRounder={true}
+                                    onClick={handleSubmit}>
                                     reset password
-                                </Button>
+                                </CustomButton>
                             </Box>
                         )}
                     </Formik>

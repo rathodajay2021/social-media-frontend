@@ -65,15 +65,6 @@ export const LoginWrapper = styled.div`
                 }
             }
 
-            .login-btn {
-                background: ${COLORS.PRIMARY_DARK};
-                color: ${COLORS.WHITE};
-                box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
-                font-family: ${FONTS.PRIMARY_Medium};
-                font-size: 20px;
-                border-radius: 35px;
-            }
-
             .msg-section {
                 gap: 20px;
 

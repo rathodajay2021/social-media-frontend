@@ -1,9 +1,10 @@
 import React from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { WelcomePageWrapper } from './WelcomePage.style';
 import { APP_NAME } from 'Helpers/Constants';
 import { URL_LOGIN, URL_SIGN_UP } from 'Helpers/Paths';
+import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
@@ -19,12 +20,19 @@ const WelcomePage = () => {
                     </Typography>
                 </Box>
                 <Box className="btn-section flex f-column">
-                    <Button className="btn login-btn" onClick={() => navigate(URL_LOGIN)}>
+                    <CustomButton
+                        btnRounder={true}
+                        btnSize={'btn-large'}
+                        onClick={() => navigate(URL_LOGIN)}>
                         login
-                    </Button>
-                    <Button className="btn sign-up-btn" onClick={() => navigate(URL_SIGN_UP)}>
+                    </CustomButton>
+                    <CustomButton
+                        btnStyle={'btn-outline'}
+                        btnRounder={true}
+                        btnSize={'btn-large'}
+                        onClick={() => navigate(URL_SIGN_UP)}>
                         sign up
-                    </Button>
+                    </CustomButton>
                 </Box>
             </Box>
         </WelcomePageWrapper>

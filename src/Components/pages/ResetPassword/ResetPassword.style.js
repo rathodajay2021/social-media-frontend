@@ -66,15 +66,6 @@ export const ResetPasswordWrapper = styled.div`
             }
         }
 
-        .submit-btn {
-            background: ${COLORS.PRIMARY_DARK};
-            color: ${COLORS.WHITE};
-            box-shadow: 5px 5px 16px rgba(0, 0, 0, 0.1);
-            font-family: ${FONTS.PRIMARY_Medium};
-            font-size: 20px;
-            border-radius: 35px;
-        }
-
         .login-container {
             margin: 10px 0 0 0;
             .login-text {

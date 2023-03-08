@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Box,
-    Button,
     CardMedia,
     FormHelperText,
     IconButton,
@@ -24,6 +23,7 @@ import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import CODES from 'Helpers/StatusCodes';
 import { ImageBox } from 'Styles/CommonStyle';
+import CustomButton from '../CustomBtn/CustomButton';
 
 const ACCEPT_FILE_TYPE =
     'image/png, image/jpeg, image/jpg, video/mp4, video/webm, audio/ogg, video/x-msvideo, video/x-matroska';
@@ -198,12 +198,13 @@ const AddPost = ({ onClose, onConfirm }) => {
                         multiple
                     />
                 </Box>
-                <Button
-                    className="add-post-btn"
+                <CustomButton
+                    btnSize="btn-large"
+                    btnRounder={true}
                     onClick={handleSubmit}
                     disabled={selectedMediaUrls.length > MEDIA_LIMIT}>
                     Add Post
-                </Button>
+                </CustomButton>
             </Box>
         </AddPostWrapper>
     );
