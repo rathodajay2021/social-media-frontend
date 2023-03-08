@@ -14,6 +14,7 @@ import { ImageBox } from 'Styles/CommonStyle';
 
 //ICON
 import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
+import NoPost from 'Components/common/NoPost';
 
 const TEMP_BIO =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad.';
@@ -103,12 +104,7 @@ const Profile = () => {
                     ))}
                 </Box>
             ) : (
-                <Box className="no-post flex f-column f-v-center f-h-center">
-                    <IconButton className='icon-btn'>
-                        <PhotoCameraOutlinedIcon className='no-post-icon' />
-                    </IconButton>
-                    <Typography className="no-post-text">No posts yet</Typography>
-                </Box>
+                <NoPost wrapperHeight={250} />
             )}
         </ProfileWrapper>
     );

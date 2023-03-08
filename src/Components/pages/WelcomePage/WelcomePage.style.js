@@ -31,7 +31,7 @@ export const WelcomePageWrapper = styled.div`
         .heading {
             .title {
                 font-size: 48px;
-                font-family: ${FONTS.PRIMARY_Medium};
+                font-family: ${FONTS.PRIMARY_MEDIUM};
                 text-transform: capitalize;
             }
 

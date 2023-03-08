@@ -2,11 +2,11 @@ import { createGlobalStyle } from 'styled-components';
 import { BASE_FONT_SIZE, FONTS, responsive } from './Constants';
 
 //FONTS
-import SignikaRegular from 'Assets/Fonts/Signika_Negative/SignikaNegative-Regular.ttf'
-import SignikaLight from 'Assets/Fonts/Signika_Negative/SignikaNegative-Light.ttf'
-import SignikaMedium from 'Assets/Fonts/Signika_Negative/SignikaNegative-Medium.ttf'
-import SignikaSemiBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-SemiBold.ttf'
-import SignikaBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-Bold.ttf'
+import SignikaRegular from 'Assets/Fonts/Signika_Negative/SignikaNegative-Regular.ttf';
+import SignikaLight from 'Assets/Fonts/Signika_Negative/SignikaNegative-Light.ttf';
+import SignikaMedium from 'Assets/Fonts/Signika_Negative/SignikaNegative-Medium.ttf';
+import SignikaSemiBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-SemiBold.ttf';
+import SignikaBold from 'Assets/Fonts/Signika_Negative/SignikaNegative-Bold.ttf';
 
 import { isIEBrowser } from 'Helpers/Utils';
 const isIE = isIEBrowser();
@@ -157,7 +157,7 @@ export const UtilityStyles = createGlobalStyle`
     }
 
     @font-face {
-        font-family: ${FONTS.PRIMARY_Medium};
+        font-family: ${FONTS.PRIMARY_MEDIUM};
         font-style: normal;
         font-weight: normal;
         /* src: ; */

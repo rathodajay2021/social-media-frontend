@@ -2,55 +2,55 @@ import styled from 'styled-components';
 import { COLORS, FONTS } from 'Styles/Constants';
 
 export const ProfileWrapper = styled.div`
-    .user-basic-details{
+    .user-basic-details {
         position: relative;
         height: 400px;
 
-        .profile-pic{
+        .profile-pic {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%,-50%);
+            transform: translate(-50%, -50%);
             border: 10px solid ${COLORS.WHITE};
             border-radius: 50%;
         }
 
-        .user-details{
+        .user-details {
             height: 50%;
             padding: 20px;
 
-            .user-name{
+            .user-name {
                 text-transform: capitalize;
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_SEMI_BOLD};
                 margin: 0 0 10px 0;
             }
 
-            .user-bio{
+            .user-bio {
                 font-size: 20px;
             }
         }
 
-        .cover-pic{
+        .cover-pic {
             height: 50%;
-            background: ${COLORS.MEDIUM_GREY}
+            background: ${COLORS.MEDIUM_GREY};
         }
     }
 
-    .user-status{
+    .user-status {
         height: 200px;
         padding: 0 15%;
         background: ${COLORS.LIGHT_GREY};
 
-        .user-record{
+        .user-record {
             min-width: 50px;
 
-            .data{
+            .data {
                 font-size: 26px;
                 font-style: ${FONTS.PRIMARY_Bold};
             }
 
-            .data-label{
+            .data-label {
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_Bold};
             }
@@ -60,19 +60,5 @@ export const ProfileWrapper = styled.div`
     .users-post-list {
         gap: 30px;
         padding: 20px;
-    }
-
-    .no-post{
-        height: 250px;
-        
-        .no-post-icon{
-            height: 40px;
-            width: 40px;
-        }
-
-        .no-post-text{
-            font-family: ${FONTS.PRIMARY_SEMI_BOLD};
-            font-size: 20px;
-        }
     }
 `;

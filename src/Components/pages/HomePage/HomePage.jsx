@@ -9,6 +9,7 @@ import { hideNavBar, showNavBar } from 'Redux/BottomBar/Actions';
 import { HomePageWrapper } from './HomePage.style';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
+import NoPost from 'Components/common/NoPost';
 
 const HomePage = () => {
     const dispatch = useDispatch();
@@ -36,18 +37,22 @@ const HomePage = () => {
 
     return (
         <HomePageWrapper>
-            <Box className="users-post-list flex f-column">
-                {postData.map((item) => (
-                    <Post
-                        key={item.postId}
-                        postData={item}
-                        userFirstName={item?.user?.firstName}
-                        userLastName={item?.user?.lastName}
-                        userProfilePic={item?.user?.profilePic}
-                        allowDelete={false}
-                    />
-                ))}
-            </Box>
+            {!!postData.length ? (
+                <Box className="users-post-list flex f-column">
+                    {postData.map((item) => (
+                        <Post
+                            key={item.postId}
+                            postData={item}
+                            userFirstName={item?.user?.firstName}
+                            userLastName={item?.user?.lastName}
+                            userProfilePic={item?.user?.profilePic}
+                            allowDelete={false}
+                        />
+                    ))}
+                </Box>
+            ) : (
+                <NoPost />
+            )}
         </HomePageWrapper>
     );
 };

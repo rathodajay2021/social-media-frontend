@@ -16,7 +16,7 @@ export const PostWrapper = styled(Paper)`
 
             .user-details {
                 .user-name {
-                    font-family: ${FONTS.PRIMARY_Medium};
+                    font-family: ${FONTS.PRIMARY_MEDIUM};
                     text-transform: capitalize;
                 }
 
@@ -77,9 +77,9 @@ export const CustomPopOver = styled(Popover)`
         padding: 5px;
         background: ${COLORS.ALERT_BG};
 
-        .delete-text{
+        .delete-text {
             color: ${COLORS.ALERT_TEXT};
-            font-style: ${FONTS.PRIMARY_Medium};
+            font-style: ${FONTS.PRIMARY_MEDIUM};
             font-size: 18px;
         }
     }

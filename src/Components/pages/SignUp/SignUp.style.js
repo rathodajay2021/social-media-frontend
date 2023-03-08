@@ -32,7 +32,7 @@ export const SignUpWrapper = styled.div`
 
             .title {
                 font-size: 40px;
-                font-family: ${FONTS.PRIMARY_Medium};
+                font-family: ${FONTS.PRIMARY_MEDIUM};
                 text-transform: capitalize;
             }
         }

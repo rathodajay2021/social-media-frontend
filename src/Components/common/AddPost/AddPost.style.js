@@ -3,9 +3,6 @@ import { Dialog } from '@mui/material';
 import { COLORS, FONTS } from 'Styles/Constants';
 
 export const AddPostWrapper = styled(Dialog)`
-    .paper-root {
-    }
-
     .header {
         padding: 10px 15px;
         border-bottom: 1px solid ${COLORS.LIGHT_GREY_SECONDARY};
@@ -21,7 +18,7 @@ export const AddPostWrapper = styled(Dialog)`
         gap: 10px;
 
         .form-label {
-            font-family: ${FONTS.PRIMARY_Medium};
+            font-family: ${FONTS.PRIMARY_MEDIUM};
             font-size: 18px;
         }
 
@@ -94,7 +91,7 @@ export const AddPostWrapper = styled(Dialog)`
             background: ${COLORS.PRIMARY};
             color: ${COLORS.WHITE};
             font-size: 16px;
-            font-style: ${FONTS.PRIMARY_Medium};
+            font-style: ${FONTS.PRIMARY_MEDIUM};
             border-radius: 20px;
 
             &:disabled {

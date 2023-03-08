@@ -14,11 +14,11 @@ export const COLORS = {
     LIGHT_GREY_SECONDARY: '#f2f2f2',
     MEDIUM_GREY: '#848484',
     NEUTRAL_GREY: '#0f172a',
-    
+
     //WHITE & BLACK
     TRANSPARENT_BLACK: '#00000085',
     WHITE: '#fff',
-    BLACK: '#000',
+    BLACK: '#000'
 };
 
 export const FONTS = {
@@ -93,7 +93,7 @@ export const BREAKPOINTS = {
     MOBILE_325: `${BREAKPOINTS_VALUE.MOBILE_325 - 1}px` // x_small
 };
 
-export const BASE_FONT_SIZE = 13;
+export const BASE_FONT_SIZE = 14;
 
 export const responsive = Object.keys(BREAKPOINTS).reduce((acc, label) => {
     acc[label] = (...args) => css`
