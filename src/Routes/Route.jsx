@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route as ReactRoute, useNavigate } from 'react-router-dom';
 import {
+    URL_FRIEND_PAGE,
     URL_HOME_PAGE,
     URL_LOGIN,
+    URL_PROFILE_PAGE,
     URL_RESET_PASSWORD,
     URL_SIGN_UP,
     URL_WELCOME_PAGE
@@ -15,6 +17,7 @@ import ProtectedRoute from './ProtectedRoute';
 import RoutesList from './RouteList';
 import { ResetPassword } from 'Components/pages/ResetPassword';
 import WrongPath from 'Components/common/NoPageFound/WrongPath';
+import { selectMenu } from 'Redux/BottomBar/Actions';
 
 const BEFORE_LOGIN_ACCESSIBLE_PATHS = [
     URL_LOGIN,
@@ -26,14 +29,34 @@ const BEFORE_LOGIN_ACCESSIBLE_PATHS = [
 
 const Route = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const isLoggedIn = useSelector((state) => state.Auth.isLoggedIn);
     const userInfo = useSelector((state) => state.Auth.userInfo);
+    const showBottomBar = useSelector((state) => state.BottomNavBar.showBottomBar);
+
+    const handleBottomBar = useCallback(() => {
+        switch (window.location.pathname) {
+            case URL_HOME_PAGE:
+                dispatch(selectMenu(0));
+                break;
+            case URL_FRIEND_PAGE:
+                dispatch(selectMenu(1));
+                break;
+            case URL_PROFILE_PAGE:
+                dispatch(selectMenu(2));
+                break;
+            default:
+                break;
+        }
+    }, [dispatch]);
 
     useEffect(() => {
         if (isLoggedIn && BEFORE_LOGIN_ACCESSIBLE_PATHS?.includes(window?.location?.pathname)) {
             navigate(URL_HOME_PAGE);
         }
-    }, [isLoggedIn, navigate, userInfo]);
+
+        isLoggedIn && showBottomBar && handleBottomBar();
+    }, [isLoggedIn, navigate, userInfo, handleBottomBar, showBottomBar]);
 
     return (
         <Routes>
@@ -57,7 +80,7 @@ const Route = () => {
                     )}
                 </React.Fragment>
             ))}
-            <ReactRoute path='*' element={<WrongPath />} />
+            <ReactRoute path="*" element={<WrongPath />} />
         </Routes>
     );
 };

@@ -1,6 +1,6 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Typography, Avatar, IconButton } from '@mui/material';
+import { Box, Typography, Avatar } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 //CUSTOM
@@ -13,7 +13,6 @@ import { API_URL } from 'Helpers/Paths';
 import { ImageBox } from 'Styles/CommonStyle';
 
 //ICON
-import PhotoCameraOutlinedIcon from '@mui/icons-material/PhotoCameraOutlined';
 import NoPost from 'Components/common/NoPost';
 
 const TEMP_BIO =
