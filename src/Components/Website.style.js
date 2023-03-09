@@ -10,5 +10,5 @@ export const ContentWrapper = styled.div`
     background-color: #fff;
     overflow: auto;
     height: ${(props) =>
-        `calc(${props?.$windowHeight}px - ${props.$bottomBarHeight}px - ${props.$navBarHeight}px)`};
+        `calc(${props?.$windowHeight}px - ${props.$bottomBarHeight}px)`};
 `;

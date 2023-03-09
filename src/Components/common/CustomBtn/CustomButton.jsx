@@ -4,7 +4,14 @@ import { CustomButtonWrapper } from './CustomButton.style';
 const BTN_STYLES = ['btn-primary', 'btn-outline'];
 const BTN_SIZES = ['btn-medium', 'btn-large'];
 
-const CustomButton = ({ children, btnStyle, btnSize, onClick, btnRounder = false, ...props }) => {
+const CustomButton = ({
+    children,
+    btnStyle,
+    btnSize,
+    onClick,
+    btnRounder = false,
+    ...props
+}) => {
     const checkButtonStyle = BTN_STYLES.includes(btnStyle) ? btnStyle : BTN_STYLES[0];
     const checkButtonSize = BTN_SIZES.includes(btnSize) ? btnSize : BTN_SIZES[0];
 

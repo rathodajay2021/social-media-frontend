@@ -35,13 +35,11 @@ const Post = ({
 }) => {
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
-    console.log(postData, userLastName);
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const removePopId = deleteMenu ? 'simple-popover' : undefined;
 
     const handlePostDelete = async () => {
-        console.log('running');
         const response = await API.delete(`${API_URL.DELETE_POST_URL}/${postData?.postId}`);
 
         if (response) {
@@ -77,6 +75,14 @@ const Post = ({
                     </IconButton>
                 )}
             </Box>
+            <Box className="post-features">
+                <Typography
+                    className={`ellipse ${
+                        !!postData.postMedia.length ? 'description' : 'more-line-description'
+                    }`}>
+                    {postData?.description}
+                </Typography>
+            </Box>
             {!!postData?.postMedia.length && (
                 <Box className="media">
                     <Slider {...SETTINGS}>
@@ -108,14 +114,6 @@ const Post = ({
                     </Slider>
                 </Box>
             )}
-            <Box className="post-features">
-                <Typography
-                    className={`ellipse ${
-                        !!postData.postMedia.length ? 'description' : 'more-line-description'
-                    }`}>
-                    {postData?.description}
-                </Typography>
-            </Box>
             <CustomPopOver
                 id={removePopId}
                 classes={{ paper: 'popover-paper' }}

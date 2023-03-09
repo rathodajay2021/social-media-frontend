@@ -24,15 +24,3 @@ export const selectMenu = (state) => {
         type: ACTION_TYPES.SELECTED_MENU
     };
 };
-
-export const showNavBar = () => {
-    return {
-        type: ACTION_TYPES.SHOW_NAV_BAR
-    }
-}
-
-export const hideNavBar = () => {
-    return {
-        type: ACTION_TYPES.HIDE_NAV_BAR
-    }
-}

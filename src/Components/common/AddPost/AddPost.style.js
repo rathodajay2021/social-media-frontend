@@ -5,7 +5,6 @@ import { COLORS, FONTS } from 'Styles/Constants';
 export const AddPostWrapper = styled(Dialog)`
     .header {
         padding: 10px 15px;
-        border-bottom: 1px solid ${COLORS.LIGHT_GREY_SECONDARY};
 
         .add-post-title {
             font-family: ${FONTS.PRIMARY_SEMI_BOLD};
@@ -84,18 +83,6 @@ export const AddPostWrapper = styled(Dialog)`
                         color: ${COLORS.WHITE};
                     }
                 }
-            }
-        }
-
-        .add-post-btn {
-            background: ${COLORS.PRIMARY};
-            color: ${COLORS.WHITE};
-            font-size: 16px;
-            font-style: ${FONTS.PRIMARY_MEDIUM};
-            border-radius: 20px;
-
-            &:disabled {
-                background: linear-gradient(180deg, #7086ec 0%, #788ded 100%);
             }
         }
     }

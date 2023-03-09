@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Box,
     CardMedia,
+    Divider,
     FormHelperText,
     IconButton,
     TextField,
@@ -36,9 +37,7 @@ const AddPost = ({ onClose, onConfirm }) => {
     const API = useMemo(() => new Api(), []);
 
     const [selectedMediaUrls, setSelectedMediaUrls] = useState([]);
-    console.log('🚀 ~ file: index.jsx:38 ~ AddPost ~ selectedMediaUrls:', selectedMediaUrls);
     const [selectedMediaFiles, setSelectedMediaFiles] = useState([]);
-    // console.log('🚀 ~ file: index.jsx:37 ~ AddPost ~ selectedMediaFiles:', selectedMediaFiles);
     const [description, setDescription] = useState('');
     const [userDetails, setUserDetails] = useState({});
 
@@ -97,7 +96,6 @@ const AddPost = ({ onClose, onConfirm }) => {
 
         const response = await API.post(`${API_URL.ADD_POST_URL}/${userDetails?.id}`, {
             data: formData,
-            description,
             isMultipart: true
         });
 
@@ -124,6 +122,7 @@ const AddPost = ({ onClose, onConfirm }) => {
                     <CloseIcon />
                 </IconButton>
             </Box>
+            <Divider />
             <Box className="add-post-form flex f-column">
                 <Box className="field-wrapper">
                     <Typography className="form-label">Description :</Typography>
@@ -199,7 +198,6 @@ const AddPost = ({ onClose, onConfirm }) => {
                     />
                 </Box>
                 <CustomButton
-                    btnSize="btn-large"
                     btnRounder={true}
                     onClick={handleSubmit}
                     disabled={selectedMediaUrls.length > MEDIA_LIMIT}>

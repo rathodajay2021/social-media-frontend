@@ -28,7 +28,7 @@ export const PostWrapper = styled(Paper)`
     }
 
     .media {
-        margin-bottom: 15px;
+        margin-bottom: 25px;
 
         .media-file {
             height: 350px;

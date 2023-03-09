@@ -8,6 +8,8 @@ export const COLORS = {
     ALERT_BG: '#fdeded',
     ALERT_TEXT: '#5f2120',
 
+    URL_TEXT: '#007fff66',
+
     //GREY
     GREY_TEXT_COLOR: '#707070',
     LIGHT_GREY: '#e8e8e8',

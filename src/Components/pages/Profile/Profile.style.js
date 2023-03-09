@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { COLORS, FONTS } from 'Styles/Constants';
 
 export const ProfileWrapper = styled.div`
+    height: ${(props) => `calc(${props?.$windowHeight}px - 120px)`};
+    overflow: auto;
+
     .user-basic-details {
         position: relative;
         height: 400px;
@@ -13,6 +16,9 @@ export const ProfileWrapper = styled.div`
             transform: translate(-50%, -50%);
             border: 10px solid ${COLORS.WHITE};
             border-radius: 50%;
+            font-size: 40px;
+            height: 130px;
+            width: 130px;
         }
 
         .user-details {
@@ -33,7 +39,7 @@ export const ProfileWrapper = styled.div`
 
         .cover-pic {
             height: 50%;
-            background: ${COLORS.MEDIUM_GREY};
+            background-color: ${COLORS.MEDIUM_GREY};
         }
     }
 
@@ -53,6 +59,12 @@ export const ProfileWrapper = styled.div`
             .data-label {
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_BOLD};
+
+                .details-icon{
+                    width: 35px;
+                    height: 35px;
+                    color: ${COLORS.NEUTRAL_GREY}
+                }
             }
         }
     }

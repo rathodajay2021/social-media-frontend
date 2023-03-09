@@ -16,7 +16,7 @@ import { logoutUser } from 'Redux/Auth/Actions';
 import AddPost from '../AddPost';
 import EditUser from '../EditUser';
 
-const NavBar = () => {
+const NavBar = ({ resetData }) => {
     const dispatch = useDispatch();
 
     const [openMenu, setOpenMenu] = useState(null);
@@ -30,10 +30,19 @@ const NavBar = () => {
     };
 
     const handleAddPost = () => {
+        resetData();
         setAddPostDialog(false);
     };
 
-    const handleUserProfileEdit = () => {};
+    const handleUserProfileEdit = () => {
+        setEditUserDialog(true);
+        setOpenMenu(null);
+    };
+
+    const handleEditUser = () => {
+        resetData();
+        setEditUserDialog(false);
+    };
 
     return (
         <NavBarWrapper className="flex f-v-center f-h-space-between">
@@ -48,7 +57,7 @@ const NavBar = () => {
                 <Menu
                     anchorEl={openMenu}
                     open={Boolean(openMenu)}
-                    onClose={() => setOpenMenu(false)}>
+                    onClose={() => setOpenMenu(null)}>
                     <MenuItem onClick={handleUserProfileEdit}>Edit Profile</MenuItem>
                     <Divider />
                     <MenuItem onClick={handleLogout}>
@@ -67,7 +76,9 @@ const NavBar = () => {
             {addPostDialog && (
                 <AddPost onClose={() => setAddPostDialog(false)} onConfirm={handleAddPost} />
             )}
-            {editUserDialog && <EditUser />}
+            {editUserDialog && (
+                <EditUser onClose={() => setEditUserDialog(false)} onConfirm={handleEditUser} />
+            )}
         </NavBarWrapper>
     );
 };

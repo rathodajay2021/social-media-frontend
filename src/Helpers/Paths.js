@@ -19,4 +19,5 @@ export const API_URL = {
     DELETE_POST_URL: '/delete-post',
     GET_ALL_POST_URL: '/get-all-post',
     GET_USER_POST_URL: '/get-user-post',
+    EDIT_USER_URL: '/edit-user',
 };
