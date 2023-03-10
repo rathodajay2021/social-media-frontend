@@ -53,23 +53,6 @@ export const PostWrapper = styled(Paper)`
             }
         }
     }
-
-    .post-features {
-        .ellipse {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-
-            &.description {
-                -webkit-line-clamp: 2;
-            }
-
-            &.more-line-description {
-                -webkit-line-clamp: 10;
-            }
-        }
-    }
 `;
 
 export const CustomPopOver = styled(Popover)`

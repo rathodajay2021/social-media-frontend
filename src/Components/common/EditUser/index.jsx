@@ -126,7 +126,11 @@ const EditUser = ({ onClose, onConfirm }) => {
             );
             setCoverPicFile({ file: {}, url: response?.data?.coverPic });
             setProfilePicFile({ file: {}, url: response?.data?.profilePic });
-            console.log(moment(new Date(response?.data?.dob)).format('MM/DD/YYYY'),new Date(response?.data?.dob))
+            console.log(
+                moment(new Date(response?.data?.dob)).format('MM/DD/YYYY'),
+                moment(new Date(response?.data?.dob)).format('DD/MM/YYYY'),
+                new Date(response?.data?.dob)
+            );
         }
     }, [API, userDetails]);
 
@@ -294,7 +298,7 @@ const EditUser = ({ onClose, onConfirm }) => {
                                             onChange={(newValue) =>
                                                 setFieldValue(
                                                     'dob',
-                                                    moment(newValue.$d).format('DD/MM/YYYY')
+                                                    moment(new Date(newValue.$d)).format('DD/MM/YYYY')
                                                 )
                                             }
                                             InputProps={{

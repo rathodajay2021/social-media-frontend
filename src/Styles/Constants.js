@@ -20,7 +20,8 @@ export const COLORS = {
     //WHITE & BLACK
     TRANSPARENT_BLACK: '#00000085',
     WHITE: '#fff',
-    BLACK: '#000'
+    BLACK: '#000',
+    WHITE_SMOKE: '#f5f5f5'
 };
 
 export const FONTS = {

@@ -5,15 +5,16 @@ import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
 
+//ICON
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 //CUSTOM
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
 import { CustomPopOver, PostWrapper } from './Post.style';
-
-//ICON
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
+import { ReadMore } from '../ReadMore';
 
 const SETTINGS = {
     arrows: false,
@@ -75,14 +76,7 @@ const Post = ({
                     </IconButton>
                 )}
             </Box>
-            <Box className="post-features">
-                <Typography
-                    className={`ellipse ${
-                        !!postData.postMedia.length ? 'description' : 'more-line-description'
-                    }`}>
-                    {postData?.description}
-                </Typography>
-            </Box>
+            <ReadMore>{postData?.description}</ReadMore>
             {!!postData?.postMedia.length && (
                 <Box className="media">
                     <Slider {...SETTINGS}>

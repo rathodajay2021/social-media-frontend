@@ -6,9 +6,19 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
 const FriendsDetails = ({ friendDetails }) => {
+
+    const removeFriendHandler = () => {
+
+    }
+
+    const addFriendHandler = () => {
+        
+    }
+
     return (
-        <FriendsDetailsWrapper>
+        <FriendsDetailsWrapper className='flex f-v-center f-h-space-between'>
             <Avatar
+                className='user-avatar'
                 {...stringAvatar(
                     CreateUserName(friendDetails?.firstName, friendDetails?.lastName),
                     friendDetails?.profilePic
@@ -21,12 +31,12 @@ const FriendsDetails = ({ friendDetails }) => {
                 <Typography className="friend-bio">{friendDetails?.bio}</Typography>
             </Box>
             {friendDetails?.isFriend ? (
-                <IconButton>
-                    <PersonAddAlt1Icon />
+                <IconButton onClick={removeFriendHandler}>
+                    <PersonRemoveAlt1Icon />
                 </IconButton>
             ) : (
-                <IconButton>
-                    <PersonRemoveAlt1Icon />
+                <IconButton onClick={addFriendHandler}>
+                    <PersonAddAlt1Icon />
                 </IconButton>
             )}
         </FriendsDetailsWrapper>
