@@ -100,7 +100,7 @@ const EditUser = ({ onClose, onConfirm }) => {
         formData.append('firstName', values?.firstName);
         formData.append('lastName', values?.lastName);
         formData.append('bio', values?.bio);
-        formData.append('dob', values?.dob);
+        formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
 
         const response = await API.put(`${API_URL.EDIT_USER_URL}/${userDetails?.id}`, {
             data: formData,
@@ -119,18 +119,13 @@ const EditUser = ({ onClose, onConfirm }) => {
         if (response?.data && response.status === CODES.SUCCESS) {
             userFormInnerRef.current.setFieldValue('firstName', response?.data?.firstName);
             userFormInnerRef.current.setFieldValue('lastName', response?.data?.lastName);
-            userFormInnerRef.current.setFieldValue('bio', response?.data?.bio);
+            userFormInnerRef.current.setFieldValue('bio', response?.data?.bio || '');
             userFormInnerRef.current.setFieldValue(
                 'dob',
                 moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
             );
             setCoverPicFile({ file: {}, url: response?.data?.coverPic });
             setProfilePicFile({ file: {}, url: response?.data?.profilePic });
-            console.log(
-                moment(new Date(response?.data?.dob)).format('MM/DD/YYYY'),
-                moment(new Date(response?.data?.dob)).format('DD/MM/YYYY'),
-                new Date(response?.data?.dob)
-            );
         }
     }, [API, userDetails]);
 
@@ -295,14 +290,16 @@ const EditUser = ({ onClose, onConfirm }) => {
                                             inputFormat="DD/MM/YYYY"
                                             value={moment(values.dob, 'DD/MM/YYYY')}
                                             name="dob"
-                                            onChange={(newValue) =>
+                                            onChange={(newValue) => {
                                                 setFieldValue(
                                                     'dob',
-                                                    moment(new Date(newValue.$d)).format('DD/MM/YYYY')
-                                                )
-                                            }
+                                                    moment(new Date(newValue.$d)).format(
+                                                        'DD/MM/YYYY'
+                                                    )
+                                                );
+                                            }}
+                                            className= 'input-field'
                                             InputProps={{
-                                                className: 'input-field',
                                                 classes: {
                                                     focused: 'input-focused',
                                                     notchedOutline: 'input-outline'

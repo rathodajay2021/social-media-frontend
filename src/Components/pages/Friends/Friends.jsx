@@ -62,7 +62,7 @@ const FriendDetails = [
         isFriend: true
     },
     {
-        id: 5,
+        id: 15,
         firstName: 'Ajay',
         lastName: 'Rathod',
         bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',

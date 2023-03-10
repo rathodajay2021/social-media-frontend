@@ -49,9 +49,11 @@ const AddPost = ({ onClose, onConfirm }) => {
             setSelectedMediaUrls((prev) => {
                 return [...prev, { url: URL.createObjectURL(element), mediaType: element.type }];
             });
+            setSelectedMediaFiles(prev => {
+                return [...prev, element]
+            });
         });
 
-        setSelectedMediaFiles(selectedFilesArray);
     };
 
     const handleDeleteMedia = (media, index) => {

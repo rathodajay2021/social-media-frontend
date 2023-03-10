@@ -49,6 +49,6 @@ export const stringAvatar = (name, imgUrl = '', height = 35, width = 35) => {
     }
 };
 
-export const CreateUserName = (firstName, LastName) => {    
-    return firstName + ' ' + LastName;
+export const CreateUserName = (firstName, lastName) => {    
+    return firstName + ' ' + lastName;
 };
