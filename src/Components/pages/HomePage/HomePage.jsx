@@ -15,7 +15,7 @@ const HomePage = () => {
     const API = useMemo(() => new Api(), []);
 
     const [postData, setPostData] = useState([]);
-    const [resetPost, setResetPost] = useState(false)
+    const [resetPost, setResetPost] = useState(false);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const getAllPostData = useCallback(async () => {
@@ -27,8 +27,8 @@ const HomePage = () => {
     }, [API]);
 
     const postResetHandler = () => {
-        setResetPost(prev => !prev)
-    }
+        setResetPost((prev) => !prev);
+    };
 
     useEffect(() => {
         function handleResize() {

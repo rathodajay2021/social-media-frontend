@@ -122,7 +122,9 @@ const EditUser = ({ onClose, onConfirm }) => {
             userFormInnerRef.current.setFieldValue('bio', response?.data?.bio || '');
             userFormInnerRef.current.setFieldValue(
                 'dob',
-                moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
+                !!response?.data?.dob
+                    ? moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
+                    : ''
             );
             setCoverPicFile({ file: {}, url: response?.data?.coverPic });
             setProfilePicFile({ file: {}, url: response?.data?.profilePic });
@@ -298,7 +300,7 @@ const EditUser = ({ onClose, onConfirm }) => {
                                                     )
                                                 );
                                             }}
-                                            className= 'input-field'
+                                            className="input-field"
                                             InputProps={{
                                                 classes: {
                                                     focused: 'input-focused',

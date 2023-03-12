@@ -22,7 +22,7 @@ import { API_URL, URL_HOME_PAGE, URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers
 import { useNavigate } from 'react-router-dom';
 import Api from 'Helpers/ApiHandler';
 import { loginUser } from 'Redux/Auth/Actions';
-import { showToast } from 'Redux/App/Actions';
+import { showToast, userProfileData } from 'Redux/App/Actions';
 import CODES from 'Helpers/StatusCodes';
 import { PASSWORD_REGEX } from 'Helpers/Constants';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
@@ -58,6 +58,7 @@ const Login = () => {
 
         if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
             dispatch(loginUser(response?.data));
+            dispatch(userProfileData(response?.data));
             navigate(URL_HOME_PAGE);
         }
 

@@ -6,7 +6,8 @@ const initState = {
         message: '',
         variant: '',
         duration: 0
-    }
+    },
+    userData: {}
 };
 
 const Reducer = (state = initState, action) => {
@@ -30,6 +31,12 @@ const Reducer = (state = initState, action) => {
                     message: '',
                     variant: ''
                 }
+            };
+
+        case ACTION_TYPES.USER_PROFILE_DATA:
+            return {
+                ...state,
+                userData: { ...action.payload }
             };
 
         default:

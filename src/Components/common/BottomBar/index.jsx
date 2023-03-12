@@ -26,18 +26,13 @@ const BOTTOM_NAVIGATION_BAR = {
 
 const BottomBar = () => {
     const selectedMenu = useSelector((state) => state.BottomNavBar.selectedMenu);
+    const UserProfileData = useSelector((state) => state.App.userData);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [userDetails, setUserDetails] = useState([]);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('userInfo'));
-        if (user) {
-            setUserDetails(user);
-        }
-
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
@@ -79,8 +74,8 @@ const BottomBar = () => {
                 icon={
                     <Avatar
                         {...stringAvatar(
-                            CreateUserName(userDetails?.firstName, userDetails?.lastName),
-                            userDetails?.profilePic
+                            CreateUserName(UserProfileData?.firstName, UserProfileData?.lastName),
+                            UserProfileData?.profilePic
                         )}
                     />
                 }
