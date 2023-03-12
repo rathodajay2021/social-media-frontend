@@ -24,7 +24,7 @@ import Api from 'Helpers/ApiHandler';
 import CODES from 'Helpers/StatusCodes';
 import { loginUser } from 'Redux/Auth/Actions';
 import { PASSWORD_REGEX } from 'Helpers/Constants';
-import { showToast } from 'Redux/App/Actions';
+import { showToast, userProfileData } from 'Redux/App/Actions';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const SignUpInitValue = {
@@ -69,9 +69,14 @@ const SignUp = () => {
 
         if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
             dispatch(loginUser(response?.data));
+            dispatch(userProfileData(response?.data));
             dispatch(showToast('New user created successfully'));
             navigate(URL_HOME_PAGE);
             return;
+        }
+
+        if (response?.status === CODES.UNPROCESSABLE_ENTITY && response.data.message) {
+            dispatch(showToast(response.data.message));
         }
     };
 
