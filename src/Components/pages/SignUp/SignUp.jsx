@@ -75,7 +75,7 @@ const SignUp = () => {
             return;
         }
 
-        if (response?.status === CODES.UNPROCESSABLE_ENTITY && response.data.message) {
+        if (response?.status === CODES.NOT_VALID_DATA && response.data.message) {
             dispatch(showToast(response.data.message));
         }
     };

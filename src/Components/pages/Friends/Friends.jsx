@@ -1,5 +1,5 @@
 //CORE
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
 
 //ICON
@@ -10,80 +10,34 @@ import CloseIcon from '@mui/icons-material/Close';
 import FriendsDetails from 'Components/common/FriendsDetails';
 import { FriendsWrapper } from './Friends.style';
 import { getWindowDimensions } from 'Helpers/Utils';
-
-const FriendDetails = [
-    {
-        id: 1,
-        firstName: 'Dhruv',
-        lastName: 'Singh',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    },
-    {
-        id: 2,
-        firstName: 'Ajay',
-        lastName: 'Rathod',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: false
-    },
-    {
-        id: 3,
-        firstName: 'Dhariya',
-        lastName: 'Parik',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    },
-    {
-        id: 7,
-        firstName: 'Dhruv',
-        lastName: 'Singh',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    },
-    {
-        id: 8,
-        firstName: 'Ajay',
-        lastName: 'Rathod',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: false
-    },
-    {
-        id: 9,
-        firstName: 'Dhariya',
-        lastName: 'Parik',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    },
-    {
-        id: 5,
-        firstName: 'Dhruv',
-        lastName: 'Singh',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    },
-    {
-        id: 15,
-        firstName: 'Ajay',
-        lastName: 'Rathod',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: false
-    },
-    {
-        id: 6,
-        firstName: 'Dhariya',
-        lastName: 'Parik',
-        bio: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa tempore maiores, ipsum sed incidunt ipsa dolor tenetur aliquid veritatis asperiores!',
-        isFriend: true
-    }
-];
+import Api from 'Helpers/ApiHandler';
+import { API_URL } from 'Helpers/Paths';
+import { useSelector } from 'react-redux';
 
 const Friends = () => {
+    const API = useMemo(() => new Api(), []);
+    const userDetails = useSelector((state) => state.App.userData);
+
     const [searchValue, setSearchValue] = useState('');
+    const [friendsList, setFriendsList] = useState([]);
+    const [resetFriendList, setResetFriendList] = useState(false);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const handleClearSearch = () => {
         setSearchValue('');
     };
+
+    const resetFriendApi = () => {
+        setResetFriendList((prev) => !prev);
+    };
+
+    const getFriendList = useCallback(async () => {
+        const response = await API.get(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`);
+
+        if (response) {
+            setFriendsList(response.data);
+        }
+    }, [API, userDetails.id]);
 
     useEffect(() => {
         function handleResize() {
@@ -96,6 +50,10 @@ const Friends = () => {
         };
     }, []);
 
+    useEffect(() => {
+        getFriendList();
+    }, [getFriendList, resetFriendList]);
+
     return (
         <FriendsWrapper $windowHeight={windowDimensions.height}>
             <Box className="search-wrapper">
@@ -106,7 +64,6 @@ const Friends = () => {
                     value={searchValue}
                     onChange={(e) => setSearchValue(e?.target?.value)}
                     className="input-field"
-                    // size="small"
                     fullWidth
                     InputProps={{
                         classes: {
@@ -133,8 +90,12 @@ const Friends = () => {
                 />
             </Box>
             <Box className="friend-list">
-                {FriendDetails.map((friend) => (
-                    <FriendsDetails key={friend.id} friendDetails={friend} />
+                {friendsList.map((friend) => (
+                    <FriendsDetails
+                        key={friend.userId}
+                        friendDetails={friend}
+                        resetFriendApi={resetFriendApi}
+                    />
                 ))}
             </Box>
         </FriendsWrapper>
