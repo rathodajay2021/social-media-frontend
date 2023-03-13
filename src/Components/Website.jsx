@@ -1,17 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ContentWrapper, WebsiteWrapper } from './Website.style';
 import { getWindowDimensions } from 'Helpers/Utils.js';
 import Route from 'Routes/Route';
 import EventManager from 'Components/common/EventManager';
 import BottomBar from './common/BottomBar';
+import { userProfileData } from 'Redux/App/Actions';
 
 const Website = () => {
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const dispatch = useDispatch()
     const isLoggedIn = useSelector((state) => state.Auth.isLoggedIn);
     const showBottomBar = useSelector((state) => state.BottomNavBar.showBottomBar);
 
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+    useEffect(() => {
+        user?.id && dispatch(userProfileData(user))
+    }, [user, dispatch]);
 
     useEffect(() => {
         function handleResize() {

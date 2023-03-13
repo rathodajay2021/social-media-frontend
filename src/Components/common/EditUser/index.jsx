@@ -97,6 +97,8 @@ const EditUser = ({ onClose, onConfirm }) => {
         const formData = new FormData();
         formData.append('coverPic', coverPicFile?.file);
         formData.append('profilePic', profilePicFile?.file);
+        formData.append('coverPicUrl', coverPicFile?.url);
+        formData.append('profilePicUrl', profilePicFile?.url);
         formData.append('firstName', values?.firstName);
         formData.append('lastName', values?.lastName);
         formData.append('bio', values?.bio);
