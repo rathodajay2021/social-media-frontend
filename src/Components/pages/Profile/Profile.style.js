@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { COLORS, FONTS } from 'Styles/Constants';
+import { COLORS, FONTS, responsive } from 'Styles/Constants';
 
 export const ProfileWrapper = styled.div`
     height: ${(props) => `calc(${props?.$windowHeight}px - 120px)`};
@@ -19,21 +19,42 @@ export const ProfileWrapper = styled.div`
             font-size: 40px;
             height: 130px;
             width: 130px;
+
+            ${responsive.PHABLET`
+                height: 100px;
+                width: 100px;
+            `}
         }
 
         .user-details {
             height: 50%;
             padding: 20px;
 
+            ${responsive.PHABLET`
+                padding: 50px 20px 20px;
+            `}
+
             .user-name {
                 text-transform: capitalize;
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_SEMI_BOLD};
                 margin: 0 0 10px 0;
+                
+                ${responsive.PHABLET`
+                    text-align: center;
+                `}
             }
 
             .user-bio {
                 font-size: 20px;
+
+                ${responsive.PHABLET`
+                    text-align: center;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                `}
             }
         }
 
@@ -60,10 +81,10 @@ export const ProfileWrapper = styled.div`
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_BOLD};
 
-                .details-icon{
+                .details-icon {
                     width: 35px;
                     height: 35px;
-                    color: ${COLORS.NEUTRAL_GREY}
+                    color: ${COLORS.NEUTRAL_GREY};
                 }
             }
         }

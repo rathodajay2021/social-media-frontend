@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 //CUSTOM
 import FriendsDetails from 'Components/common/FriendsDetails';
 import { FriendsWrapper } from './Friends.style';
-import { getWindowDimensions } from 'Helpers/Utils';
+import { CreateUserName, getWindowDimensions } from 'Helpers/Utils';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { useSelector } from 'react-redux';
@@ -20,6 +20,7 @@ const Friends = () => {
 
     const [searchValue, setSearchValue] = useState('');
     const [friendsList, setFriendsList] = useState([]);
+    const [searchFriendList, setSearchFriendList] = useState([]);
     const [resetFriendList, setResetFriendList] = useState(false);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -27,15 +28,26 @@ const Friends = () => {
         setSearchValue('');
     };
 
+    const handleFriendSearch = useCallback(() => {
+        let temSearchData = friendsList.filter((friend) =>
+            CreateUserName(friend.firstName, friend.lastName)
+                .toLowerCase()
+                .match(searchValue.toLowerCase())
+        );
+        setSearchFriendList(temSearchData)
+    }, [friendsList, searchValue]);
+
     const resetFriendApi = () => {
         setResetFriendList((prev) => !prev);
     };
 
     const getFriendList = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`);
+        if (userDetails.id) {
+            const response = await API.get(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`);
 
-        if (response) {
-            setFriendsList(response.data);
+            if (response) {
+                setFriendsList(response.data);
+            }
         }
     }, [API, userDetails.id]);
 
@@ -54,6 +66,10 @@ const Friends = () => {
         getFriendList();
     }, [getFriendList, resetFriendList]);
 
+    useEffect(() => {
+        handleFriendSearch();
+    }, [handleFriendSearch]);
+
     return (
         <FriendsWrapper $windowHeight={windowDimensions.height}>
             <Box className="search-wrapper">
@@ -62,7 +78,7 @@ const Friends = () => {
                     placeholder="Search your friends here"
                     variant="outlined"
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e?.target?.value)}
+                    onChange={(e) => setSearchValue(e?.target?.value.replace(/[^a-zA-Z ]/g, ""))}
                     className="input-field"
                     fullWidth
                     InputProps={{
@@ -90,7 +106,7 @@ const Friends = () => {
                 />
             </Box>
             <Box className="friend-list">
-                {friendsList.map((friend) => (
+                {searchFriendList.map((friend) => (
                     <FriendsDetails
                         key={friend.userId}
                         friendDetails={friend}

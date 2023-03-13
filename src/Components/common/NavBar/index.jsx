@@ -19,7 +19,14 @@ import { userProfileData } from 'Redux/App/Actions';
 import { API_URL } from 'Helpers/Paths';
 import Api from 'Helpers/ApiHandler';
 
-const NavBar = ({ resetData }) => {
+const NavBar = ({
+    resetData = () => {
+        return null;
+    },
+    addReset = () => {
+        return null;
+    }
+}) => {
     const dispatch = useDispatch();
     const UserProfileData = useSelector((state) => state.App.userData);
     const API = useMemo(() => new Api(), []);
@@ -35,6 +42,7 @@ const NavBar = ({ resetData }) => {
     };
 
     const handleAddPost = () => {
+        addReset()
         resetData();
         setAddPostDialog(false);
     };
@@ -49,6 +57,7 @@ const NavBar = ({ resetData }) => {
 
         if (response?.data) {
             response?.data?.id && dispatch(userProfileData(response?.data));
+            response?.data?.id && localStorage.setItem('userInfo', JSON.stringify(response?.data));
         }
 
         resetData();

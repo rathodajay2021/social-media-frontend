@@ -1,8 +1,12 @@
 //CORE
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Typography, Avatar, IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+
+//ICON
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
 //CUSTOM
 import { ProfileWrapper } from './Profile.style';
@@ -11,18 +15,15 @@ import Post from 'Components/common/Post';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { ImageBox } from 'Styles/CommonStyle';
-
-//ICON
 import NoPost from 'Components/common/NoPost';
 import NavBar from 'Components/common/NavBar';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 
 const TEMP_BIO =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad.';
 
 const Profile = () => {
     const API = useMemo(() => new Api(), []);
+    const postRef = useRef(null);
     const UserProfileData = useSelector((state) => state.App.userData);
 
     const [userPostData, setUserPostData] = useState({});
@@ -33,21 +34,23 @@ const Profile = () => {
         setResetUser((prev) => !prev);
     };
 
-    const getUserData = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+    const scrollToPostSection = () => {
+        postRef.current.scrollIntoView({behavior: 'smooth'})
+    };
 
-        if (response?.data) {
-            setUserPostData(response?.data);
+    const getUserData = useCallback(async () => {
+        if (UserProfileData?.id) {
+            const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+
+            if (response?.data) {
+                setUserPostData(response?.data);
+            }
         }
     }, [API, UserProfileData]);
 
     useEffect(() => {
         getUserData();
     }, [getUserData, resetUser]);
-
-    useEffect(() => {
-        userPostData?.id && localStorage.setItem('userInfo', JSON.stringify(userPostData));
-    }, [userPostData]);
 
     useEffect(() => {
         function handleResize() {
@@ -62,7 +65,7 @@ const Profile = () => {
 
     return (
         <>
-            <NavBar resetData={handleRefetchUserPost} />
+            <NavBar addReset={handleRefetchUserPost} />
             <ProfileWrapper $windowHeight={windowDimensions.height}>
                 <Box className="user-basic-details">
                     <ImageBox className="cover-pic" $coverPic={userPostData?.coverPic}></ImageBox>
@@ -97,7 +100,9 @@ const Profile = () => {
                     </Box>
                     <Box className="user-record">
                         <Typography className="data-label flex f-h-center">
-                            <LocalPostOfficeIcon className="details-icon" />
+                            <IconButton onClick={scrollToPostSection}>
+                                <LocalPostOfficeIcon className="details-icon" />
+                            </IconButton>
                         </Typography>
                         <Typography className="data flex f-h-center">
                             {userPostData?.post_data && userPostData?.post_data.length}
@@ -105,7 +110,7 @@ const Profile = () => {
                     </Box>
                 </Box>
                 {userPostData?.post_data && !!userPostData?.post_data.length ? (
-                    <Box className="users-post-list flex f-column">
+                    <Box className="users-post-list flex f-column" ref={postRef}>
                         {userPostData?.post_data.map((item) => (
                             <Post
                                 key={item.postId}
