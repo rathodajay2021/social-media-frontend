@@ -113,6 +113,10 @@ export const EditUserWrapper = styled(Dialog)`
                         border: 1px solid ${COLORS.TEXT_LIGHT};
                     }
                 }
+
+                .bio-char-limit{
+                    text-align: end;
+                }
             }
         }
     }

@@ -47,13 +47,14 @@ export const ProfileWrapper = styled.div`
 
             .user-bio {
                 font-size: 20px;
-
+                width: inherit;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                
                 ${responsive.PHABLET`
                     text-align: center;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
                 `}
             }
         }

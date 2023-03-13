@@ -34,6 +34,8 @@ import CODES from 'Helpers/StatusCodes';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from 'Redux/App/Actions';
 
+const TEXT_LENGTH = 254;
+
 const IMG_FILE_TYPE = 'image/png, image/jpeg, image/jpg';
 
 const FORM_INIT_VALUE = {
@@ -267,7 +269,7 @@ const EditUser = ({ onClose, onConfirm }) => {
                                         name="bio"
                                         className="input-field"
                                         placeholder="Tell us something about yourself"
-                                        value={values?.bio}
+                                        value={values?.bio.slice(0, TEXT_LENGTH)}
                                         onChange={handleChange}
                                         multiline
                                         maxRows={6}
@@ -279,6 +281,9 @@ const EditUser = ({ onClose, onConfirm }) => {
                                             }
                                         }}
                                     />
+                                    <FormHelperText className="bio-char-limit">{`${
+                                        values?.bio.slice(0, TEXT_LENGTH).length
+                                    }/${TEXT_LENGTH}`}</FormHelperText>
                                 </Box>
                                 <Box className="field-wrapper">
                                     <Typography className="form-label">DOB :</Typography>
