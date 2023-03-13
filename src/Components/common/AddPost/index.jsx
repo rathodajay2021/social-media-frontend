@@ -1,5 +1,5 @@
 //CORE
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Box,
     CardMedia,
@@ -29,9 +29,9 @@ import CustomButton from '../CustomBtn/CustomButton';
 const ACCEPT_FILE_TYPE =
     'image/png, image/jpeg, image/jpg, video/mp4, video/webm, audio/ogg, video/x-msvideo, video/x-matroska';
 
-const IMAGE_TYPE_FILE = ['image/png', 'image/jpeg', 'image/jpg'];
+const IMAGE_TYPE_FILE = ['image/png', 'image/jpeg', 'image/jpg', 'img'];
 
-const AddPost = ({ onClose, onConfirm }) => {
+const AddPost = ({ onClose, onConfirm, postId = false }) => {
     const fileUpload = useRef(null);
     const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
@@ -49,11 +49,10 @@ const AddPost = ({ onClose, onConfirm }) => {
             setSelectedMediaUrls((prev) => {
                 return [...prev, { url: URL.createObjectURL(element), mediaType: element.type }];
             });
-            setSelectedMediaFiles(prev => {
-                return [...prev, element]
+            setSelectedMediaFiles((prev) => {
+                return [...prev, element];
             });
         });
-
     };
 
     const handleDeleteMedia = (media, index) => {
@@ -106,6 +105,26 @@ const AddPost = ({ onClose, onConfirm }) => {
             onConfirm();
         }
     };
+
+    const getEditPostData = useCallback(async () => {
+        if (postId) {
+            const response = await API.get(`${API_URL.GET_POST_URL}/${postId}`);
+
+            if (response) {
+                setDescription(response?.data?.description);
+                response?.data?.postMedia.forEach((media) =>
+                    setSelectedMediaUrls((prev) => {
+                        let arr = [...prev, { url: media.mediaPath, mediaType: media?.mediaType }];
+                        return [...new Map(arr.map(item => [item["url"], item])).values()];
+                    })
+                );
+            }
+        }
+    }, [API, postId]);
+
+    useEffect(() => {
+        getEditPostData();
+    }, [getEditPostData]);
 
     return (
         <AddPostWrapper

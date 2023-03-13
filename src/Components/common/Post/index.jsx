@@ -1,20 +1,32 @@
 //CORE
 import React, { useMemo, useState } from 'react';
-import { Avatar, Box, CardMedia, IconButton, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    CardMedia,
+    Divider,
+    IconButton,
+    Menu,
+    MenuItem,
+    Typography
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
 
 //ICON
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 //CUSTOM
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
-import { CustomPopOver, PostWrapper } from './Post.style';
+import { PostWrapper } from './Post.style';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
+import AddPost from '../AddPost';
 
 const SETTINGS = {
     arrows: false,
@@ -38,7 +50,13 @@ const Post = ({
     const dispatch = useDispatch();
 
     const [deleteMenu, setDeleteMenu] = useState(null);
+    const [addPostDialog, setAddPostDialog] = useState(false);
     const removePopId = deleteMenu ? 'simple-popover' : undefined;
+
+    const handleEditPost = () => {
+        setAddPostDialog(true)
+        setDeleteMenu(null)
+    }
 
     const handlePostDelete = async () => {
         const response = await API.delete(`${API_URL.DELETE_POST_URL}/${postData?.postId}`);
@@ -108,7 +126,21 @@ const Post = ({
                     </Slider>
                 </Box>
             )}
-            <CustomPopOver
+            <Menu
+                open={Boolean(deleteMenu)}
+                anchorEl={deleteMenu}
+                onClose={() => setDeleteMenu(null)}>
+                <MenuItem className="delete-text hover" onClick={handlePostDelete}>
+                    <DeleteIcon />
+                    Delete
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleEditPost}>
+                    <EditIcon />
+                    Edit
+                </MenuItem>
+            </Menu>
+            {/* <CustomPopOver
                 id={removePopId}
                 classes={{ paper: 'popover-paper' }}
                 open={Boolean(deleteMenu)}
@@ -121,7 +153,10 @@ const Post = ({
                 <Typography className="delete-text hover" onClick={handlePostDelete}>
                     Delete
                 </Typography>
-            </CustomPopOver>
+            </CustomPopOver> */}
+            {addPostDialog && (
+                <AddPost onClose={() => setAddPostDialog(false)} onConfirm={onDelete} postId={postData?.postId} />
+            )}
         </PostWrapper>
     );
 };

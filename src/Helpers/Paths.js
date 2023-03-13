@@ -22,5 +22,6 @@ export const API_URL = {
     EDIT_USER_URL: '/edit-user',
     GET_USER_LIST_URL: '/get-user-list',
     REMOVE_FRIEND_URL: '/remove-friend',
-    ADD_FRIEND_URL: '/add-friend'
+    ADD_FRIEND_URL: '/add-friend',
+    GET_POST_URL: '/get-user-file'
 };

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 //CUSTOM
 import { FONTS } from 'Styles/Constants';
 
-const TEXT_LENGTH = 250
+const TEXT_LENGTH = 450;
 
 const ReadMore = ({ children }) => {
     const text = children;
@@ -18,14 +18,16 @@ const ReadMore = ({ children }) => {
 
     return (
         <ReadMoreWrapper>
-            <Typography component={'span'}>
+            <Typography>
                 {isReadMore ? text.slice(0, TEXT_LENGTH) : text}
-                {text.length > TEXT_LENGTH && <Typography
-                    component={'span'}
-                    onClick={toggleReadMore}
-                    className="read-or-hide hover">
-                    {isReadMore ? '...read more' : ' show less'}
-                </Typography>}
+                {text.length > TEXT_LENGTH && (
+                    <Typography
+                        component={'span'}
+                        onClick={toggleReadMore}
+                        className="read-or-hide hover">
+                        {isReadMore ? '...read more' : ' show less'}
+                    </Typography>
+                )}
             </Typography>
         </ReadMoreWrapper>
     );
