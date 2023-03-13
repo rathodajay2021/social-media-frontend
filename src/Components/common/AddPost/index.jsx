@@ -1,5 +1,5 @@
 //CORE
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import {
     Box,
     CardMedia,
@@ -10,7 +10,7 @@ import {
     Tooltip,
     Typography
 } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //ICON
 import CloseIcon from '@mui/icons-material/Close';
@@ -35,11 +35,11 @@ const AddPost = ({ onClose, onConfirm }) => {
     const fileUpload = useRef(null);
     const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
+    const UserProfileData = useSelector((state) => state.App.userData);
 
     const [selectedMediaUrls, setSelectedMediaUrls] = useState([]);
     const [selectedMediaFiles, setSelectedMediaFiles] = useState([]);
     const [description, setDescription] = useState('');
-    const [userDetails, setUserDetails] = useState({});
 
     const handleFileHandler = (e) => {
         const selectedFiles = e.target.files;
@@ -96,7 +96,7 @@ const AddPost = ({ onClose, onConfirm }) => {
         }
         formData.append('description', description);
 
-        const response = await API.post(`${API_URL.ADD_POST_URL}/${userDetails?.id}`, {
+        const response = await API.post(`${API_URL.ADD_POST_URL}/${UserProfileData?.id}`, {
             data: formData,
             isMultipart: true
         });
@@ -106,10 +106,6 @@ const AddPost = ({ onClose, onConfirm }) => {
             onConfirm();
         }
     };
-
-    useEffect(() => {
-        setUserDetails(JSON.parse(localStorage.getItem('userInfo')));
-    }, []);
 
     return (
         <AddPostWrapper

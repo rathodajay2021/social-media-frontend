@@ -1,7 +1,7 @@
 //CORE
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //ICON
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
@@ -21,13 +21,13 @@ import Api from 'Helpers/ApiHandler';
 
 const NavBar = ({ resetData }) => {
     const dispatch = useDispatch();
+    const UserProfileData = useSelector((state) => state.App.userData);
     const API = useMemo(() => new Api(), []);
 
     const [openMenu, setOpenMenu] = useState(null);
     const [logoutDialog, setLogoutDialog] = useState(false);
     const [addPostDialog, setAddPostDialog] = useState(false);
     const [editUserDialog, setEditUserDialog] = useState(false);
-    const [userDetails, setUserDetails] = useState([]);
 
     const handleLogout = () => {
         setOpenMenu(null);
@@ -45,7 +45,7 @@ const NavBar = ({ resetData }) => {
     };
 
     const handleEditUser = async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${userDetails?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
 
         if (response?.data) {
             response?.data?.id && dispatch(userProfileData(response?.data));
@@ -54,13 +54,6 @@ const NavBar = ({ resetData }) => {
         resetData();
         setEditUserDialog(false);
     };
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('userInfo'));
-        if (user) {
-            setUserDetails(user);
-        }
-    }, [dispatch]);
 
     return (
         <NavBarWrapper className="flex f-v-center f-h-space-between">

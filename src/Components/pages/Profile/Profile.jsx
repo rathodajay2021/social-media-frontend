@@ -1,7 +1,7 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Typography, Avatar } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import moment from 'moment';
 
 //CUSTOM
@@ -22,11 +22,10 @@ const TEMP_BIO =
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad.';
 
 const Profile = () => {
-    const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
+    const UserProfileData = useSelector((state) => state.App.userData);
 
     const [userPostData, setUserPostData] = useState({});
-    const [userDetails, setUserDetails] = useState([]);
     const [resetUser, setResetUser] = useState(true);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
@@ -35,12 +34,12 @@ const Profile = () => {
     };
 
     const getUserData = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${userDetails?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
 
         if (response?.data) {
             setUserPostData(response?.data);
         }
-    }, [API, userDetails]);
+    }, [API, UserProfileData]);
 
     useEffect(() => {
         getUserData();
@@ -49,13 +48,6 @@ const Profile = () => {
     useEffect(() => {
         userPostData?.id && localStorage.setItem('userInfo', JSON.stringify(userPostData));
     }, [userPostData]);
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('userInfo'));
-        if (user) {
-            setUserDetails(user);
-        }
-    }, [dispatch]);
 
     useEffect(() => {
         function handleResize() {
@@ -107,7 +99,9 @@ const Profile = () => {
                         <Typography className="data-label flex f-h-center">
                             <LocalPostOfficeIcon className="details-icon" />
                         </Typography>
-                        <Typography className="data flex f-h-center">0</Typography>
+                        <Typography className="data flex f-h-center">
+                            {userPostData?.post_data && userPostData?.post_data.length}
+                        </Typography>
                     </Box>
                 </Box>
                 {userPostData?.post_data && !!userPostData?.post_data.length ? (

@@ -31,7 +31,7 @@ import CustomButton from '../CustomBtn/CustomButton';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import CODES from 'Helpers/StatusCodes';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from 'Redux/App/Actions';
 
 const IMG_FILE_TYPE = 'image/png, image/jpeg, image/jpg';
@@ -50,12 +50,12 @@ const FORM_VALIDATION = Yup.object({
 
 const EditUser = ({ onClose, onConfirm }) => {
     const API = useMemo(() => new Api(), []);
+    const UserProfileData = useSelector((state) => state.App.userData);
     const dispatch = useDispatch();
     const coverPicRef = useRef(null);
     const profilePicRef = useRef(null);
     const userFormInnerRef = useRef(null);
 
-    const [userDetails, setUserDetails] = useState([]);
     const [coverPicFile, setCoverPicFile] = useState({
         file: {},
         url: ''
@@ -104,7 +104,7 @@ const EditUser = ({ onClose, onConfirm }) => {
         formData.append('bio', values?.bio);
         formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
 
-        const response = await API.put(`${API_URL.EDIT_USER_URL}/${userDetails?.id}`, {
+        const response = await API.put(`${API_URL.EDIT_USER_URL}/${UserProfileData?.id}`, {
             data: formData,
             isMultipart: true
         });
@@ -116,7 +116,7 @@ const EditUser = ({ onClose, onConfirm }) => {
     };
 
     const getUserDetails = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${userDetails?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
 
         if (response?.data && response.status === CODES.SUCCESS) {
             userFormInnerRef.current.setFieldValue('firstName', response?.data?.firstName);
@@ -131,18 +131,11 @@ const EditUser = ({ onClose, onConfirm }) => {
             setCoverPicFile({ file: {}, url: response?.data?.coverPic });
             setProfilePicFile({ file: {}, url: response?.data?.profilePic });
         }
-    }, [API, userDetails]);
-
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem('userInfo'));
-        if (user) {
-            setUserDetails(user);
-        }
-    }, []);
+    }, [API, UserProfileData]);
 
     useEffect(() => {
         getUserDetails();
-    }, [getUserDetails, userDetails]);
+    }, [getUserDetails]);
 
     return (
         <EditUserWrapper open onClose={onClose} fullWidth maxWidth="sm">
@@ -200,8 +193,8 @@ const EditUser = ({ onClose, onConfirm }) => {
                                     <Avatar
                                         {...stringAvatar(
                                             CreateUserName(
-                                                userDetails?.firstName,
-                                                userDetails?.lastName
+                                                UserProfileData?.firstName,
+                                                UserProfileData?.lastName
                                             ),
                                             profilePicFile.url
                                         )}
