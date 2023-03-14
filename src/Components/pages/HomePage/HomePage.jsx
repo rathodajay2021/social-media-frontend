@@ -59,6 +59,7 @@ const HomePage = () => {
                                 userLastName={item?.user?.lastName}
                                 userProfilePic={item?.user?.profilePic}
                                 allowDelete={false}
+                                redirect={true}
                             />
                         ))}
                     </Box>

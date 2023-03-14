@@ -1,6 +1,7 @@
 //PATH
 import {
     URL_FRIEND_PAGE,
+    URL_FRIEND_PROFILE_PAGE,
     URL_HOME_PAGE,
     URL_NOTIFICATION_PAGE,
     URL_PROFILE_PAGE
@@ -11,6 +12,7 @@ import { HomePage } from 'Components/pages/HomePage';
 import { Profile } from 'Components/pages/Profile';
 import { Notification } from 'Components/pages/Notification';
 import { Friends } from 'Components/pages/Friends';
+import FriendProfile from 'Components/common/FriendProfile';
 
 const RoutesList = [
     {
@@ -32,6 +34,11 @@ const RoutesList = [
         path: URL_FRIEND_PAGE,
         exact: true,
         Component: <Friends />
+    },
+    {
+        path: URL_FRIEND_PROFILE_PAGE,
+        exact: true,
+        Component: <FriendProfile />
     }
 ];
 

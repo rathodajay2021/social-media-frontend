@@ -13,6 +13,7 @@ import {
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 //ICON
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -23,7 +24,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
 import { PostWrapper } from './Post.style';
 import Api from 'Helpers/ApiHandler';
-import { API_URL } from 'Helpers/Paths';
+import { API_URL, URL_FRIEND_PROFILE_PAGE } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
 import AddPost from '../AddPost';
@@ -44,19 +45,21 @@ const Post = ({
     userFirstName,
     userLastName,
     userProfilePic,
-    onDelete
+    onDelete,
+    redirect = false
 }) => {
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const [addPostDialog, setAddPostDialog] = useState(false);
     const removePopId = deleteMenu ? 'simple-popover' : undefined;
 
     const handleEditPost = () => {
-        setAddPostDialog(true)
-        setDeleteMenu(null)
-    }
+        setAddPostDialog(true);
+        setDeleteMenu(null);
+    };
 
     const handlePostDelete = async () => {
         const response = await API.delete(`${API_URL.DELETE_POST_URL}/${postData?.postId}`);
@@ -64,6 +67,12 @@ const Post = ({
         if (response) {
             dispatch(showToast(response.data.message, 'success'));
             onDelete();
+        }
+    };
+
+    const handleRedirectToFriend = () => {
+        if (redirect) {
+            navigate(URL_FRIEND_PROFILE_PAGE, { state: { friendId: postData.user.userId } });
         }
     };
 
@@ -76,6 +85,8 @@ const Post = ({
                             CreateUserName(userFirstName, userLastName),
                             userProfilePic
                         )}
+                        className={`${redirect && 'hover'}`}
+                        onClick={handleRedirectToFriend}
                     />
                     <Box className="user-details">
                         <Typography className="user-name">
@@ -155,7 +166,11 @@ const Post = ({
                 </Typography>
             </CustomPopOver> */}
             {addPostDialog && (
-                <AddPost onClose={() => setAddPostDialog(false)} onConfirm={onDelete} postId={postData?.postId} />
+                <AddPost
+                    onClose={() => setAddPostDialog(false)}
+                    onConfirm={onDelete}
+                    postId={postData?.postId}
+                />
             )}
         </PostWrapper>
     );
