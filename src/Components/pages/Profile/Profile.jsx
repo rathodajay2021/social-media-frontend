@@ -7,6 +7,7 @@ import moment from 'moment';
 //ICON
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import GroupIcon from '@mui/icons-material/Group';
 
 //CUSTOM
 import { ProfileWrapper } from './Profile.style';
@@ -28,6 +29,7 @@ const Profile = () => {
 
     const [userPostData, setUserPostData] = useState({});
     const [resetUser, setResetUser] = useState(true);
+    const [friendList, setFriendList] = useState({});
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const handleRefetchUserPost = () => {
@@ -35,7 +37,7 @@ const Profile = () => {
     };
 
     const scrollToPostSection = () => {
-        postRef.current.scrollIntoView({behavior: 'smooth'})
+        postRef.current.scrollIntoView({ behavior: 'smooth' });
     };
 
     const getUserData = useCallback(async () => {
@@ -48,11 +50,22 @@ const Profile = () => {
         }
     }, [API, UserProfileData]);
 
+    const getFriendList = useCallback(async () => {
+        if (UserProfileData?.id) {
+            const response = await API.get(`${API_URL.GET_FRIEND_LIST_URL}/${UserProfileData?.id}`);
+
+            if (response) {
+                setFriendList(response.data);
+            }
+        }
+    }, [API, UserProfileData.id]);
+
     useEffect(() => {
         getUserData();
     }, [getUserData, resetUser]);
 
     useEffect(() => {
+        getFriendList();
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
@@ -61,7 +74,7 @@ const Profile = () => {
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    }, []);
+    }, [getFriendList]);
 
     return (
         <>
@@ -87,17 +100,23 @@ const Profile = () => {
                 </Box>
                 <Box className="user-status flex f-v-center f-h-space-between">
                     <Box className="user-record">
-                        <Typography className="data-label flex f-h-center">Friends</Typography>
-                        <Typography className="data flex f-h-center">No</Typography>
-                    </Box>
-                    <Box className="user-record">
                         <Typography className="data-label flex f-h-center">
-                            <CalendarMonthIcon className="details-icon" />
+                            <GroupIcon className="details-icon" />
                         </Typography>
                         <Typography className="data flex f-h-center">
-                            {moment(new Date(userPostData?.dob)).format('DD MMM')}
+                            {friendList?.count}
                         </Typography>
                     </Box>
+                    {userPostData?.dob && (
+                        <Box className="user-record">
+                            <Typography className="data-label flex f-h-center">
+                                <CalendarMonthIcon className="details-icon" />
+                            </Typography>
+                            <Typography className="data flex f-h-center">
+                                {moment(new Date(userPostData?.dob)).format('DD MMM')}
+                            </Typography>
+                        </Box>
+                    )}
                     <Box className="user-record">
                         <Typography className="data-label flex f-h-center">
                             <IconButton onClick={scrollToPostSection}>

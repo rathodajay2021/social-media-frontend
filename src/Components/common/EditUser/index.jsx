@@ -128,7 +128,7 @@ const EditUser = ({ onClose, onConfirm }) => {
                 'dob',
                 !!response?.data?.dob
                     ? moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
-                    : ''
+                    : null
             );
             setCoverPicFile({ file: {}, url: response?.data?.coverPic });
             setProfilePicFile({ file: {}, url: response?.data?.profilePic });
@@ -290,7 +290,11 @@ const EditUser = ({ onClose, onConfirm }) => {
                                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                                         <DatePicker
                                             inputFormat="DD/MM/YYYY"
-                                            value={moment(values.dob, 'DD/MM/YYYY')}
+                                            value={
+                                                !!values.dob
+                                                    ? moment(values.dob, 'DD/MM/YYYY')
+                                                    : null
+                                            }
                                             name="dob"
                                             onChange={(newValue) => {
                                                 setFieldValue(
