@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, Typography, Avatar, IconButton } from '@mui/material';
 import { useSelector } from 'react-redux';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 //ICON
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -14,18 +15,16 @@ import { ProfileWrapper } from './Profile.style';
 import { CreateUserName, getWindowDimensions, stringAvatar } from 'Helpers/Utils';
 import Post from 'Components/common/Post';
 import Api from 'Helpers/ApiHandler';
-import { API_URL } from 'Helpers/Paths';
+import { API_URL, URL_FRIEND_PAGE } from 'Helpers/Paths';
 import { ImageBox } from 'Styles/CommonStyle';
 import NoPost from 'Components/common/NoPost';
 import NavBar from 'Components/common/NavBar';
-
-const TEMP_BIO =
-    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad. Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti nam voluptatibus ad.';
 
 const Profile = () => {
     const API = useMemo(() => new Api(), []);
     const postRef = useRef(null);
     const UserProfileData = useSelector((state) => state.App.userData);
+    const navigate = useNavigate();
 
     const [userPostData, setUserPostData] = useState({});
     const [resetUser, setResetUser] = useState(true);
@@ -93,15 +92,15 @@ const Profile = () => {
                         <Typography className="user-name">
                             {CreateUserName(userPostData?.firstName, userPostData?.lastName)}
                         </Typography>
-                        <Typography className="user-bio">
-                            {userPostData?.bio || TEMP_BIO}
-                        </Typography>
+                        <Typography className="user-bio">{userPostData?.bio}</Typography>
                     </Box>
                 </Box>
                 <Box className="user-status flex f-v-center f-h-space-between">
                     <Box className="user-record">
                         <Typography className="data-label flex f-h-center">
-                            <GroupIcon className="details-icon" />
+                            <IconButton onClick={() => navigate(URL_FRIEND_PAGE)}>
+                                <GroupIcon className="details-icon" />
+                            </IconButton>
                         </Typography>
                         <Typography className="data flex f-h-center">
                             {friendList?.count}
