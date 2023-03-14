@@ -109,7 +109,9 @@ const Profile = () => {
                     {userPostData?.dob && (
                         <Box className="user-record">
                             <Typography className="data-label flex f-h-center">
-                                <CalendarMonthIcon className="details-icon" />
+                                <IconButton>
+                                    <CalendarMonthIcon className="details-icon" />
+                                </IconButton>
                             </Typography>
                             <Typography className="data flex f-h-center">
                                 {moment(new Date(userPostData?.dob)).format('DD MMM')}

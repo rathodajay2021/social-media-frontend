@@ -1,6 +1,6 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Avatar, Box, IconButton, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { useLocation } from 'react-router-dom';
 import moment from 'moment';
 
@@ -104,10 +104,10 @@ const FriendProfile = () => {
                     </Box>
                 )}
                 <Box className="user-record">
-                    <Typography className="data-label flex f-h-center">
-                        <IconButton onClick={scrollToPostSection}>
-                            <LocalPostOfficeIcon className="details-icon" />
-                        </IconButton>
+                    <Typography
+                        className="data-label flex f-h-center hover"
+                        onClick={scrollToPostSection}>
+                        <LocalPostOfficeIcon className="details-icon" />
                     </Typography>
                     <Typography className="data flex f-h-center">
                         {userPostData?.post_data && userPostData?.post_data.length}

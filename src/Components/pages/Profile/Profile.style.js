@@ -39,7 +39,7 @@ export const ProfileWrapper = styled.div`
                 font-size: 24px;
                 font-style: ${FONTS.PRIMARY_SEMI_BOLD};
                 margin: 0 0 10px 0;
-                
+
                 ${responsive.PHABLET`
                     text-align: center;
                 `}
@@ -52,7 +52,7 @@ export const ProfileWrapper = styled.div`
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
-                
+
                 ${responsive.PHABLET`
                     text-align: center;
                 `}
@@ -76,6 +76,9 @@ export const ProfileWrapper = styled.div`
             .data {
                 font-size: 26px;
                 font-style: ${FONTS.PRIMARY_BOLD};
+                ${responsive.PHABLET`
+                    font-size: 18px;
+                `}
             }
 
             .data-label {
@@ -86,6 +89,11 @@ export const ProfileWrapper = styled.div`
                     width: 35px;
                     height: 35px;
                     color: ${COLORS.NEUTRAL_GREY};
+
+                    ${responsive.PHABLET`
+                        width: 25px;
+                        height: 25px;
+                    `}
                 }
             }
         }
