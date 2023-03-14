@@ -61,6 +61,11 @@ const Post = ({
         setDeleteMenu(null);
     };
 
+    const handleEditPostMedia = () => {
+        setAddPostDialog(false)
+        onDelete()
+    }
+
     const handlePostDelete = async () => {
         const response = await API.delete(`${API_URL.DELETE_POST_URL}/${postData?.postId}`);
 
@@ -141,14 +146,14 @@ const Post = ({
                 open={Boolean(deleteMenu)}
                 anchorEl={deleteMenu}
                 onClose={() => setDeleteMenu(null)}>
-                <MenuItem className="delete-text hover" onClick={handlePostDelete}>
-                    <DeleteIcon />
-                    Delete
-                </MenuItem>
-                <Divider />
                 <MenuItem onClick={handleEditPost}>
                     <EditIcon />
                     Edit
+                </MenuItem>
+                <Divider />
+                <MenuItem className="delete-text hover" onClick={handlePostDelete}>
+                    <DeleteIcon />
+                    Delete
                 </MenuItem>
             </Menu>
             {/* <CustomPopOver
@@ -168,8 +173,9 @@ const Post = ({
             {addPostDialog && (
                 <AddPost
                     onClose={() => setAddPostDialog(false)}
-                    onConfirm={onDelete}
+                    onConfirm={handleEditPostMedia}
                     postId={postData?.postId}
+                    isEdit={true}
                 />
             )}
         </PostWrapper>

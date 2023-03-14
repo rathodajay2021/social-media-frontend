@@ -31,7 +31,7 @@ const ACCEPT_FILE_TYPE =
 
 const IMAGE_TYPE_FILE = ['image/png', 'image/jpeg', 'image/jpg', 'img'];
 
-const AddPost = ({ onClose, onConfirm, postId = false }) => {
+const AddPost = ({ onClose, onConfirm, postId = 0, isEdit = false }) => {
     const fileUpload = useRef(null);
     const dispatch = useDispatch();
     const API = useMemo(() => new Api(), []);
@@ -40,6 +40,7 @@ const AddPost = ({ onClose, onConfirm, postId = false }) => {
     const [selectedMediaUrls, setSelectedMediaUrls] = useState([]);
     const [selectedMediaFiles, setSelectedMediaFiles] = useState([]);
     const [description, setDescription] = useState('');
+    const [deleteMediaId, setDeleteMediaId] = useState([]);
 
     const handleFileHandler = (e) => {
         const selectedFiles = e.target.files;
@@ -56,6 +57,10 @@ const AddPost = ({ onClose, onConfirm, postId = false }) => {
     };
 
     const handleDeleteMedia = (media, index) => {
+        if (isEdit) {
+            selectedMediaFiles[index].id &&
+                setDeleteMediaId((prev) => [...prev, selectedMediaFiles[index]]);
+        }
         const tempMediaFiles = [...selectedMediaFiles];
         tempMediaFiles.splice(index, 1);
         setSelectedMediaFiles(tempMediaFiles);
@@ -76,6 +81,33 @@ const AddPost = ({ onClose, onConfirm, postId = false }) => {
 
     const handleFileUploadClick = () => {
         fileUpload.current.click();
+    };
+
+    const handleEditPost = async () => {
+        const formData = new FormData();
+        for (let index = 0; index < selectedMediaFiles.length; index++) {
+            if (!!selectedMediaFiles[index].name) {
+                formData.append(`mediaData`, selectedMediaFiles[index]);
+            }
+        }
+        formData.append('description', description);
+
+        const response = await API.put(`${API_URL.EDIT_POST_URL}/${postId}`, {
+            data: formData,
+            isMultipart: true
+        });
+
+        for (let index = 0; index < deleteMediaId.length; index++) {
+            await API.delete(
+                `${API_URL.DELETE_POST_MEDIA_URL}/${deleteMediaId[index].id}`
+            );
+        }
+
+        if (response) {
+            dispatch(showToast(response?.data?.message));
+            onConfirm();
+        }
+
     };
 
     const handleSubmit = async () => {
@@ -112,12 +144,16 @@ const AddPost = ({ onClose, onConfirm, postId = false }) => {
 
             if (response) {
                 setDescription(response?.data?.description);
-                response?.data?.postMedia.forEach((media) =>
+                response?.data?.postMedia.forEach((media) => {
                     setSelectedMediaUrls((prev) => {
                         let arr = [...prev, { url: media.mediaPath, mediaType: media?.mediaType }];
-                        return [...new Map(arr.map(item => [item["url"], item])).values()];
-                    })
-                );
+                        return [...new Map(arr.map((item) => [item['url'], item])).values()];
+                    });
+                    setSelectedMediaFiles((prev) => {
+                        let arr = [...prev, { id: media.mediaID }];
+                        return [...new Map(arr.map((item) => [item['id'], item])).values()];
+                    });
+                });
             }
         }
     }, [API, postId]);
@@ -214,12 +250,21 @@ const AddPost = ({ onClose, onConfirm, postId = false }) => {
                         multiple
                     />
                 </Box>
-                <CustomButton
-                    btnRounder={true}
-                    onClick={handleSubmit}
-                    disabled={selectedMediaUrls.length > MEDIA_LIMIT}>
-                    Add Post
-                </CustomButton>
+                {isEdit ? (
+                    <CustomButton
+                        btnRounder={true}
+                        onClick={handleEditPost}
+                        disabled={selectedMediaUrls.length > MEDIA_LIMIT}>
+                        Edit Post
+                    </CustomButton>
+                ) : (
+                    <CustomButton
+                        btnRounder={true}
+                        onClick={handleSubmit}
+                        disabled={selectedMediaUrls.length > MEDIA_LIMIT}>
+                        Add Post
+                    </CustomButton>
+                )}
             </Box>
         </AddPostWrapper>
     );
