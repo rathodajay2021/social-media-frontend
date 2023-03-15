@@ -37,7 +37,7 @@ const FriendProfile = () => {
             const response = await API.get(`${API_URL.GET_USER_POST_URL}/${friendId}`);
 
             if (response?.data) {
-                setUserPostData(response?.data);
+                setUserPostData(response?.data?.data);
             }
         }
     }, [API, friendId]);

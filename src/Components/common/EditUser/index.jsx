@@ -103,7 +103,7 @@ const EditUser = ({ onClose, onConfirm }) => {
         formData.append('profilePicUrl', profilePicFile?.url);
         formData.append('firstName', values?.firstName);
         formData.append('lastName', values?.lastName);
-        formData.append('bio', values?.bio);
+        formData.append('bio', values?.bio.slice(0, TEXT_LENGTH));
         formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
 
         const response = await API.put(`${API_URL.EDIT_USER_URL}/${UserProfileData?.id}`, {
@@ -121,17 +121,17 @@ const EditUser = ({ onClose, onConfirm }) => {
         const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
 
         if (response?.data && response.status === CODES.SUCCESS) {
-            userFormInnerRef.current.setFieldValue('firstName', response?.data?.firstName);
-            userFormInnerRef.current.setFieldValue('lastName', response?.data?.lastName);
-            userFormInnerRef.current.setFieldValue('bio', response?.data?.bio || '');
+            userFormInnerRef.current.setFieldValue('firstName', response?.data?.data?.firstName);
+            userFormInnerRef.current.setFieldValue('lastName', response?.data?.data?.lastName);
+            userFormInnerRef.current.setFieldValue('bio', response?.data?.data?.bio || '');
             userFormInnerRef.current.setFieldValue(
                 'dob',
-                !!response?.data?.dob
-                    ? moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
+                !!response?.data?.data?.dob
+                    ? moment(new Date(response?.data?.data?.dob)).format('DD/MM/YYYY')
                     : null
             );
-            setCoverPicFile({ file: {}, url: response?.data?.coverPic });
-            setProfilePicFile({ file: {}, url: response?.data?.profilePic });
+            setCoverPicFile({ file: {}, url: response?.data?.data?.coverPic });
+            setProfilePicFile({ file: {}, url: response?.data?.data?.profilePic });
         }
     }, [API, UserProfileData]);
 

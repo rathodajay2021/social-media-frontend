@@ -132,7 +132,7 @@ const AddPost = ({ onClose, onConfirm, postId = 0, isEdit = false }) => {
             isMultipart: true
         });
 
-        if (response?.status === CODES.SUCCESS && response?.data?.isSuccess) {
+        if (response?.status === CODES.SUCCESS && response?.data?.data?.isSuccess) {
             dispatch(showToast(response?.data?.message));
             onConfirm();
         }
@@ -143,8 +143,8 @@ const AddPost = ({ onClose, onConfirm, postId = 0, isEdit = false }) => {
             const response = await API.get(`${API_URL.GET_POST_URL}/${postId}`);
 
             if (response) {
-                setDescription(response?.data?.description);
-                response?.data?.postMedia.forEach((media) => {
+                setDescription(response?.data?.data?.description);
+                response?.data?.data?.postMedia.forEach((media) => {
                     setSelectedMediaUrls((prev) => {
                         let arr = [...prev, { url: media.mediaPath, mediaType: media?.mediaType }];
                         return [...new Map(arr.map((item) => [item['url'], item])).values()];

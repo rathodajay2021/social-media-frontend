@@ -28,7 +28,7 @@ const Profile = () => {
 
     const [userPostData, setUserPostData] = useState({});
     const [resetUser, setResetUser] = useState(true);
-    const [friendList, setFriendList] = useState({});
+    const [friendList, setFriendList] = useState(0);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const handleRefetchUserPost = () => {
@@ -44,7 +44,7 @@ const Profile = () => {
             const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
 
             if (response?.data) {
-                setUserPostData(response?.data);
+                setUserPostData(response?.data?.data);
             }
         }
     }, [API, UserProfileData]);
@@ -54,7 +54,7 @@ const Profile = () => {
             const response = await API.get(`${API_URL.GET_FRIEND_LIST_URL}/${UserProfileData?.id}`);
 
             if (response) {
-                setFriendList(response.data);
+                setFriendList(response?.data?.data?.count);
             }
         }
     }, [API, UserProfileData.id]);
@@ -102,9 +102,7 @@ const Profile = () => {
                                 <GroupIcon className="details-icon" />
                             </IconButton>
                         </Typography>
-                        <Typography className="data flex f-h-center">
-                            {friendList?.count}
-                        </Typography>
+                        <Typography className="data flex f-h-center">{friendList}</Typography>
                     </Box>
                     {userPostData?.dob && (
                         <Box className="user-record">

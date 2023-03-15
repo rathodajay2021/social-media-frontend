@@ -28,7 +28,7 @@ const FriendsDetails = ({ friendDetails, resetFriendApi }) => {
         });
 
         if (response) {
-            dispatch(showToast(response.data.message));
+            dispatch(showToast(response?.data?.message));
             resetFriendApi();
         }
     };
@@ -42,7 +42,7 @@ const FriendsDetails = ({ friendDetails, resetFriendApi }) => {
         });
 
         if (response) {
-            dispatch(showToast(response.data.message));
+            dispatch(showToast(response?.data?.message));
             resetFriendApi();
         }
     };

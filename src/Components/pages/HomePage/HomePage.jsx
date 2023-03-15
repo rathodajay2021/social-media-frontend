@@ -22,7 +22,7 @@ const HomePage = () => {
         const response = await API.get(API_URL.GET_ALL_POST_URL);
 
         if (response) {
-            setPostData(response?.data);
+            setPostData(response?.data?.data);
         }
     }, [API]);
 
