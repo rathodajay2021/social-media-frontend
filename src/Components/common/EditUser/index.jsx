@@ -34,7 +34,7 @@ import CODES from 'Helpers/StatusCodes';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from 'Redux/App/Actions';
 
-const TEXT_LENGTH = 254;
+const TEXT_LENGTH = 255;
 
 const IMG_FILE_TYPE = 'image/png, image/jpeg, image/jpg';
 

@@ -46,7 +46,7 @@ const Friends = () => {
             const response = await API.get(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`);
 
             if (response) {
-                setFriendsList(response.data);
+                setFriendsList(response?.data?.data);
             }
         }
     }, [API, userDetails.id]);
