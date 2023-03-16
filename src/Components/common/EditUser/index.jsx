@@ -104,7 +104,9 @@ const EditUser = ({ onClose, onConfirm }) => {
         formData.append('firstName', values?.firstName);
         formData.append('lastName', values?.lastName);
         formData.append('bio', values?.bio);
-        formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        !!values.dob &&
+            formData.append('dob', moment(values.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        // formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
 
         const response = await API.put(`${API_URL.EDIT_USER_URL}/${UserProfileData?.id}`, {
             data: formData,
