@@ -67,16 +67,12 @@ const SignUp = () => {
             data: reqBody
         });
 
-        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
-            dispatch(loginUser(response?.data));
-            dispatch(userProfileData(response?.data));
-            dispatch(showToast('New user created successfully'));
+        if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
+            dispatch(loginUser(response?.data?.data));
+            dispatch(userProfileData(response?.data?.data));
+            dispatch(showToast(response?.data?.message));
             navigate(URL_HOME_PAGE);
             return;
-        }
-
-        if (response?.status === CODES.NOT_VALID_DATA && response.data.message) {
-            dispatch(showToast(response.data.message));
         }
     };
 

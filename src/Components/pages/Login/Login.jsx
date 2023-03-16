@@ -22,7 +22,7 @@ import { API_URL, URL_HOME_PAGE, URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers
 import { useNavigate } from 'react-router-dom';
 import Api from 'Helpers/ApiHandler';
 import { loginUser } from 'Redux/Auth/Actions';
-import { showToast, userProfileData } from 'Redux/App/Actions';
+import { userProfileData } from 'Redux/App/Actions';
 import CODES from 'Helpers/StatusCodes';
 import { PASSWORD_REGEX } from 'Helpers/Constants';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
@@ -55,17 +55,13 @@ const Login = () => {
         const response = await API.post(API_URL.LOGIN_URL, {
             data: values
         });
+        console.log("🚀 ~ file: Login.jsx:58 ~ handleSubmit ~ response:", response)
 
-        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
-            dispatch(loginUser(response?.data));
-            dispatch(userProfileData(response?.data));
+        if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
+            dispatch(loginUser(response?.data?.data));
+            dispatch(userProfileData(response?.data?.data));
             navigate(URL_HOME_PAGE);
         }
-
-        if (response?.status === CODES.SUCCESS && response?.data?.message) {
-            dispatch(showToast(response?.data?.message, 'warning'));
-        }
-        return;
     };
 
     return (

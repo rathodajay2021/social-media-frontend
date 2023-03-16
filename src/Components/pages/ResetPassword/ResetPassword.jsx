@@ -68,12 +68,10 @@ const ResetPassword = () => {
             data: values
         });
 
-        if (response.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+        if (response.status === CODES.SUCCESS) {
             dispatch(showToast('User verified'));
             setUserEmail(values.email);
             setFormOrder((prev) => !prev);
-        } else {
-            response?.data?.message && dispatch(showToast(response?.data?.message, 'warning'));
         }
     };
 
@@ -85,12 +83,10 @@ const ResetPassword = () => {
         const response = await API.put(API_URL.RESET_PASSWORD_URL, {
             data: reqBody
         });
-        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
+        if (response?.status === CODES.SUCCESS) {
             dispatch(showToast(response?.data?.message));
             navigate(URL_LOGIN);
-            return;
         }
-        dispatch(showToast(response?.data?.message));
     };
 
     return (

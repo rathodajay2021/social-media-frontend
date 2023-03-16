@@ -111,7 +111,7 @@ const EditUser = ({ onClose, onConfirm }) => {
             isMultipart: true
         });
 
-        if (response.data.isSuccess && response.status === CODES.SUCCESS) {
+        if (response.status === CODES.SUCCESS) {
             dispatch(showToast(response?.data?.message, 'success'));
             onConfirm();
         }
