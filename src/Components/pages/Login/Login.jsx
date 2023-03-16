@@ -55,7 +55,6 @@ const Login = () => {
         const response = await API.post(API_URL.LOGIN_URL, {
             data: values
         });
-        console.log("🚀 ~ file: Login.jsx:58 ~ handleSubmit ~ response:", response)
 
         if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
             dispatch(loginUser(response?.data?.data));
