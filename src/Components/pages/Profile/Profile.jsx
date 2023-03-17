@@ -20,6 +20,7 @@ import { ImageBox } from 'Styles/CommonStyle';
 import NoPost from 'Components/common/NoPost';
 import NavBar from 'Components/common/NavBar';
 import LoadMore from 'Components/common/LoadMore';
+import Loader from 'Components/common/Loader';
 
 const PAGINATION_INIT = {
     perPage: 5,
@@ -41,6 +42,7 @@ const Profile = () => {
     const [friendList, setFriendList] = useState(0);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [paginationInfo, setPaginationInfo] = useState(PAGINATION_INIT);
+    const [loading, setLoading] = useState(false)
 
     const handleRefetchUserPost = () => {
         setResetUser((prev) => !prev);
@@ -61,16 +63,19 @@ const Profile = () => {
 
     const getUserData = useCallback(async () => {
         if (UserProfileData?.id) {
+            setLoading(true)
             const response = await API.get(`${API_URL.GET_USER_DATA_URL}/${UserProfileData?.id}`);
 
             if (response?.data) {
                 setUserData(response?.data?.data);
+                setLoading(false)
             }
         }
     }, [API, UserProfileData]);
 
     const getUserPostData = useCallback(async () => {
         if (UserProfileData?.id) {
+            setLoading(true)
             const response = await API.post(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`, {
                 data: {
                     page: paginationInfo.pageNo,
@@ -89,16 +94,19 @@ const Profile = () => {
                         data: [...new Map(arr.map((item) => [item['postId'], item])).values()]
                     };
                 });
+                setLoading(false)
             }
         }
     }, [API, UserProfileData, paginationInfo]);
 
     const getFriendList = useCallback(async () => {
         if (UserProfileData?.id) {
+            setLoading(true)
             const response = await API.get(`${API_URL.GET_FRIEND_LIST_URL}/${UserProfileData?.id}`);
 
             if (response) {
                 setFriendList(response?.data?.data?.count);
+                setLoading(false)
             }
         }
     }, [API, UserProfileData.id]);
@@ -124,6 +132,7 @@ const Profile = () => {
         <>
             <NavBar addReset={handleRefetchUserPost} />
             <ProfileWrapper $windowHeight={windowDimensions.height}>
+                <Loader isLoading={loading} />
                 <Box className="user-basic-details">
                     <ImageBox className="cover-pic" $coverPic={userData?.coverPic}></ImageBox>
                     <Avatar

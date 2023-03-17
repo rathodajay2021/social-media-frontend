@@ -1,7 +1,7 @@
 //CORE
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, debounce } from 'lodash';
 
 //ICON
 import SearchIcon from '@mui/icons-material/Search';
@@ -38,14 +38,20 @@ const Friends = () => {
         });
     };
 
-    const handleSearch = (search) => {
+    const handlePaginationSearch = debounce((e) => {
         setPaginationInfo((prev) => {
             return {
                 ...prev,
                 pageNo: 0,
-                search
+                search: e?.target?.value.replace(/[^a-zA-Z ]/g, '')
             };
         });
+    }, 2000);
+
+    const handleSearch = (e) => {
+        setSearchValue(e?.target?.value.replace(/[^a-zA-Z ]/g, ''));
+        setLoading(true);
+        handlePaginationSearch(e);
     };
 
     const handlePagination = () => {
@@ -104,14 +110,10 @@ const Friends = () => {
         };
     }, []);
 
-    useEffect(() => {
-        setLoading(true);
-        const debounce = setTimeout(() => {
-            handleSearch(searchValue);
-        }, 2000);
-
-        return () => clearTimeout(debounce);
-    }, [searchValue]);
+    // useEffect(() => {
+    //     setLoading(true);
+    //     handleSearch(searchValue)
+    // }, [searchValue, handleSearch]);
 
     useEffect(() => {
         getFriendList();
@@ -125,7 +127,7 @@ const Friends = () => {
                     placeholder="Search your friends here"
                     variant="outlined"
                     value={searchValue}
-                    onChange={(e) => setSearchValue(e?.target?.value.replace(/[^a-zA-Z ]/g, ''))}
+                    onChange={handleSearch}
                     className="input-field"
                     fullWidth
                     InputProps={{

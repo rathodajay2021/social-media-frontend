@@ -4,6 +4,7 @@ import { COLORS, FONTS, responsive } from 'Styles/Constants';
 export const ProfileWrapper = styled.div`
     height: ${(props) => `calc(${props?.$windowHeight}px - 120px)`};
     overflow: auto;
+    position: relative;
 
     .user-basic-details {
         position: relative;
