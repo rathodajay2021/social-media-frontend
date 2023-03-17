@@ -23,12 +23,6 @@ const HomePage = () => {
         data: [],
         totalRecord: 0
     });
-    console.log(
-        '🚀 ~ file: HomePage.jsx:25 ~ HomePage ~ postData:',
-        postData,
-        postData?.data?.length,
-        postData?.totalRecord
-    );
     const [resetPost, setResetPost] = useState(false);
     const [paginationInfo, setPaginationInfo] = useState(PAGINATION_INIT);
     const [loading, setLoading] = useState(false)
