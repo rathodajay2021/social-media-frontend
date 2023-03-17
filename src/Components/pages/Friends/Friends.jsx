@@ -14,12 +14,8 @@ import { getWindowDimensions } from 'Helpers/Utils';
 import Api from 'Helpers/ApiHandler';
 import { API_URL } from 'Helpers/Paths';
 import { useSelector } from 'react-redux';
-
-const PAGINATION_INIT = {
-    per_page: 10,
-    page_no: 0,
-    search: ''
-};
+import { PAGINATION_INIT } from 'Helpers/Constants';
+import Loader from 'Components/common/Loader';
 
 const Friends = () => {
     const API = useMemo(() => new Api(), []);
@@ -33,6 +29,7 @@ const Friends = () => {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [searchValue, setSearchValue] = useState('');
     const [resetAPI, setResetAPI] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const handleClearSearch = () => {
         setSearchValue('');
@@ -66,6 +63,7 @@ const Friends = () => {
 
     const getFriendList = useCallback(async () => {
         if (userDetails.id) {
+            setLoading(true)
             const response = await API.post(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`, {
                 data: {
                     per_page: paginationInfo.per_page,
@@ -85,6 +83,7 @@ const Friends = () => {
                         data: [...new Map(arr.map((item) => [item['userId'], item])).values()]
                     };
                 });
+                setLoading(false)
             }
         }
     }, [API, userDetails.id, paginationInfo]);
@@ -101,6 +100,7 @@ const Friends = () => {
     }, []);
 
     useEffect(() => {
+        setLoading(true)
         const debounce = setTimeout(() => {
             handleSearch(searchValue);
         }, 2000);
@@ -148,6 +148,7 @@ const Friends = () => {
                 />
             </Box>
             <Box className="friend-list">
+                <Loader isLoading={loading} loadingText={'Loading...'} />
                 {friendsList?.data.map((friend) => (
                     <FriendsDetails
                         key={friend.userId}

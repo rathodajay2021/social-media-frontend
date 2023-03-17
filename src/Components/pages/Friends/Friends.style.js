@@ -27,6 +27,7 @@ export const FriendsWrapper = styled.div`
     .friend-list {
         height: ${(props) => `calc(${props?.$windowHeight}px - 156px)`};
         overflow: auto;
+        position: relative;
 
         .load-more {
             width: fit-content;
