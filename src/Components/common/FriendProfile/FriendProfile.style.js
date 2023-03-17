@@ -4,6 +4,7 @@ import { COLORS, FONTS, responsive } from 'Styles/Constants';
 export const FriendProfileWrapper = styled.div`
     height: ${(props) => `calc(${props?.$windowHeight}px - 60px)`};
     overflow: auto;
+    position: relative;
 
     .user-basic-details {
         position: relative;
