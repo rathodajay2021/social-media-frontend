@@ -19,6 +19,12 @@ import { API_URL, URL_FRIEND_PAGE } from 'Helpers/Paths';
 import { ImageBox } from 'Styles/CommonStyle';
 import NoPost from 'Components/common/NoPost';
 import NavBar from 'Components/common/NavBar';
+import LoadMore from 'Components/common/LoadMore';
+
+const PAGINATION_INIT = {
+    perPage: 5,
+    pageNo: 0
+};
 
 const Profile = () => {
     const API = useMemo(() => new Api(), []);
@@ -26,10 +32,15 @@ const Profile = () => {
     const UserProfileData = useSelector((state) => state.App.userData);
     const navigate = useNavigate();
 
-    const [userPostData, setUserPostData] = useState({});
+    const [userPostData, setUserPostData] = useState({
+        data: [],
+        totalRecord: 0
+    });
+    const [userData, setUserData] = useState({});
     const [resetUser, setResetUser] = useState(true);
     const [friendList, setFriendList] = useState(0);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+    const [paginationInfo, setPaginationInfo] = useState(PAGINATION_INIT);
 
     const handleRefetchUserPost = () => {
         setResetUser((prev) => !prev);
@@ -39,15 +50,48 @@ const Profile = () => {
         postRef.current.scrollIntoView({ behavior: 'smooth' });
     };
 
+    const handlePagination = () => {
+        setPaginationInfo((prev) => {
+            return {
+                ...prev,
+                pageNo: prev.pageNo + 1
+            };
+        });
+    };
+
     const getUserData = useCallback(async () => {
         if (UserProfileData?.id) {
-            const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+            const response = await API.get(`${API_URL.GET_USER_DATA_URL}/${UserProfileData?.id}`);
 
             if (response?.data) {
-                setUserPostData(response?.data?.data);
+                setUserData(response?.data?.data);
             }
         }
     }, [API, UserProfileData]);
+
+    const getUserPostData = useCallback(async () => {
+        if (UserProfileData?.id) {
+            const response = await API.post(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`, {
+                data: {
+                    page: paginationInfo.pageNo,
+                    perPage: paginationInfo.perPage
+                }
+            });
+
+            if (response) {
+                setUserPostData((prev) => {
+                    let arr =
+                        paginationInfo.pageNo === 0
+                            ? response?.data?.data?.rows
+                            : prev?.data.concat(response?.data?.data?.rows);
+                    return {
+                        totalRecord: response?.data?.data?.count,
+                        data: [...new Map(arr.map((item) => [item['postId'], item])).values()]
+                    };
+                });
+            }
+        }
+    }, [API, UserProfileData, paginationInfo]);
 
     const getFriendList = useCallback(async () => {
         if (UserProfileData?.id) {
@@ -61,7 +105,8 @@ const Profile = () => {
 
     useEffect(() => {
         getUserData();
-    }, [getUserData, resetUser]);
+        getUserPostData();
+    }, [getUserData, getUserPostData, resetUser]);
 
     useEffect(() => {
         getFriendList();
@@ -80,19 +125,19 @@ const Profile = () => {
             <NavBar addReset={handleRefetchUserPost} />
             <ProfileWrapper $windowHeight={windowDimensions.height}>
                 <Box className="user-basic-details">
-                    <ImageBox className="cover-pic" $coverPic={userPostData?.coverPic}></ImageBox>
+                    <ImageBox className="cover-pic" $coverPic={userData?.coverPic}></ImageBox>
                     <Avatar
                         className="profile-pic"
                         {...stringAvatar(
-                            CreateUserName(userPostData?.firstName, userPostData?.lastName),
-                            userPostData?.profilePic
+                            CreateUserName(userData?.firstName, userData?.lastName),
+                            userData?.profilePic
                         )}
                     />
                     <Box className="user-details">
                         <Typography className="user-name">
-                            {CreateUserName(userPostData?.firstName, userPostData?.lastName)}
+                            {CreateUserName(userData?.firstName, userData?.lastName)}
                         </Typography>
-                        <Typography className="user-bio">{userPostData?.bio}</Typography>
+                        <Typography className="user-bio">{userData?.bio}</Typography>
                     </Box>
                 </Box>
                 <Box className="user-status flex f-v-center f-h-space-between">
@@ -104,7 +149,7 @@ const Profile = () => {
                         </Typography>
                         <Typography className="data flex f-h-center">{friendList}</Typography>
                     </Box>
-                    {userPostData?.dob && (
+                    {userData?.dob && (
                         <Box className="user-record">
                             <Typography className="data-label flex f-h-center">
                                 <IconButton>
@@ -112,7 +157,7 @@ const Profile = () => {
                                 </IconButton>
                             </Typography>
                             <Typography className="data flex f-h-center">
-                                {moment(new Date(userPostData?.dob)).format('DD MMM')}
+                                {moment(new Date(userData?.dob)).format('DD MMM')}
                             </Typography>
                         </Box>
                     )}
@@ -123,23 +168,26 @@ const Profile = () => {
                             </IconButton>
                         </Typography>
                         <Typography className="data flex f-h-center">
-                            {userPostData?.post_data && userPostData?.post_data.length}
+                            {userPostData?.totalRecord}
                         </Typography>
                     </Box>
                 </Box>
-                {userPostData?.post_data && !!userPostData?.post_data.length ? (
+                {userPostData?.data && !!userPostData?.data.length ? (
                     <Box className="users-post-list flex f-column" ref={postRef}>
-                        {userPostData?.post_data.map((item) => (
+                        {userPostData?.data.map((item) => (
                             <Post
                                 key={item.postId}
                                 postData={item}
-                                userFirstName={userPostData?.firstName}
-                                userLastName={userPostData?.lastName}
-                                userProfilePic={userPostData?.profilePic}
+                                userFirstName={userData?.firstName}
+                                userLastName={userData?.lastName}
+                                userProfilePic={userData?.profilePic}
                                 allowDelete={true}
                                 onDelete={handleRefetchUserPost}
                             />
                         ))}
+                        {userPostData?.data.length < userPostData?.totalRecord && (
+                            <LoadMore onClickFuc={handlePagination} />
+                        )}
                     </Box>
                 ) : (
                     <NoPost wrapperHeight={250} />

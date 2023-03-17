@@ -119,7 +119,7 @@ const EditUser = ({ onClose, onConfirm }) => {
     };
 
     const getUserDetails = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_DATA_URL}/${UserProfileData?.id}`);
 
         if (response?.data && response.status === CODES.SUCCESS) {
             userFormInnerRef.current.setFieldValue('firstName', response?.data?.data?.firstName);

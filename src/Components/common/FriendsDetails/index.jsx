@@ -29,7 +29,7 @@ const FriendsDetails = ({ friendDetails, resetFriendApi }) => {
 
         if (response) {
             dispatch(showToast(response?.data?.message));
-            resetFriendApi();
+            resetFriendApi(friendDetails?.userId);
         }
     };
 
@@ -43,7 +43,7 @@ const FriendsDetails = ({ friendDetails, resetFriendApi }) => {
 
         if (response) {
             dispatch(showToast(response?.data?.message));
-            resetFriendApi();
+            resetFriendApi(friendDetails?.userId);
         }
     };
 

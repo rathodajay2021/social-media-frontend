@@ -5,7 +5,7 @@ export const PASSWORD_REGEX = /(?=[A-Za-z0-9@#$%^&+!=\\/\]+$)^(?=.*[a-z])(?=.*[A
 export const MEDIA_LIMIT = 5
 
 export const PAGINATION_INIT = {
-    per_page: 10,
-    page_no: 0,
+    perPage: 10,
+    pageNo: 0,
     search: ''
 };

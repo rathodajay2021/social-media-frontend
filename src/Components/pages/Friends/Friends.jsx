@@ -1,11 +1,11 @@
 //CORE
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { Box, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
+import { Box, IconButton, InputAdornment, TextField } from '@mui/material';
+import { cloneDeep } from 'lodash';
 
 //ICON
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 //CUSTOM
 import FriendsDetails from 'Components/common/FriendsDetails';
@@ -16,6 +16,7 @@ import { API_URL } from 'Helpers/Paths';
 import { useSelector } from 'react-redux';
 import { PAGINATION_INIT } from 'Helpers/Constants';
 import Loader from 'Components/common/Loader';
+import LoadMore from 'Components/common/LoadMore';
 
 const Friends = () => {
     const API = useMemo(() => new Api(), []);
@@ -28,8 +29,7 @@ const Friends = () => {
     const [paginationInfo, setPaginationInfo] = useState(PAGINATION_INIT);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
     const [searchValue, setSearchValue] = useState('');
-    const [resetAPI, setResetAPI] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const handleClearSearch = () => {
         setSearchValue('');
@@ -42,7 +42,7 @@ const Friends = () => {
         setPaginationInfo((prev) => {
             return {
                 ...prev,
-                page_no: 0,
+                pageNo: 0,
                 search
             };
         });
@@ -52,22 +52,27 @@ const Friends = () => {
         setPaginationInfo((prev) => {
             return {
                 ...prev,
-                page_no: prev.page_no + 1
+                pageNo: prev.pageNo + 1
             };
         });
     };
 
-    const resetFriendApi = () => {
-        setResetAPI(prev => !prev)
+    const resetFriendApi = (id) => {
+        let tempFriendList = cloneDeep(friendsList?.data);
+        const index = tempFriendList.findIndex((item) => item?.userId === id);
+        tempFriendList[index].isFriend = !tempFriendList[index].isFriend;
+        setFriendsList((prev) => {
+            return { ...prev, data: tempFriendList };
+        });
     };
 
     const getFriendList = useCallback(async () => {
         if (userDetails.id) {
-            setLoading(true)
+            setLoading(true);
             const response = await API.post(`${API_URL.GET_USER_LIST_URL}/${userDetails.id}`, {
                 data: {
-                    per_page: paginationInfo.per_page,
-                    page: paginationInfo.page_no,
+                    perPage: paginationInfo.perPage,
+                    page: paginationInfo.pageNo,
                     search: paginationInfo.search
                 }
             });
@@ -75,7 +80,7 @@ const Friends = () => {
             if (response) {
                 setFriendsList((prev) => {
                     let arr =
-                        paginationInfo.page_no === 0
+                        paginationInfo.pageNo === 0
                             ? response?.data?.data?.rows
                             : prev.data.concat(response?.data?.data?.rows);
                     return {
@@ -83,7 +88,7 @@ const Friends = () => {
                         data: [...new Map(arr.map((item) => [item['userId'], item])).values()]
                     };
                 });
-                setLoading(false)
+                setLoading(false);
             }
         }
     }, [API, userDetails.id, paginationInfo]);
@@ -100,7 +105,7 @@ const Friends = () => {
     }, []);
 
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
         const debounce = setTimeout(() => {
             handleSearch(searchValue);
         }, 2000);
@@ -110,7 +115,7 @@ const Friends = () => {
 
     useEffect(() => {
         getFriendList();
-    }, [getFriendList, resetAPI]);
+    }, [getFriendList]);
 
     return (
         <FriendsWrapper $windowHeight={windowDimensions.height}>
@@ -157,12 +162,7 @@ const Friends = () => {
                     />
                 ))}
                 {friendsList?.data.length < friendsList?.totalRecord && (
-                    <Box
-                        className="load-more flex f-column f-v-center hover"
-                        onClick={handlePagination}>
-                        <Typography className="load-more-text">load more</Typography>
-                        <ArrowDownwardIcon className="load-more-icon" />
-                    </Box>
+                    <LoadMore onClickFuc={handlePagination} />
                 )}
             </Box>
         </FriendsWrapper>
