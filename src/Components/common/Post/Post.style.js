@@ -47,6 +47,11 @@ export const PostWrapper = styled(Paper)`
                 padding: 0 10px 0 0;
             }
 
+            .test-div {
+                video {
+                }
+            }
+
             .background-img-div,
             .background-video-div {
                 height: inherit;

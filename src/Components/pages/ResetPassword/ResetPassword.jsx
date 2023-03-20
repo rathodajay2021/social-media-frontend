@@ -20,7 +20,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 //CUSTOM
 import { ResetPasswordWrapper } from './ResetPassword.style';
 import { API_URL, URL_LOGIN } from 'Helpers/Paths';
-import { PASSWORD_REGEX } from 'Helpers/Constants';
+import { EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX } from 'Helpers/Constants';
 import Api from 'Helpers/ApiHandler';
 import CODES from 'Helpers/StatusCodes';
 import { showToast } from 'Redux/App/Actions';
@@ -37,8 +37,15 @@ const formTwoInitValue = {
 
 const formOneValidationSchema = Yup.object({
     email: Yup.string()
-        .required('Please enter your email address')
-        .email('Please enter valid email address')
+        .required('Please enter your email address or phone number')
+        .test('user-validation', 'Enter Valid email address or mobile number', function (value) {
+            let isValidEmail = EMAIL_REGEX.test(value);
+            let isValidPhone = PHONE_REGEX.test(value);
+            if (!isValidEmail && !isValidPhone) {
+                return false;
+            }
+            return true;
+        })
 });
 
 const formTwoValidationSchema = Yup.object({
