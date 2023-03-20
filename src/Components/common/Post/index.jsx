@@ -1,19 +1,12 @@
 //CORE
-import React, { useMemo, useState } from 'react';
-import {
-    Avatar,
-    Box,
-    CardMedia,
-    Divider,
-    IconButton,
-    Menu,
-    MenuItem,
-    Typography
-} from '@mui/material';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Avatar, Box, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import ReactPlayer from 'react-player';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 //ICON
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -21,13 +14,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //CUSTOM
-import { CreateUserName, stringAvatar } from 'Helpers/Utils';
+import { CreateUserName, getWindowDimensions, stringAvatar } from 'Helpers/Utils';
 import { PostWrapper } from './Post.style';
 import Api from 'Helpers/ApiHandler';
 import { API_URL, URL_FRIEND_PROFILE_PAGE } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
 import AddPost from '../AddPost';
+import { BREAKPOINTS_VALUE } from 'Styles/Constants';
 
 const SETTINGS = {
     arrows: false,
@@ -51,10 +45,14 @@ const Post = ({
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const videoRef = useRef(null);
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const [addPostDialog, setAddPostDialog] = useState(false);
     const removePopId = deleteMenu ? 'simple-popover' : undefined;
+    const [videoPlay, setVideoPlay] = useState(false);
+    const [videoPlayerHeight, setVideoPlayerHeight] = useState(350);
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const handleEditPost = () => {
         setAddPostDialog(true);
@@ -80,6 +78,54 @@ const Post = ({
             navigate(URL_FRIEND_PROFILE_PAGE, { state: { friendId: postData.user.userId } });
         }
     };
+
+    const handleViewChange = useCallback((entries) => {
+        for (let entry of entries) {
+            if (entry.intersectionRatio < 0.5) {
+                setVideoPlay(false);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleViewChange, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5
+        });
+
+        if (videoRef.current) {
+            observer.observe(videoRef.current);
+        }
+
+        return () => {
+            if (observer) {
+                observer.disconnect();
+            }
+        };
+    }, [handleViewChange]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowDimensions(getWindowDimensions());
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    useEffect(() => {
+        if (windowDimensions?.width) {
+            if (windowDimensions?.width > BREAKPOINTS_VALUE.PHABLET) {
+                setVideoPlayerHeight(350);
+            } else if (windowDimensions?.width > BREAKPOINTS_VALUE.MOBILE) {
+                setVideoPlayerHeight(300);
+            } else {
+                setVideoPlayerHeight(250);
+            }
+        }
+    }, [windowDimensions?.width]);
 
     return (
         <PostWrapper className="flex f-column" classes={{ root: 'post-paper' }}>
@@ -130,12 +176,22 @@ const Post = ({
                                             backgroundPosition: 'center'
                                         }}></Box>
                                 ) : (
-                                    <CardMedia
-                                        className="background-video-div"
-                                        component={'video'}
-                                        src={item.mediaPath}
-                                        controls
-                                    />
+                                    <OutsideClickHandler
+                                        onOutsideClick={() => {
+                                            setVideoPlay(false);
+                                        }}>
+                                        <Box ref={videoRef}>
+                                            <ReactPlayer
+                                                playing={videoPlay}
+                                                url={item.mediaPath}
+                                                width="100%"
+                                                height={`${videoPlayerHeight}px`}
+                                                onPlay={() => setVideoPlay(true)}
+                                                onPause={() => setVideoPlay(false)}
+                                                controls
+                                            />
+                                        </Box>
+                                    </OutsideClickHandler>
                                 )}
                             </Box>
                         ))}
@@ -156,20 +212,6 @@ const Post = ({
                     Delete
                 </MenuItem>
             </Menu>
-            {/* <CustomPopOver
-                id={removePopId}
-                classes={{ paper: 'popover-paper' }}
-                open={Boolean(deleteMenu)}
-                anchorEl={deleteMenu}
-                onClose={() => setDeleteMenu(null)}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left'
-                }}>
-                <Typography className="delete-text hover" onClick={handlePostDelete}>
-                    Delete
-                </Typography>
-            </CustomPopOver> */}
             {addPostDialog && (
                 <AddPost
                     onClose={() => setAddPostDialog(false)}

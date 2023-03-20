@@ -103,7 +103,7 @@ const EditUser = ({ onClose, onConfirm }) => {
         formData.append('profilePicUrl', profilePicFile?.url);
         formData.append('firstName', values?.firstName);
         formData.append('lastName', values?.lastName);
-        formData.append('bio', values?.bio.slice(0, TEXT_LENGTH));
+        formData.append('bio', values?.bio);
         !!values.dob &&
             formData.append('dob', moment(values?.dob, 'DD/MM/YYYY').format('YYYY-MM-DD'));
 
@@ -270,8 +270,9 @@ const EditUser = ({ onClose, onConfirm }) => {
                                         name="bio"
                                         className="input-field"
                                         placeholder="Tell us something about yourself"
-                                        value={values?.bio.slice(0, TEXT_LENGTH)}
+                                        value={values?.bio}
                                         onChange={handleChange}
+                                        inputProps={{ maxLength: TEXT_LENGTH }}
                                         multiline
                                         maxRows={6}
                                         minRows={6}

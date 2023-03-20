@@ -1,6 +1,6 @@
-import { Paper, Popover } from '@mui/material';
+import { Paper } from '@mui/material';
 import styled from 'styled-components';
-import { COLORS, FONTS, responsive } from 'Styles/Constants';
+import { FONTS, responsive } from 'Styles/Constants';
 
 export const PostWrapper = styled(Paper)`
     padding: 10px;
@@ -51,19 +51,6 @@ export const PostWrapper = styled(Paper)`
             .background-video-div {
                 height: inherit;
             }
-        }
-    }
-`;
-
-export const CustomPopOver = styled(Popover)`
-    .popover-paper {
-        padding: 5px;
-        background: ${COLORS.ALERT_BG};
-
-        .delete-text {
-            color: ${COLORS.ALERT_TEXT};
-            font-style: ${FONTS.PRIMARY_MEDIUM};
-            font-size: 18px;
         }
     }
 `;
