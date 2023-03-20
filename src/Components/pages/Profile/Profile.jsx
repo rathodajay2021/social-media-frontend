@@ -49,7 +49,7 @@ const Profile = () => {
     };
 
     const scrollToPostSection = () => {
-        postRef.current.scrollIntoView({ behavior: 'smooth' });
+        postRef?.current && postRef.current.scrollIntoView({ behavior: 'smooth' });
     };
 
     const handlePagination = () => {

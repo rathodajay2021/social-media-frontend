@@ -180,7 +180,7 @@ const Post = ({
                                         onOutsideClick={() => {
                                             setVideoPlay(false);
                                         }}>
-                                        <Box ref={videoRef} className='test-div'>
+                                        <Box ref={videoRef}>
                                             <ReactPlayer
                                                 playing={videoPlay}
                                                 url={item.mediaPath}
