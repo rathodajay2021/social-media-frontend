@@ -1,3 +1,5 @@
+import { floor } from 'lodash';
+
 export function isIEBrowser() {
     // BROWSER CHECK VARIABLES
     const ua = window.navigator.userAgent;
@@ -49,6 +51,26 @@ export const stringAvatar = (name, imgUrl = '', height = 35, width = 35) => {
     }
 };
 
-export const CreateUserName = (firstName, lastName) => {    
+export const CreateUserName = (firstName, lastName) => {
     return firstName + ' ' + lastName;
+};
+
+export const numberFormat = (number) => {
+    return number.toLocaleString('en-US', {
+        minimumIntegerDigits: 2,
+        useGrouping: false
+    });
+};
+
+export const getTotalTimeInMins = (seconds) => {
+    let duration = seconds;
+    if (duration) {
+        let min = floor(duration / 60);
+        let sec = 0;
+        min < 1 ? (sec = duration) : (sec = duration - min * 60);
+
+        return numberFormat(min) + ':' + numberFormat(floor(sec));
+    }
+
+    return '00:00';
 };
