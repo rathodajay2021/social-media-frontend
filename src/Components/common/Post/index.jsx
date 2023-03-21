@@ -1,6 +1,15 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Avatar, Box, CardMedia, Divider, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    CardMedia,
+    Divider,
+    IconButton,
+    Menu,
+    MenuItem,
+    Typography
+} from '@mui/material';
 import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
@@ -13,16 +22,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 //CUSTOM
-import {
-    CreateUserName,
-    stringAvatar
-} from 'Helpers/Utils';
+import { CreateUserName, stringAvatar } from 'Helpers/Utils';
 import { PostWrapper } from './Post.style';
 import Api from 'Helpers/ApiHandler';
 import { API_URL, URL_FRIEND_PROFILE_PAGE } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
 import AddPost from '../AddPost';
+import { ImageBox } from 'Styles/CommonStyle';
 
 const SETTINGS = {
     arrows: false,
@@ -145,14 +152,10 @@ const Post = ({
                                 }`}
                                 key={index}>
                                 {item?.mediaType === 'img' ? (
-                                    <Box
+                                    <ImageBox
                                         className="background-img-div"
-                                        style={{
-                                            backgroundImage: `url(${item.mediaPath})`,
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center'
-                                        }}></Box>
+                                        $coverPic={item.mediaPath}
+                                    />
                                 ) : (
                                     <OutsideClickHandler
                                         onOutsideClick={() => {

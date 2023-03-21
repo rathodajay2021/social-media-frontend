@@ -32,7 +32,6 @@ export const PostWrapper = styled(Paper)`
 
         .media-file {
             height: 350px;
-            width: 100%;
             cursor: grab;
 
             ${responsive.PHABLET`
