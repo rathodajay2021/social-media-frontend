@@ -8,7 +8,7 @@ import { FONTS } from 'Styles/Constants';
 
 const TEXT_LENGTH = 450;
 
-const ReadMore = ({ children }) => {
+const ReadMore = ({ children, childrenLength = null }) => {
     const text = children;
     const [isReadMore, setIsReadMore] = useState(true);
 
@@ -19,8 +19,8 @@ const ReadMore = ({ children }) => {
     return (
         <ReadMoreWrapper>
             <Typography>
-                {isReadMore ? text.slice(0, TEXT_LENGTH) : text}
-                {text.length > TEXT_LENGTH && (
+                {isReadMore ? text.slice(0, childrenLength || TEXT_LENGTH) : text}
+                {text.length > (childrenLength || TEXT_LENGTH) && (
                     <Typography
                         component={'span'}
                         onClick={toggleReadMore}

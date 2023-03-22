@@ -4,6 +4,7 @@ import {
     Avatar,
     Box,
     CardMedia,
+    Collapse,
     Divider,
     IconButton,
     Menu,
@@ -22,6 +23,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 //CUSTOM
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
@@ -32,6 +34,7 @@ import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
 import AddPost from '../AddPost';
 import { ImageBox } from 'Styles/CommonStyle';
+import CommentDetails from '../CommentDetails';
 
 const SETTINGS = {
     arrows: false,
@@ -62,7 +65,7 @@ const Post = ({
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const [addPostDialog, setAddPostDialog] = useState(false);
-    const removePopId = deleteMenu ? 'simple-popover' : undefined;
+    const [collapseDialog, setCollapseDialog] = useState(false);
 
     const handleEditPost = () => {
         setAddPostDialog(true);
@@ -171,9 +174,7 @@ const Post = ({
                     </Box>
                 </Box>
                 {allowDelete && (
-                    <IconButton
-                        onClick={(e) => setDeleteMenu(e.currentTarget)}
-                        aria-describedby={removePopId}>
+                    <IconButton onClick={(e) => setDeleteMenu(e.currentTarget)} >
                         <MoreVertIcon />
                     </IconButton>
                 )}
@@ -226,7 +227,16 @@ const Post = ({
                     )}
                     {!!postData?.likesCount && postData?.likesCount}
                 </Box>
+                <Box>
+                    <IconButton onClick={() => setCollapseDialog((prev) => !prev)}>
+                        <ChatBubbleOutlineIcon />
+                    </IconButton>
+                    {!!postData?.commentCount && postData?.commentCount}
+                </Box>
             </Box>
+            <Collapse in={collapseDialog}>
+                <CommentDetails postData={postData} collapseDialog={collapseDialog} />
+            </Collapse>
             <Menu
                 open={Boolean(deleteMenu)}
                 anchorEl={deleteMenu}

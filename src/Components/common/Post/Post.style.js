@@ -67,6 +67,8 @@ export const PostWrapper = styled(Paper)`
     }
 
     .likes-comments{
+        gap: 10px;
+        
         .liked{
             color: ${COLORS.LIKED_RED}
         }

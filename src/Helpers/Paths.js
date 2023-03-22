@@ -31,4 +31,7 @@ export const API_URL = {
     GET_USER_DATA_URL: '/get-user-data',
     ADD_LIKE_URL : "/add-likes",
     DELETE_LIKE_URL : "/delete-likes",
+    GET_COMMENT_URL : "/get-comment",
+    ADD_COMMENT_URL : "/add-comment",
+    DELETE_COMMENT_URL : "/delete-comment",
 };

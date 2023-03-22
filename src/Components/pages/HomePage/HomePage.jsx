@@ -17,7 +17,7 @@ import LoadMore from 'Components/common/LoadMore';
 
 const HomePage = () => {
     const API = useMemo(() => new Api(), []);
-    const userProfileData = useSelector(state => state?.App.userData)
+    const userProfileData = useSelector((state) => state?.App.userData);
 
     const [postData, setPostData] = useState({
         data: [],
@@ -25,31 +25,33 @@ const HomePage = () => {
     });
     const [resetPost, setResetPost] = useState(false);
     const [paginationInfo, setPaginationInfo] = useState(PAGINATION_INIT);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
     const getAllPostData = useCallback(async () => {
-        setLoading(true)
-        const response = await API.post(`${API_URL.GET_ALL_POST_URL}/${userProfileData?.id}`, {
-            data: {
-                perPage: paginationInfo.perPage,
-                page: paginationInfo.pageNo
-            }
-        });
-
-        if (response) {
-            setPostData((prev) => {
-                let arr =
-                    paginationInfo.pageNo === 0
-                        ? response?.data?.data?.rows
-                        : prev.data.concat(response?.data?.data?.rows);
-
-                return {
-                    data: [...new Map(arr.map((item) => [item['postId'], item])).values()],
-                    totalRecord: response?.data?.data?.count
-                };
+        if (userProfileData?.id) {
+            setLoading(true);
+            const response = await API.post(`${API_URL.GET_ALL_POST_URL}/${userProfileData?.id}`, {
+                data: {
+                    perPage: paginationInfo.perPage,
+                    page: paginationInfo.pageNo
+                }
             });
-            setLoading(false)
+
+            if (response) {
+                setPostData((prev) => {
+                    let arr =
+                        paginationInfo.pageNo === 0
+                            ? response?.data?.data?.rows
+                            : prev.data.concat(response?.data?.data?.rows);
+
+                    return {
+                        data: [...new Map(arr.map((item) => [item['postId'], item])).values()],
+                        totalRecord: response?.data?.data?.count
+                    };
+                });
+                setLoading(false);
+            }
         }
     }, [API, paginationInfo, userProfileData?.id]);
 
