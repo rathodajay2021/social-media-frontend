@@ -29,4 +29,6 @@ export const API_URL = {
     GET_POST_URL: '/get-user-file',
     GET_FRIEND_LIST_URL: '/get-friend-list',
     GET_USER_DATA_URL: '/get-user-data',
+    ADD_LIKE_URL : "/add-likes",
+    DELETE_LIKE_URL : "/delete-likes",
 };

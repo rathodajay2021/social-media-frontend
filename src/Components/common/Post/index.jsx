@@ -20,6 +20,8 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 //CUSTOM
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
@@ -48,7 +50,10 @@ const Post = ({
     userLastName,
     userProfilePic,
     onDelete,
-    redirect = false
+    redirect = false,
+    userProfileData,
+    setTotalPostData,
+    allPostData
 }) => {
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
@@ -93,6 +98,38 @@ const Post = ({
             }
         }
     }, []);
+
+    const handleLike = async () => {
+        let response;
+        const data = {
+            userId: userProfileData?.id,
+            postId: postData?.postId
+        };
+        if (postData?.userLiked) {
+            //remove like
+            response = await API.delete(API_URL.DELETE_LIKE_URL, {
+                data
+            });
+        } else {
+            //add like
+            response = await API.post(API_URL.ADD_LIKE_URL, {
+                data
+            });
+        }
+
+        if (response) {
+            const tempPostData = [...allPostData?.data];
+            const index = tempPostData.findIndex((item) => item.postId === postData?.postId);
+            tempPostData[index] = {
+                ...tempPostData[index],
+                userLiked: !tempPostData[index].userLiked,
+                likesCount: tempPostData[index].likesCount + (postData?.userLiked ? -1 : 1)
+            };
+            setTotalPostData((prev) => {
+                return { ...prev, data: tempPostData };
+            });
+        }
+    };
 
     useEffect(() => {
         const observer = new IntersectionObserver(handleViewChange, {
@@ -176,6 +213,20 @@ const Post = ({
                     </Slider>
                 </Box>
             )}
+            <Box className="likes-comments flex">
+                <Box>
+                    {postData?.userLiked ? (
+                        <IconButton className="liked" onClick={handleLike}>
+                            <FavoriteIcon />
+                        </IconButton>
+                    ) : (
+                        <IconButton onClick={handleLike}>
+                            <FavoriteBorderIcon />
+                        </IconButton>
+                    )}
+                    {!!postData?.likesCount && postData?.likesCount}
+                </Box>
+            </Box>
             <Menu
                 open={Boolean(deleteMenu)}
                 anchorEl={deleteMenu}

@@ -1,6 +1,6 @@
 import { Paper } from '@mui/material';
 import styled from 'styled-components';
-import { FONTS, responsive } from 'Styles/Constants';
+import { COLORS, FONTS, responsive } from 'Styles/Constants';
 
 export const PostWrapper = styled(Paper)`
     padding: 10px;
@@ -63,6 +63,12 @@ export const PostWrapper = styled(Paper)`
                     height: 250px;
                 `}
             }
+        }
+    }
+
+    .likes-comments{
+        .liked{
+            color: ${COLORS.LIKED_RED}
         }
     }
 `;

@@ -1,6 +1,7 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 //CUSTOM
 import Post from 'Components/common/Post';
@@ -16,6 +17,7 @@ import LoadMore from 'Components/common/LoadMore';
 
 const HomePage = () => {
     const API = useMemo(() => new Api(), []);
+    const userProfileData = useSelector(state => state?.App.userData)
 
     const [postData, setPostData] = useState({
         data: [],
@@ -28,7 +30,7 @@ const HomePage = () => {
 
     const getAllPostData = useCallback(async () => {
         setLoading(true)
-        const response = await API.post(API_URL.GET_ALL_POST_URL, {
+        const response = await API.post(`${API_URL.GET_ALL_POST_URL}/${userProfileData?.id}`, {
             data: {
                 perPage: paginationInfo.perPage,
                 page: paginationInfo.pageNo
@@ -49,7 +51,7 @@ const HomePage = () => {
             });
             setLoading(false)
         }
-    }, [API, paginationInfo]);
+    }, [API, paginationInfo, userProfileData?.id]);
 
     const handlePagination = () => {
         setPaginationInfo((prev) => {
@@ -93,6 +95,9 @@ const HomePage = () => {
                                     userProfilePic={item?.user?.profilePic}
                                     allowDelete={false}
                                     redirect={true}
+                                    userProfileData={userProfileData}
+                                    setTotalPostData={setPostData}
+                                    allPostData={postData}
                                 />
                             ))}
                         </Box>
