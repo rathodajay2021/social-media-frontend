@@ -12,7 +12,16 @@ export const ProfileWrapper = styled.div`
         ${responsive.TABLET`
            width: 100%;
         `}
-        
+
+        .responsive-width{
+            width: 80%;
+            margin: 0 auto;
+
+            ${responsive.TABLET`
+                width: 100%;
+            `}
+        }
+
         .user-basic-details {
             position: relative;
             height: 400px;

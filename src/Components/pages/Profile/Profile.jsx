@@ -148,7 +148,7 @@ const Profile = () => {
                         <LeftMenu $windowHeight={windowDimensions.height} />
                     )}
                     <Box className="profile-area">
-                        <Box className="user-basic-details">
+                        <Box className="user-basic-details responsive-width">
                             <ImageBox
                                 className="cover-pic"
                                 $coverPic={userData?.coverPic}></ImageBox>
@@ -166,7 +166,7 @@ const Profile = () => {
                                 <Typography className="user-bio">{userData?.bio}</Typography>
                             </Box>
                         </Box>
-                        <Box className="user-status flex f-v-center f-h-space-between">
+                        <Box className="user-status responsive-width flex f-v-center f-h-space-between">
                             <Box className="user-record">
                                 <Typography className="data-label flex f-h-center">
                                     <IconButton onClick={() => navigate(URL_FRIEND_PAGE)}>
@@ -209,7 +209,7 @@ const Profile = () => {
                                         userFirstName={userData?.firstName}
                                         userLastName={userData?.lastName}
                                         userProfilePic={userData?.profilePic}
-                                        allowDelete={true}
+                                        allowDelete={true && !location?.state?.friendId}
                                         onDelete={handleRefetchUserPost}
                                         userProfileData={UserProfileData}
                                         setTotalPostData={setUserPostData}
