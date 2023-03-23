@@ -5,6 +5,12 @@ import { COLORS, FONTS, responsive } from 'Styles/Constants';
 export const PostWrapper = styled(Paper)`
     padding: 10px;
     gap: 15px;
+    width: 80%;
+    margin: 0 auto;
+
+    ${responsive.TABLET`
+        width: 100%;
+    `}
 
     &.post-paper {
         box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
@@ -31,8 +37,12 @@ export const PostWrapper = styled(Paper)`
         margin-bottom: 25px;
 
         .media-file {
-            height: 350px;
+            height: 550px;
             cursor: grab;
+
+            ${responsive.TABLET`
+                height: 450px;
+            `}
 
             ${responsive.PHABLET`
                 height: 300px;
@@ -51,9 +61,13 @@ export const PostWrapper = styled(Paper)`
             }
 
             .video-player {
-                height: 350px;
+                height: 550px;
                 position: relative;
                 width: 100%;
+
+                ${responsive.TABLET`
+                    height: 450px;
+                `}
 
                 ${responsive.PHABLET`
                     height: 300px;

@@ -12,7 +12,6 @@ import { HomePage } from 'Components/pages/HomePage';
 import { Profile } from 'Components/pages/Profile';
 import { Notification } from 'Components/pages/Notification';
 import { Friends } from 'Components/pages/Friends';
-import FriendProfile from 'Components/common/FriendProfile';
 
 const RoutesList = [
     {
@@ -38,7 +37,7 @@ const RoutesList = [
     {
         path: URL_FRIEND_PROFILE_PAGE,
         exact: true,
-        Component: <FriendProfile />
+        Component: <Profile />
     }
 ];
 

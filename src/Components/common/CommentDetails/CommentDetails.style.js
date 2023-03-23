@@ -10,6 +10,11 @@ export const CommentDetailsWrapper = styled.div`
 
         .comment-box {
             gap: 15px;
+            padding: 10px;
+
+            &:nth-child(2n + 1) {
+                background: ${COLORS.LIGHT_GREY};
+            }
 
             .user-name {
                 font-family: ${FONTS.PRIMARY_BOLD};
@@ -34,7 +39,7 @@ export const CommentDetailsWrapper = styled.div`
             }
         }
 
-        .add-edit-icon{
+        .add-edit-icon {
             width: 45px;
             height: 45px;
         }
