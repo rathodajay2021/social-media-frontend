@@ -102,6 +102,18 @@ const Post = ({
         }
     }, []);
 
+    const handleLikeText = () => {
+        if (!!postData?.likesCount) {
+            if (!postData?.userLiked) return postData?.likesCount;
+            if (postData?.userLiked && postData?.likesCount === 1) {
+                return `${CreateUserName(userProfileData?.firstName, userProfileData?.lastName)}`;
+            } else {
+                return `you and ${postData?.likesCount - 1} others`;
+            }
+        }
+        return;
+    };
+
     const handleLike = async () => {
         let response;
         const data = {
@@ -174,7 +186,7 @@ const Post = ({
                     </Box>
                 </Box>
                 {allowDelete && (
-                    <IconButton onClick={(e) => setDeleteMenu(e.currentTarget)} >
+                    <IconButton onClick={(e) => setDeleteMenu(e.currentTarget)}>
                         <MoreVertIcon />
                     </IconButton>
                 )}
@@ -225,7 +237,7 @@ const Post = ({
                             <FavoriteBorderIcon />
                         </IconButton>
                     )}
-                    {!!postData?.likesCount && postData?.likesCount}
+                    {handleLikeText()}
                 </Box>
                 <Box>
                     <IconButton onClick={() => setCollapseDialog((prev) => !prev)}>
@@ -235,7 +247,12 @@ const Post = ({
                 </Box>
             </Box>
             <Collapse in={collapseDialog}>
-                <CommentDetails postData={postData} collapseDialog={collapseDialog} />
+                <CommentDetails
+                    postData={postData}
+                    collapseDialog={collapseDialog}
+                    setTotalPostData={setTotalPostData}
+                    allPostData={allPostData}
+                />
             </Collapse>
             <Menu
                 open={Boolean(deleteMenu)}

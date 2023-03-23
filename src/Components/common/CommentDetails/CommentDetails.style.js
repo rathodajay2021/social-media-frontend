@@ -26,10 +26,17 @@ export const CommentDetailsWrapper = styled.div`
         margin: 10px 0;
     }
 
-    .input-field {
-        .input-focused,
-        .input-outline {
-            border: none;
+    .create-post {
+        .input-field {
+            .input-focused,
+            .input-outline {
+                border: none;
+            }
+        }
+
+        .add-edit-icon{
+            width: 45px;
+            height: 45px;
         }
     }
 `;

@@ -66,11 +66,21 @@ export const PostWrapper = styled(Paper)`
         }
     }
 
-    .likes-comments{
+    .post-like-text {
         gap: 10px;
-        
-        .liked{
-            color: ${COLORS.LIKED_RED}
+        padding: 0;
+        margin: 0;
+
+        .liked {
+            color: ${COLORS.LIKED_RED};
+        }
+    }
+
+    .likes-comments {
+        gap: 10px;
+
+        .liked {
+            color: ${COLORS.LIKED_RED};
         }
     }
 `;

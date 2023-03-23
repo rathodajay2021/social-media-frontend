@@ -1,6 +1,15 @@
 //CORE
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Avatar, Box, Divider, IconButton, TextField, Typography } from '@mui/material';
+import {
+    Avatar,
+    Box,
+    Divider,
+    FormHelperText,
+    IconButton,
+    InputAdornment,
+    TextField,
+    Typography
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 //ICON
@@ -8,6 +17,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 //CUSTOM
 import { CommentDetailsWrapper, PopOverWrapper } from './CommentDetails.style';
@@ -21,10 +31,10 @@ import { showToast } from 'Redux/App/Actions';
 
 const TEXT_LENGTH = 255;
 
-const CommentDetails = ({ postData, collapseDialog }) => {
+const CommentDetails = ({ postData, collapseDialog, allPostData, setTotalPostData }) => {
     const API = useMemo(() => new Api(), []);
     const userProfileData = useSelector((state) => state?.App.userData);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const [popOverMenu, setPopOverMenu] = useState(null);
     const [commentDescription, setCommentDescription] = useState('');
@@ -35,6 +45,7 @@ const CommentDetails = ({ postData, collapseDialog }) => {
         data: [],
         totalRecord: 0
     });
+    const [isEdit, setIsEdit] = useState(false);
 
     const handlePagination = () => {
         setPaginationInfo((prev) => {
@@ -52,7 +63,32 @@ const CommentDetails = ({ postData, collapseDialog }) => {
         setPopOverMenu(null);
     };
 
-    const handleAddPost = async () => {
+    const handleCommentCount = (no) => {
+        const tempPostData = [...allPostData?.data];
+        const index = tempPostData.findIndex((item) => item.postId === postData?.postId);
+        tempPostData[index] = {
+            ...tempPostData[index],
+            commentCount: tempPostData[index].commentCount + no
+        };
+        setTotalPostData((prev) => {
+            return { ...prev, data: tempPostData };
+        });
+    };
+
+    const CommentEditParams = () => {
+        setIsEdit(true);
+        commentsData.data.forEach((item) => {
+            item.commentId === commentId && setCommentDescription(item?.comment);
+        });
+        setPopOverMenu(null);
+    };
+
+    const closeEditComment = () => {
+        setIsEdit(false);
+        setCommentDescription('');
+    };
+
+    const handleAddComment = async () => {
         const response = await API.post(API_URL.ADD_COMMENT_URL, {
             data: {
                 postId: postData?.postId,
@@ -64,7 +100,25 @@ const CommentDetails = ({ postData, collapseDialog }) => {
         if (response) {
             dispatch(showToast(response?.data?.message, 'success'));
             setCommentDescription('');
-            setResetCommentData((prev) => !prev);
+            setPaginationInfo(PAGINATION_INIT);
+            handleCommentCount(1);
+            paginationInfo?.pageNo === 0 && setResetCommentData((prev) => !prev);
+        }
+    };
+
+    const handleEditCommit = async () => {
+        const response = await API.put(`${API_URL.EDIT_COMMENT_URL}/${commentId}`, {
+            data: {
+                comment: commentDescription
+            }
+        });
+
+        if (response) {
+            dispatch(showToast(response?.data?.message, 'success'));
+            setCommentDescription('');
+            setPaginationInfo(PAGINATION_INIT);
+            paginationInfo?.pageNo === 0 && setResetCommentData((prev) => !prev);
+            setIsEdit(false);
         }
     };
 
@@ -74,7 +128,9 @@ const CommentDetails = ({ postData, collapseDialog }) => {
 
             if (response) {
                 dispatch(showToast(response?.data?.message, 'success'));
-                setResetCommentData((prev) => !prev);
+                setPaginationInfo(PAGINATION_INIT);
+                handleCommentCount(-1);
+                paginationInfo?.pageNo === 0 && setResetCommentData((prev) => !prev);
                 handlePopoverClose();
             }
         }
@@ -104,7 +160,7 @@ const CommentDetails = ({ postData, collapseDialog }) => {
 
     useEffect(() => {
         collapseDialog && getCommentData();
-    }, [getCommentData, resetCommentData, collapseDialog]);
+    }, [getCommentData, collapseDialog, resetCommentData]);
 
     return (
         <CommentDetailsWrapper>
@@ -137,38 +193,64 @@ const CommentDetails = ({ postData, collapseDialog }) => {
                 )}
             </Box>
             {!!commentsData.totalRecord && <Divider className="divider" />}
-            <Box className="create-post flex">
+            <Box className="create-post flex f-v-center">
                 <Avatar
                     {...stringAvatar(
                         CreateUserName(userProfileData?.firstName, userProfileData?.lastName),
                         userProfileData?.profilePic
                     )}
                 />
-                <TextField
-                    variant="outlined"
-                    className="input-field"
-                    placeholder={`Add a comment for ${CreateUserName(
-                        postData?.user?.firstName || userProfileData?.firstName,
-                        postData?.user?.lastName || userProfileData?.lastName
-                    )}`}
-                    value={commentDescription}
-                    onChange={(e) => setCommentDescription(e?.target?.value)}
-                    inputProps={{ maxLength: TEXT_LENGTH }}
-                    InputProps={{
-                        classes: {
-                            focused: 'input-focused',
-                            notchedOutline: 'input-outline'
-                        }
-                    }}
-                    fullWidth
-                    multiline
-                    maxRows={4}
-                    minRows={1}
-                    size="small"
-                />
-                <IconButton onClick={handleAddPost}>
-                    <ControlPointIcon />
-                </IconButton>
+                <Box sx={{ width: '100%' }}>
+                    <TextField
+                        variant="outlined"
+                        className="input-field"
+                        placeholder={`${isEdit ? 'Edit' : 'Add'} a comment for ${CreateUserName(
+                            postData?.user?.firstName || userProfileData?.firstName,
+                            postData?.user?.lastName || userProfileData?.lastName
+                        )}`}
+                        value={commentDescription}
+                        onChange={(e) => setCommentDescription(e?.target?.value)}
+                        inputProps={{ maxLength: TEXT_LENGTH }}
+                        InputProps={{
+                            classes: {
+                                focused: 'input-focused',
+                                notchedOutline: 'input-outline'
+                            },
+                            endAdornment: isEdit ? (
+                                <InputAdornment position="end" className='flex'>
+                                    <FormHelperText>{`${
+                                        commentDescription.slice(0, TEXT_LENGTH).length
+                                    }/${TEXT_LENGTH}`}</FormHelperText>
+                                    <IconButton
+                                        onClick={closeEditComment}
+                                        className="clear-search-icon">
+                                        <CloseIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ) : (
+                                <InputAdornment position="end">
+                                    <FormHelperText>{`${
+                                        commentDescription.slice(0, TEXT_LENGTH).length
+                                    }/${TEXT_LENGTH}`}</FormHelperText>
+                                </InputAdornment>
+                            )
+                        }}
+                        fullWidth
+                        multiline
+                        maxRows={4}
+                        minRows={1}
+                        size="small"
+                    />
+                </Box>
+                {isEdit ? (
+                    <IconButton className="add-edit-icon" onClick={handleEditCommit}>
+                        <EditIcon />
+                    </IconButton>
+                ) : (
+                    <IconButton className="add-edit-icon" onClick={handleAddComment}>
+                        <ControlPointIcon />
+                    </IconButton>
+                )}
             </Box>
             <PopOverWrapper
                 open={Boolean(popOverMenu)}
@@ -184,7 +266,7 @@ const CommentDetails = ({ postData, collapseDialog }) => {
                     horizontal: 'right'
                 }}>
                 <Box className="edit-box">
-                    <IconButton className="icon">
+                    <IconButton className="icon" onClick={CommentEditParams}>
                         <EditIcon />
                     </IconButton>
                 </Box>

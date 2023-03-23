@@ -33,5 +33,6 @@ export const API_URL = {
     DELETE_LIKE_URL : "/delete-likes",
     GET_COMMENT_URL : "/get-comment",
     ADD_COMMENT_URL : "/add-comment",
+    EDIT_COMMENT_URL : "/edit-comment",
     DELETE_COMMENT_URL : "/delete-comment",
 };
