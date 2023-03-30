@@ -5,12 +5,12 @@ import { useSelector } from 'react-redux';
 
 //icon
 import NewspaperIcon from '@mui/icons-material/Newspaper';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EmailIcon from '@mui/icons-material/Email';
-import InsertPhotoIcon from '@mui/icons-material/InsertPhoto';
-import VideoCameraBackIcon from '@mui/icons-material/VideoCameraBack';
-import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
+import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import InsertPhotoOutlinedIcon from '@mui/icons-material/InsertPhotoOutlined';
+import VideoCameraBackOutlinedIcon from '@mui/icons-material/VideoCameraBackOutlined';
+import SportsEsportsOutlinedIcon from '@mui/icons-material/SportsEsportsOutlined';
 
 //CUSTOM
 import { LeftMenuWrapper } from './LeftMenu.style';
@@ -52,15 +52,15 @@ const LeftMenu = ({ $windowHeight }) => {
                     <Divider />
                     <Box className="menu-options flex f-column">
                         <Box className="option flex f-v-center hover">
-                            <InsertPhotoIcon className="option-icon" />
+                            <InsertPhotoOutlinedIcon className="option-icon" />
                             <Typography className="option-label">gallery</Typography>
                         </Box>
                         <Box className="option flex f-v-center hover">
-                            <VideoCameraBackIcon className="option-icon" />
+                            <VideoCameraBackOutlinedIcon className="option-icon" />
                             <Typography className="option-label">go live</Typography>
                         </Box>
                         <Box className="option flex f-v-center hover">
-                            <SportsEsportsIcon className="option-icon" />
+                            <SportsEsportsOutlinedIcon className="option-icon" />
                             <Typography className="option-label">games</Typography>
                         </Box>
                     </Box>
@@ -101,15 +101,15 @@ const LeftMenu = ({ $windowHeight }) => {
                             <Typography className="option-label">news feed</Typography>
                         </Box>
                         <Box className="option flex f-v-center hover">
-                            <MilitaryTechIcon className="option-icon" />
+                            <MilitaryTechOutlinedIcon className="option-icon" />
                             <Typography className="option-label">achievement</Typography>
                         </Box>
                         <Box className="option flex f-v-center hover">
-                            <LocationOnIcon className="option-icon" />
+                            <LocationOnOutlinedIcon className="option-icon" />
                             <Typography className="option-label">latest event</Typography>
                         </Box>
                         <Box className="option flex f-v-center hover">
-                            <EmailIcon className="option-icon" />
+                            <EmailOutlinedIcon className="option-icon" />
                             <Typography className="option-label">messages</Typography>
                         </Box>
                     </Box>

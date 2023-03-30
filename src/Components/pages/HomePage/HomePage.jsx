@@ -85,39 +85,37 @@ const HomePage = () => {
     return (
         <>
             <NavBar resetData={() => postResetHandler()} />
-            <HomePageWrapper $windowHeight={windowDimensions.height}>
+            <HomePageWrapper $windowHeight={windowDimensions.height} className="flex">
                 <Loader isLoading={loading} loadingText={'Loading...'} />
-                <Box className="flex">
-                    {windowDimensions.width > BREAKPOINTS_VALUE.TABLET && (
-                        <LeftMenu $windowHeight={windowDimensions.height} />
+                {windowDimensions.width > BREAKPOINTS_VALUE.TABLET && (
+                    <LeftMenu $windowHeight={windowDimensions.height} />
+                )}
+                <Box className="post-area flex f-column">
+                    {!!postData?.data.length ? (
+                        <>
+                            <Box className="users-post-list flex f-column">
+                                {postData?.data.map((item) => (
+                                    <Post
+                                        key={item.postId}
+                                        postData={item}
+                                        userFirstName={item?.user?.firstName}
+                                        userLastName={item?.user?.lastName}
+                                        userProfilePic={item?.user?.profilePic}
+                                        allowDelete={false}
+                                        redirect={true}
+                                        userProfileData={userProfileData}
+                                        setTotalPostData={setPostData}
+                                        allPostData={postData}
+                                    />
+                                ))}
+                            </Box>
+                            {postData?.data?.length < postData?.totalRecord && (
+                                <LoadMore onClickFuc={handlePagination} />
+                            )}
+                        </>
+                    ) : (
+                        <NoPost />
                     )}
-                    <Box className="post-area flex f-column">
-                        {!!postData?.data.length ? (
-                            <>
-                                <Box className="users-post-list flex f-column">
-                                    {postData?.data.map((item) => (
-                                        <Post
-                                            key={item.postId}
-                                            postData={item}
-                                            userFirstName={item?.user?.firstName}
-                                            userLastName={item?.user?.lastName}
-                                            userProfilePic={item?.user?.profilePic}
-                                            allowDelete={false}
-                                            redirect={true}
-                                            userProfileData={userProfileData}
-                                            setTotalPostData={setPostData}
-                                            allPostData={postData}
-                                        />
-                                    ))}
-                                </Box>
-                                {postData?.data?.length < postData?.totalRecord && (
-                                    <LoadMore onClickFuc={handlePagination} />
-                                )}
-                            </>
-                        ) : (
-                            <NoPost />
-                        )}
-                    </Box>
                 </Box>
             </HomePageWrapper>
         </>

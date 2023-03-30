@@ -141,89 +141,83 @@ const Profile = () => {
     return (
         <>
             <NavBar addReset={handleRefetchUserPost} />
-            <ProfileWrapper $windowHeight={windowDimensions.height}>
+            <ProfileWrapper $windowHeight={windowDimensions.height} className="flex">
                 <Loader isLoading={loading} />
-                <Box className="flex">
-                    {windowDimensions.width > BREAKPOINTS_VALUE.TABLET && (
-                        <LeftMenu $windowHeight={windowDimensions.height} />
-                    )}
-                    <Box className="profile-area">
-                        <Box className="user-basic-details responsive-width">
-                            <ImageBox
-                                className="cover-pic"
-                                $coverPic={userData?.coverPic}></ImageBox>
-                            <Avatar
-                                className="profile-pic"
-                                {...stringAvatar(
-                                    CreateUserName(userData?.firstName, userData?.lastName),
-                                    userData?.profilePic
-                                )}
-                            />
-                            <Box className="user-details">
-                                <Typography className="user-name">
-                                    {CreateUserName(userData?.firstName, userData?.lastName)}
-                                </Typography>
-                                <Typography className="user-bio">{userData?.bio}</Typography>
-                            </Box>
-                        </Box>
-                        <Box className="user-status responsive-width flex f-v-center f-h-space-between">
-                            <Box className="user-record">
-                                <Typography className="data-label flex f-h-center">
-                                    <IconButton onClick={() => navigate(URL_FRIEND_PAGE)}>
-                                        <GroupIcon className="details-icon" />
-                                    </IconButton>
-                                </Typography>
-                                <Typography className="data flex f-h-center">
-                                    {friendList}
-                                </Typography>
-                            </Box>
-                            {userData?.dob && (
-                                <Box className="user-record">
-                                    <Typography className="data-label flex f-h-center">
-                                        <IconButton>
-                                            <CalendarMonthIcon className="details-icon" />
-                                        </IconButton>
-                                    </Typography>
-                                    <Typography className="data flex f-h-center">
-                                        {moment(new Date(userData?.dob)).format('DD MMM')}
-                                    </Typography>
-                                </Box>
+                {windowDimensions.width > BREAKPOINTS_VALUE.TABLET && (
+                    <LeftMenu $windowHeight={windowDimensions.height} />
+                )}
+                <Box className="profile-area">
+                    <Box className="user-basic-details responsive-width">
+                        <ImageBox className="cover-pic" $coverPic={userData?.coverPic}></ImageBox>
+                        <Avatar
+                            className="profile-pic"
+                            {...stringAvatar(
+                                CreateUserName(userData?.firstName, userData?.lastName),
+                                userData?.profilePic
                             )}
+                        />
+                        <Box className="user-details">
+                            <Typography className="user-name">
+                                {CreateUserName(userData?.firstName, userData?.lastName)}
+                            </Typography>
+                            <Typography className="user-bio">{userData?.bio}</Typography>
+                        </Box>
+                    </Box>
+                    <Box className="user-status responsive-width flex f-v-center f-h-space-between">
+                        <Box className="user-record">
+                            <Typography className="data-label flex f-h-center">
+                                <IconButton onClick={() => navigate(URL_FRIEND_PAGE)}>
+                                    <GroupIcon className="details-icon" />
+                                </IconButton>
+                            </Typography>
+                            <Typography className="data flex f-h-center">{friendList}</Typography>
+                        </Box>
+                        {userData?.dob && (
                             <Box className="user-record">
                                 <Typography className="data-label flex f-h-center">
-                                    <IconButton onClick={scrollToPostSection}>
-                                        <LocalPostOfficeIcon className="details-icon" />
+                                    <IconButton>
+                                        <CalendarMonthIcon className="details-icon" />
                                     </IconButton>
                                 </Typography>
                                 <Typography className="data flex f-h-center">
-                                    {userPostData?.totalRecord}
+                                    {moment(new Date(userData?.dob)).format('DD MMM')}
                                 </Typography>
                             </Box>
-                        </Box>
-                        {userPostData?.data && !!userPostData?.data.length ? (
-                            <Box className="users-post-list flex f-column" ref={postRef}>
-                                {userPostData?.data.map((item) => (
-                                    <Post
-                                        key={item.postId}
-                                        postData={item}
-                                        userFirstName={userData?.firstName}
-                                        userLastName={userData?.lastName}
-                                        userProfilePic={userData?.profilePic}
-                                        allowDelete={true && !location?.state?.friendId}
-                                        onDelete={handleRefetchUserPost}
-                                        userProfileData={UserProfileData}
-                                        setTotalPostData={setUserPostData}
-                                        allPostData={userPostData}
-                                    />
-                                ))}
-                                {userPostData?.data.length < userPostData?.totalRecord && (
-                                    <LoadMore onClickFuc={handlePagination} />
-                                )}
-                            </Box>
-                        ) : (
-                            <NoPost wrapperHeight={250} />
                         )}
+                        <Box className="user-record">
+                            <Typography className="data-label flex f-h-center">
+                                <IconButton onClick={scrollToPostSection}>
+                                    <LocalPostOfficeIcon className="details-icon" />
+                                </IconButton>
+                            </Typography>
+                            <Typography className="data flex f-h-center">
+                                {userPostData?.totalRecord}
+                            </Typography>
+                        </Box>
                     </Box>
+                    {userPostData?.data && !!userPostData?.data.length ? (
+                        <Box className="users-post-list flex f-column" ref={postRef}>
+                            {userPostData?.data.map((item) => (
+                                <Post
+                                    key={item.postId}
+                                    postData={item}
+                                    userFirstName={userData?.firstName}
+                                    userLastName={userData?.lastName}
+                                    userProfilePic={userData?.profilePic}
+                                    allowDelete={true && !location?.state?.friendId}
+                                    onDelete={handleRefetchUserPost}
+                                    userProfileData={UserProfileData}
+                                    setTotalPostData={setUserPostData}
+                                    allPostData={userPostData}
+                                />
+                            ))}
+                            {userPostData?.data.length < userPostData?.totalRecord && (
+                                <LoadMore onClickFuc={handlePagination} />
+                            )}
+                        </Box>
+                    ) : (
+                        <NoPost wrapperHeight={250} />
+                    )}
                 </Box>
             </ProfileWrapper>
         </>

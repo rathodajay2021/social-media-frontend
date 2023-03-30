@@ -2,26 +2,29 @@ import styled from 'styled-components';
 import { COLORS, FONTS } from 'Styles/Constants';
 
 export const LeftMenuWrapper = styled.div`
-    position: relative;
+    position: sticky;
+    left: 10px;
+    top: 10px;
     width: 20%;
-
+    height: ${(props) => `calc(${props?.$windowHeight}px - 120px - 20px)`};
+    
     .left-menu-position {
-        position: sticky;
-        left: 10px;
-        top: 10px;
-        width: calc(100% - 10px);
-        height: ${(props) => `calc(${props?.$windowHeight}px - 120px - 20px)`};
         gap: 10px;
-
+        
         .paper {
             &.post-paper {
+                /* border-radius: 15px; */
                 box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
+                overflow: hidden;
+                padding-bottom: 5px;
             }
 
             .title {
                 padding: 10px;
                 font-family: ${FONTS.PRIMARY_MEDIUM};
                 font-size: 24px;
+                color: ${COLORS.WHITE};
+                background: ${COLORS.PRIMARY_LIGHT};
             }
 
             .menu-options {
@@ -32,7 +35,7 @@ export const LeftMenuWrapper = styled.div`
                     gap: 10px;
 
                     .option-icon {
-                        color: ${COLORS.GREY_TEXT_COLOR};
+                        color: ${COLORS.PRIMARY_LIGHT};
                         height: 30px;
                         width: 30px;
                     }

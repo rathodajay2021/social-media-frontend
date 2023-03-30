@@ -8,10 +8,10 @@ export const ProfileWrapper = styled.div`
 
     .profile-area {
         width: 80%;
-
+        
         ${responsive.TABLET`
            width: 100%;
-        `}
+           `}
 
         .responsive-width{
             width: 80%;
@@ -24,11 +24,10 @@ export const ProfileWrapper = styled.div`
 
         .user-basic-details {
             position: relative;
-            height: 400px;
 
             .profile-pic {
                 position: absolute;
-                top: 50%;
+                top: 350px;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 border: 10px solid ${COLORS.WHITE};
@@ -44,7 +43,7 @@ export const ProfileWrapper = styled.div`
             }
 
             .user-details {
-                height: 50%;
+                max-height: 200px;
                 padding: 20px;
 
                 ${responsive.PHABLET`
@@ -77,7 +76,7 @@ export const ProfileWrapper = styled.div`
             }
 
             .cover-pic {
-                height: 50%;
+                height: 350px;
                 background-color: ${COLORS.MEDIUM_GREY};
             }
         }
