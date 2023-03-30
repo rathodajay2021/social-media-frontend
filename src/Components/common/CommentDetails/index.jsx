@@ -217,7 +217,7 @@ const CommentDetails = ({ postData, collapseDialog, allPostData, setTotalPostDat
                                 notchedOutline: 'input-outline'
                             },
                             endAdornment: isEdit ? (
-                                <InputAdornment position="end" className='flex'>
+                                <InputAdornment position="end" className="flex">
                                     <FormHelperText>{`${
                                         commentDescription.slice(0, TEXT_LENGTH).length
                                     }/${TEXT_LENGTH}`}</FormHelperText>
@@ -243,11 +243,19 @@ const CommentDetails = ({ postData, collapseDialog, allPostData, setTotalPostDat
                     />
                 </Box>
                 {isEdit ? (
-                    <IconButton className="add-edit-icon" onClick={handleEditCommit}>
+                    <IconButton
+                        className="add-edit-icon"
+                        onClick={handleEditCommit}
+                        disabled={!commentDescription.length}
+                        >
                         <EditIcon />
                     </IconButton>
                 ) : (
-                    <IconButton className="add-edit-icon" onClick={handleAddComment}>
+                    <IconButton
+                        className="add-edit-icon"
+                        onClick={handleAddComment}
+                        disabled={!commentDescription.length}
+                        >
                         <ControlPointIcon />
                     </IconButton>
                 )}
