@@ -18,7 +18,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //CUSTOM
 import { LoginWrapper } from './Login.style';
-import { API_URL, URL_HOME_PAGE, URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers/Paths';
+import {
+    API_URL,
+    URL_HOME_PAGE,
+    URL_RESET_PASSWORD,
+    URL_SIGN_UP,
+    URL_VERIFY_EMAIL
+} from 'Helpers/Paths';
 import { useNavigate } from 'react-router-dom';
 import Api from 'Helpers/ApiHandler';
 import { loginUser } from 'Redux/Auth/Actions';
@@ -59,14 +65,27 @@ const Login = () => {
     const [passwordVisibility, setPasswordVisibility] = useState(false);
 
     const handleSubmit = async (values) => {
-        const response = await API.post(API_URL.LOGIN_URL, {
-            data: values
-        });
+        try {
+            const response = await API.post(API_URL.LOGIN_URL, {
+                data: values
+            });
 
-        if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
-            dispatch(loginUser(response?.data?.data));
-            dispatch(userProfileData(response?.data?.data));
-            navigate(URL_HOME_PAGE);
+            if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
+                dispatch(loginUser(response?.data?.data));
+                dispatch(userProfileData(response?.data?.data));
+                navigate(URL_HOME_PAGE);
+            }
+        } catch (error) {
+            if (error?.response?.status === CODES.PRECONDITION_FAILED) {
+                console.log(values?.email, values);
+                navigate(URL_VERIFY_EMAIL, {
+                    state: { email: values?.email, password: values?.password }
+                });
+            }
+
+            if (error?.response?.status === CODES.NOT_FOUND) {
+                navigate(URL_SIGN_UP);
+            }
         }
     };
 
