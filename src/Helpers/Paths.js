@@ -3,6 +3,7 @@ export const URL_SIGN_UP = '/signup';
 export const URL_LOGIN = '/login';
 export const URL_RESET_PASSWORD = '/reset-password';
 export const URL_WELCOME_PAGE = '/';
+export const URL_VERIFY_EMAIL = '/verify-email'
 
 //LOGIN PATH
 export const URL_HOME_PAGE = '/post';
@@ -35,4 +36,6 @@ export const API_URL = {
     ADD_COMMENT_URL : "/add-comment",
     EDIT_COMMENT_URL : "/edit-comment",
     DELETE_COMMENT_URL : "/delete-comment",
+    VERIFY_OTP_URL : "/verify-otp",
+    RESEND_OTP_URL : "/resend-otp",
 };

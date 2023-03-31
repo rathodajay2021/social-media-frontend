@@ -19,12 +19,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 //CUSTOM
 import { SignUpWrapper } from './SignUp.style';
-import { API_URL, URL_HOME_PAGE, URL_LOGIN } from 'Helpers/Paths';
+import { API_URL, URL_LOGIN, URL_VERIFY_EMAIL } from 'Helpers/Paths';
 import Api from 'Helpers/ApiHandler';
 import CODES from 'Helpers/StatusCodes';
-import { loginUser } from 'Redux/Auth/Actions';
 import { EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX } from 'Helpers/Constants';
-import { showToast, userProfileData } from 'Redux/App/Actions';
+import { showToast } from 'Redux/App/Actions';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const SignUpInitValue = {
@@ -74,11 +73,14 @@ const SignUp = () => {
             data: reqBody
         });
 
-        if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
-            dispatch(loginUser(response?.data?.data));
-            dispatch(userProfileData(response?.data?.data));
+        if (response?.status === CODES.SUCCESS) {
             dispatch(showToast(response?.data?.message));
-            navigate(URL_HOME_PAGE);
+            navigate(URL_VERIFY_EMAIL, {
+                state: { email: values?.email, password: values?.password }
+            });
+            // dispatch(loginUser(response?.data?.data));
+            // dispatch(userProfileData(response?.data?.data));
+            // navigate(URL_HOME_PAGE);
             return;
         }
     };
