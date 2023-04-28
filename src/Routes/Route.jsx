@@ -8,6 +8,7 @@ import {
     URL_PROFILE_PAGE,
     URL_RESET_PASSWORD,
     URL_SIGN_UP,
+    URL_VERIFY_EMAIL,
     URL_WELCOME_PAGE
 } from 'Helpers/Paths';
 import { SignUp } from 'Components/pages/SignUp';
@@ -18,13 +19,15 @@ import RoutesList from './RouteList';
 import { ResetPassword } from 'Components/pages/ResetPassword';
 import WrongPath from 'Components/common/NoPageFound/WrongPath';
 import { selectMenu } from 'Redux/BottomBar/Actions';
+import { VerifyEmail } from 'Components/pages/VerifyEmail';
 
 const BEFORE_LOGIN_ACCESSIBLE_PATHS = [
     URL_LOGIN,
     URL_SIGN_UP,
     URL_RESET_PASSWORD,
     URL_WELCOME_PAGE,
-    URL_RESET_PASSWORD
+    URL_RESET_PASSWORD,
+    URL_VERIFY_EMAIL
 ];
 
 const Route = () => {
@@ -64,6 +67,7 @@ const Route = () => {
             <ReactRoute path={URL_SIGN_UP} element={<SignUp />} />
             <ReactRoute path={URL_WELCOME_PAGE} element={<WelcomePage />} />
             <ReactRoute path={URL_RESET_PASSWORD} element={<ResetPassword />} />
+            <ReactRoute path={URL_VERIFY_EMAIL} element={<VerifyEmail />} />
             {RoutesList.map((route, index) => (
                 <React.Fragment key={index}>
                     {route.hasChildren ? (
