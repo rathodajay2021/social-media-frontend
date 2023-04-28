@@ -1,10 +1,16 @@
-import { Paper, Popover } from '@mui/material';
+import { Paper } from '@mui/material';
 import styled from 'styled-components';
 import { COLORS, FONTS, responsive } from 'Styles/Constants';
 
 export const PostWrapper = styled(Paper)`
     padding: 10px;
     gap: 15px;
+    width: 80%;
+    margin: 0 auto;
+
+    ${responsive.TABLET`
+        width: 100%;
+    `}
 
     &.post-paper {
         box-shadow: 2px 4px 16px rgba(0, 0, 0, 0.15);
@@ -31,9 +37,12 @@ export const PostWrapper = styled(Paper)`
         margin-bottom: 25px;
 
         .media-file {
-            height: 350px;
-            width: 100%;
+            height: 550px;
             cursor: grab;
+
+            ${responsive.TABLET`
+                height: 450px;
+            `}
 
             ${responsive.PHABLET`
                 height: 300px;
@@ -47,23 +56,45 @@ export const PostWrapper = styled(Paper)`
                 padding: 0 10px 0 0;
             }
 
-            .background-img-div,
-            .background-video-div {
+            .background-img-div {
                 height: inherit;
+            }
+
+            .video-player {
+                height: 550px;
+                position: relative;
+                width: 100%;
+
+                ${responsive.TABLET`
+                    height: 450px;
+                `}
+
+                ${responsive.PHABLET`
+                    height: 300px;
+                `}
+
+                ${responsive.MOBILE`
+                    height: 250px;
+                `}
             }
         }
     }
-`;
 
-export const CustomPopOver = styled(Popover)`
-    .popover-paper {
-        padding: 5px;
-        background: ${COLORS.ALERT_BG};
+    .post-like-text {
+        gap: 10px;
+        padding: 0;
+        margin: 0;
 
-        .delete-text {
-            color: ${COLORS.ALERT_TEXT};
-            font-style: ${FONTS.PRIMARY_MEDIUM};
-            font-size: 18px;
+        .liked {
+            color: ${COLORS.LIKED_RED};
+        }
+    }
+
+    .likes-comments {
+        gap: 10px;
+
+        .liked {
+            color: ${COLORS.LIKED_RED};
         }
     }
 `;

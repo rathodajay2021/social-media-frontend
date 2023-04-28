@@ -22,28 +22,28 @@ const FriendsDetails = ({ friendDetails, resetFriendApi }) => {
     const removeFriendHandler = async () => {
         const response = await API.delete(API_URL.REMOVE_FRIEND_URL, {
             data: {
-                userId1: userDetails.id,
-                userId2: friendDetails.userId
+                senderId: userDetails.id,
+                receiverId: friendDetails.userId
             }
         });
 
         if (response) {
-            dispatch(showToast(response.data.message));
-            resetFriendApi();
+            dispatch(showToast(response?.data?.message));
+            resetFriendApi(friendDetails?.userId);
         }
     };
 
     const addFriendHandler = async () => {
         const response = await API.post(API_URL.ADD_FRIEND_URL, {
             data: {
-                userId1: userDetails.id,
-                userId2: friendDetails.userId
+                senderId: userDetails.id,
+                receiverId: friendDetails.userId
             }
         });
 
         if (response) {
-            dispatch(showToast(response.data.message));
-            resetFriendApi();
+            dispatch(showToast(response?.data?.message));
+            resetFriendApi(friendDetails?.userId);
         }
     };
 

@@ -22,15 +22,22 @@ import { API_URL, URL_HOME_PAGE, URL_RESET_PASSWORD, URL_SIGN_UP } from 'Helpers
 import { useNavigate } from 'react-router-dom';
 import Api from 'Helpers/ApiHandler';
 import { loginUser } from 'Redux/Auth/Actions';
-import { showToast, userProfileData } from 'Redux/App/Actions';
+import { userProfileData } from 'Redux/App/Actions';
 import CODES from 'Helpers/StatusCodes';
-import { PASSWORD_REGEX } from 'Helpers/Constants';
+import { EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX } from 'Helpers/Constants';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const validationSchema = Yup.object({
     email: Yup.string()
-        .required('Please enter your email address')
-        .email('Please enter valid email address'),
+        .required('Please enter your email address or phone number')
+        .test('user-validation', 'Enter Valid email address or mobile number', function (value) {
+            let isValidEmail = EMAIL_REGEX.test(value);
+            let isValidPhone = PHONE_REGEX.test(value);
+            if (!isValidEmail && !isValidPhone) {
+                return false;
+            }
+            return true;
+        }),
     password: Yup.string()
         .required('Please enter your password')
         .matches(
@@ -56,16 +63,11 @@ const Login = () => {
             data: values
         });
 
-        if (response?.status === CODES.SUCCESS && response?.data?.isUserVerified) {
-            dispatch(loginUser(response?.data));
-            dispatch(userProfileData(response?.data));
+        if (response?.status === CODES.SUCCESS && response?.data?.data?.isUserVerified) {
+            dispatch(loginUser(response?.data?.data));
+            dispatch(userProfileData(response?.data?.data));
             navigate(URL_HOME_PAGE);
         }
-
-        if (response?.status === CODES.SUCCESS && response?.data?.message) {
-            dispatch(showToast(response?.data?.message, 'warning'));
-        }
-        return;
     };
 
     return (

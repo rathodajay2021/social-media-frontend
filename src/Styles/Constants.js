@@ -10,6 +10,9 @@ export const COLORS = {
 
     URL_TEXT: '#007fff66',
 
+    //RED
+    LIKED_RED: '#fa3e3e',
+
     //GREY
     GREY_TEXT_COLOR: '#707070',
     LIGHT_GREY: '#e8e8e8',

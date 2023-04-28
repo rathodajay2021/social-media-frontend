@@ -1,9 +1,10 @@
 //CORE
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Avatar,
     Box,
     CardMedia,
+    Collapse,
     Divider,
     IconButton,
     Menu,
@@ -14,11 +15,15 @@ import { useDispatch } from 'react-redux';
 import Slider from 'react-slick';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import OutsideClickHandler from 'react-outside-click-handler';
 
 //ICON
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 //CUSTOM
 import { CreateUserName, stringAvatar } from 'Helpers/Utils';
@@ -28,6 +33,8 @@ import { API_URL, URL_FRIEND_PROFILE_PAGE } from 'Helpers/Paths';
 import { showToast } from 'Redux/App/Actions';
 import { ReadMore } from '../ReadMore';
 import AddPost from '../AddPost';
+import { ImageBox } from 'Styles/CommonStyle';
+import CommentDetails from '../CommentDetails';
 
 const SETTINGS = {
     arrows: false,
@@ -46,15 +53,19 @@ const Post = ({
     userLastName,
     userProfilePic,
     onDelete,
-    redirect = false
+    redirect = false,
+    userProfileData,
+    setTotalPostData,
+    allPostData
 }) => {
     const API = useMemo(() => new Api(), []);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const videoRef = useRef(null);
 
     const [deleteMenu, setDeleteMenu] = useState(null);
     const [addPostDialog, setAddPostDialog] = useState(false);
-    const removePopId = deleteMenu ? 'simple-popover' : undefined;
+    const [collapseDialog, setCollapseDialog] = useState(false);
 
     const handleEditPost = () => {
         setAddPostDialog(true);
@@ -62,9 +73,9 @@ const Post = ({
     };
 
     const handleEditPostMedia = () => {
-        setAddPostDialog(false)
-        onDelete()
-    }
+        setAddPostDialog(false);
+        onDelete();
+    };
 
     const handlePostDelete = async () => {
         const response = await API.delete(`${API_URL.DELETE_POST_URL}/${postData?.postId}`);
@@ -80,6 +91,78 @@ const Post = ({
             navigate(URL_FRIEND_PROFILE_PAGE, { state: { friendId: postData.user.userId } });
         }
     };
+
+    const handleViewChange = useCallback((entries) => {
+        for (let entry of entries) {
+            if (entry.intersectionRatio > 0.9) {
+                videoRef?.current && videoRef?.current.play();
+            } else {
+                videoRef?.current && videoRef?.current.pause();
+            }
+        }
+    }, []);
+
+    const handleLikeText = () => {
+        if (!!postData?.likesCount) {
+            if (!postData?.userLiked) return postData?.likesCount;
+            if (postData?.userLiked && postData?.likesCount === 1) {
+                return `${CreateUserName(userProfileData?.firstName, userProfileData?.lastName)}`;
+            } else {
+                return `you and ${postData?.likesCount - 1} others`;
+            }
+        }
+        return;
+    };
+
+    const handleLike = async () => {
+        let response;
+        const data = {
+            userId: userProfileData?.id,
+            postId: postData?.postId
+        };
+        if (postData?.userLiked) {
+            //remove like
+            response = await API.delete(API_URL.DELETE_LIKE_URL, {
+                data
+            });
+        } else {
+            //add like
+            response = await API.post(API_URL.ADD_LIKE_URL, {
+                data
+            });
+        }
+
+        if (response) {
+            const tempPostData = [...allPostData?.data];
+            const index = tempPostData.findIndex((item) => item.postId === postData?.postId);
+            tempPostData[index] = {
+                ...tempPostData[index],
+                userLiked: !tempPostData[index].userLiked,
+                likesCount: tempPostData[index].likesCount + (postData?.userLiked ? -1 : 1)
+            };
+            setTotalPostData((prev) => {
+                return { ...prev, data: tempPostData };
+            });
+        }
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(handleViewChange, {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.9
+        });
+
+        if (videoRef.current) {
+            observer.observe(videoRef.current);
+        }
+
+        return () => {
+            if (observer) {
+                observer.disconnect();
+            }
+        };
+    }, [handleViewChange]);
 
     return (
         <PostWrapper className="flex f-column" classes={{ root: 'post-paper' }}>
@@ -103,9 +186,7 @@ const Post = ({
                     </Box>
                 </Box>
                 {allowDelete && (
-                    <IconButton
-                        onClick={(e) => setDeleteMenu(e.currentTarget)}
-                        aria-describedby={removePopId}>
+                    <IconButton onClick={(e) => setDeleteMenu(e.currentTarget)}>
                         <MoreVertIcon />
                     </IconButton>
                 )}
@@ -121,27 +202,58 @@ const Post = ({
                                 }`}
                                 key={index}>
                                 {item?.mediaType === 'img' ? (
-                                    <Box
+                                    <ImageBox
                                         className="background-img-div"
-                                        style={{
-                                            backgroundImage: `url(${item.mediaPath})`,
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center'
-                                        }}></Box>
-                                ) : (
-                                    <CardMedia
-                                        className="background-video-div"
-                                        component={'video'}
-                                        src={item.mediaPath}
-                                        controls
+                                        $coverPic={item.mediaPath}
                                     />
+                                ) : (
+                                    <OutsideClickHandler
+                                        onOutsideClick={() => {
+                                            videoRef?.current.pause();
+                                        }}>
+                                        <CardMedia
+                                            component={'video'}
+                                            ref={videoRef}
+                                            src={item.mediaPath}
+                                            controls
+                                            className="video-player"
+                                            muted
+                                        />
+                                    </OutsideClickHandler>
                                 )}
                             </Box>
                         ))}
                     </Slider>
                 </Box>
             )}
+            <Box className="likes-comments flex">
+                <Box>
+                    {postData?.userLiked ? (
+                        <IconButton className="liked" onClick={handleLike}>
+                            <FavoriteIcon />
+                        </IconButton>
+                    ) : (
+                        <IconButton onClick={handleLike}>
+                            <FavoriteBorderIcon />
+                        </IconButton>
+                    )}
+                    {handleLikeText()}
+                </Box>
+                <Box>
+                    <IconButton onClick={() => setCollapseDialog((prev) => !prev)}>
+                        <ChatBubbleOutlineIcon />
+                    </IconButton>
+                    {!!postData?.commentCount && postData?.commentCount}
+                </Box>
+            </Box>
+            <Collapse in={collapseDialog}>
+                <CommentDetails
+                    postData={postData}
+                    collapseDialog={collapseDialog}
+                    setTotalPostData={setTotalPostData}
+                    allPostData={allPostData}
+                />
+            </Collapse>
             <Menu
                 open={Boolean(deleteMenu)}
                 anchorEl={deleteMenu}
@@ -156,20 +268,6 @@ const Post = ({
                     Delete
                 </MenuItem>
             </Menu>
-            {/* <CustomPopOver
-                id={removePopId}
-                classes={{ paper: 'popover-paper' }}
-                open={Boolean(deleteMenu)}
-                anchorEl={deleteMenu}
-                onClose={() => setDeleteMenu(null)}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left'
-                }}>
-                <Typography className="delete-text hover" onClick={handlePostDelete}>
-                    Delete
-                </Typography>
-            </CustomPopOver> */}
             {addPostDialog && (
                 <AddPost
                     onClose={() => setAddPostDialog(false)}

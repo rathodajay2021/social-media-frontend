@@ -34,7 +34,7 @@ import CODES from 'Helpers/StatusCodes';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from 'Redux/App/Actions';
 
-const TEXT_LENGTH = 254;
+const TEXT_LENGTH = 255;
 
 const IMG_FILE_TYPE = 'image/png, image/jpeg, image/jpg';
 
@@ -113,27 +113,27 @@ const EditUser = ({ onClose, onConfirm }) => {
             isMultipart: true
         });
 
-        if (response.data.isSuccess && response.status === CODES.SUCCESS) {
+        if (response.status === CODES.SUCCESS) {
             dispatch(showToast(response?.data?.message, 'success'));
             onConfirm();
         }
     };
 
     const getUserDetails = useCallback(async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_DATA_URL}/${UserProfileData?.id}`);
 
         if (response?.data && response.status === CODES.SUCCESS) {
-            userFormInnerRef.current.setFieldValue('firstName', response?.data?.firstName);
-            userFormInnerRef.current.setFieldValue('lastName', response?.data?.lastName);
-            userFormInnerRef.current.setFieldValue('bio', response?.data?.bio || '');
+            userFormInnerRef.current.setFieldValue('firstName', response?.data?.data?.firstName);
+            userFormInnerRef.current.setFieldValue('lastName', response?.data?.data?.lastName);
+            userFormInnerRef.current.setFieldValue('bio', response?.data?.data?.bio || '');
             userFormInnerRef.current.setFieldValue(
                 'dob',
-                !!response?.data?.dob
-                    ? moment(new Date(response?.data?.dob)).format('DD/MM/YYYY')
+                !!response?.data?.data?.dob
+                    ? moment(new Date(response?.data?.data?.dob)).format('DD/MM/YYYY')
                     : null
             );
-            setCoverPicFile({ file: {}, url: response?.data?.coverPic });
-            setProfilePicFile({ file: {}, url: response?.data?.profilePic });
+            setCoverPicFile({ file: {}, url: response?.data?.data?.coverPic });
+            setProfilePicFile({ file: {}, url: response?.data?.data?.profilePic });
         }
     }, [API, UserProfileData]);
 
@@ -271,8 +271,9 @@ const EditUser = ({ onClose, onConfirm }) => {
                                         name="bio"
                                         className="input-field"
                                         placeholder="Tell us something about yourself"
-                                        value={values?.bio.slice(0, TEXT_LENGTH)}
+                                        value={values?.bio}
                                         onChange={handleChange}
+                                        inputProps={{ maxLength: TEXT_LENGTH }}
                                         multiline
                                         maxRows={6}
                                         minRows={6}

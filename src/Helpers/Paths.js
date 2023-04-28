@@ -28,4 +28,11 @@ export const API_URL = {
     ADD_FRIEND_URL: '/add-friend',
     GET_POST_URL: '/get-user-file',
     GET_FRIEND_LIST_URL: '/get-friend-list',
+    GET_USER_DATA_URL: '/get-user-data',
+    ADD_LIKE_URL : "/add-likes",
+    DELETE_LIKE_URL : "/delete-likes",
+    GET_COMMENT_URL : "/get-comment",
+    ADD_COMMENT_URL : "/add-comment",
+    EDIT_COMMENT_URL : "/edit-comment",
+    DELETE_COMMENT_URL : "/delete-comment",
 };

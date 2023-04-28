@@ -53,11 +53,11 @@ const NavBar = ({
     };
 
     const handleEditUser = async () => {
-        const response = await API.get(`${API_URL.GET_USER_POST_URL}/${UserProfileData?.id}`);
+        const response = await API.get(`${API_URL.GET_USER_DATA_URL}/${UserProfileData?.id}`);
 
         if (response?.data) {
-            response?.data?.id && dispatch(userProfileData(response?.data));
-            response?.data?.id && localStorage.setItem('userInfo', JSON.stringify(response?.data));
+            response?.data?.data?.id && dispatch(userProfileData(response?.data?.data));
+            response?.data?.data?.id && localStorage.setItem('userInfo', JSON.stringify(response?.data?.data));
         }
 
         resetData();

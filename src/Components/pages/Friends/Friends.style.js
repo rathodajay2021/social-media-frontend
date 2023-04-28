@@ -18,7 +18,7 @@ export const FriendsWrapper = styled.div`
                 border: none;
             }
 
-            .clear-search-icon{
+            .clear-search-icon {
                 background: ${COLORS.WHITE_SMOKE};
             }
         }
@@ -27,5 +27,6 @@ export const FriendsWrapper = styled.div`
     .friend-list {
         height: ${(props) => `calc(${props?.$windowHeight}px - 156px)`};
         overflow: auto;
+        position: relative;
     }
 `;
