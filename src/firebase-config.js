@@ -6,12 +6,12 @@ import { getFirestore } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'AIzaSyAZ6DIzLwGrCuXRFIR_wYbu4FG6Wcrld4s',
-    authDomain: 'social-media-app-e50fb.firebaseapp.com',
-    projectId: 'social-media-app-e50fb',
-    storageBucket: 'social-media-app-e50fb.appspot.com',
-    messagingSenderId: '593860371851',
-    appId: '1:593860371851:web:c3eac40817a42fc02afb8e'
+    apiKey: "AIzaSyAXVVEKnNU5UyWuWxE9ICfuwPOj8ErdnvI",
+    authDomain: "social-media-app-ff1ff.firebaseapp.com",
+    projectId: "social-media-app-ff1ff",
+    storageBucket: "social-media-app-ff1ff.appspot.com",
+    messagingSenderId: "194146451862",
+    appId: "1:194146451862:web:041a92475c66961aa59db7"
 };
 
 // Initialize Firebase
