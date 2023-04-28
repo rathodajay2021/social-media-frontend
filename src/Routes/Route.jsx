@@ -2,6 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route as ReactRoute, useNavigate } from 'react-router-dom';
 import {
+    URL_CHAT,
     URL_FRIEND_PAGE,
     URL_HOME_PAGE,
     URL_LOGIN,
@@ -45,8 +46,11 @@ const Route = () => {
             case URL_FRIEND_PAGE:
                 dispatch(selectMenu(1));
                 break;
-            case URL_PROFILE_PAGE:
+            case URL_CHAT:
                 dispatch(selectMenu(2));
+                break;
+            case URL_PROFILE_PAGE:
+                dispatch(selectMenu(3));
                 break;
             default:
                 break;

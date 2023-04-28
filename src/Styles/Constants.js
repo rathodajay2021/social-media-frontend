@@ -24,7 +24,9 @@ export const COLORS = {
     TRANSPARENT_BLACK: '#00000085',
     WHITE: '#fff',
     BLACK: '#000',
-    WHITE_SMOKE: '#f5f5f5'
+    WHITE_SMOKE: '#f5f5f5',
+
+    SKY_BLUE: "#ecf4ff"
 };
 
 export const FONTS = {

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 //icon
 import HomeIcon from '@mui/icons-material/Home';
 import GroupIcon from '@mui/icons-material/Group';
+import ForumIcon from '@mui/icons-material/Forum';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 
 //CUSTOM
@@ -14,6 +15,7 @@ import { CreateUserName, getWindowDimensions, stringAvatar } from 'Helpers/Utils
 import { selectMenu } from 'Redux/BottomBar/Actions';
 import { BREAKPOINTS_VALUE, COLORS } from 'Styles/Constants';
 import {
+    URL_CHAT,
     URL_FRIEND_PAGE,
     URL_HOME_PAGE,
     // URL_NOTIFICATION_PAGE,
@@ -62,6 +64,11 @@ const BottomBar = () => {
                 label="Friends"
                 onClick={() => navigate(URL_FRIEND_PAGE)}
                 icon={<GroupIcon />}
+            />
+            <BottomNavigationAction
+                label="Chat Room"
+                onClick={() => navigate(URL_CHAT)}
+                icon={<ForumIcon />}
             />
             {/* <BottomNavigationAction
                 label="Notification"
