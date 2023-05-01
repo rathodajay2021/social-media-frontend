@@ -69,9 +69,7 @@ export const ChatWrapper = styled(Box)`
 
         .msg-container {
             /* height: ${(props) => `calc(${props?.$windowHeight}px - 136px)`}; */
-            /* border: 1px solid green; */
             height: 100%;
-            flex-direction: column-reverse;
             overflow-y: auto;
             gap: 10px;
             padding: 10px 10px 0 10px;
@@ -89,15 +87,19 @@ export const ChatWrapper = styled(Box)`
                 max-width: 45%;
                 padding: 10px;
 
+                &:first-child{
+                    margin-top: auto;
+                }
+
                 ${responsive.PHABLET`
-                        max-width: 70%;
-                    `}
+                    max-width: 70%;
+                `}
 
                 ${responsive.MOBILE`
-                        max-width: 80%;
-                    `}
+                    max-width: 80%;
+                `}
         
-                    &.msg-send {
+                &.msg-send {
                     align-self: flex-end;
                     border-radius: 10px 10px 0 10px;
                     background: ${COLORS.WHITE};

@@ -43,8 +43,8 @@ const Chat = () => {
         try {
             if (UserProfileData?.id && userChat?.userId) {
                 if (textMsg.trim() === '') return;
-                const docName = [UserProfileData?.id, userChat?.userId].sort().join('-');
-                const subCollection = collection(db, 'userChats', docName, 'chatMsg');
+                const docName = [UserProfileData?.id, userChat?.userId].sort().join('-'); //creating custom name for the doc
+                const subCollection = collection(db, 'userChats', docName, 'chatMsg'); // sub collection ref
                 //send msg to firebase db
                 await setDoc(doc(subCollection), {
                     message: textMsg,
@@ -63,6 +63,7 @@ const Chat = () => {
 
     const createNewConversation = useCallback(async () => {
         try {
+            //on click of new user it will create new collection if there is no collection
             if (UserProfileData?.id && userChat?.userId) {
                 setLoading(true);
                 const docName = [UserProfileData?.id, userChat?.userId].sort().join('-');
@@ -72,7 +73,6 @@ const Chat = () => {
 
                 if (!getResponse.exists()) await setDoc(docRef, {});
                 setLoading(false);
-                return;
             }
             return;
         } catch (error) {
