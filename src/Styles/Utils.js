@@ -106,7 +106,7 @@ export const UtilityStyles = createGlobalStyle`
         cursor: pointer;
     }
 
-    .elipsis {
+    .ellipse {
         overflow        : hidden;
         text-overflow   : ellipsis;
         white-space     : nowrap;

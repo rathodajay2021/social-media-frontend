@@ -7,16 +7,71 @@ export const ChatWrapper = styled(Box)`
     width: 100%;
     background: ${COLORS.SKY_BLUE};
 
-    .container {
-        width: 60%;
+    .no-user-selected {
+        text-align: center;
         height: 100%;
+        width: 70%;
+
+        ${responsive.TABLET`
+            display: none
+        `}
+
+        .msg-icon {
+            height: 100px;
+            width: 100px;
+            color: ${COLORS.MEDIUM_GREY};
+        }
+
+        .title {
+            font-size: 22px;
+            color: ${COLORS.MEDIUM_GREY};
+            text-transform: capitalize;
+            font-family: ${FONTS.PRIMARY_BOLD};
+        }
+
+        .sub-title {
+            font-size: 16px;
+            color: ${COLORS.GREY_TEXT_COLOR};
+            font-family: ${FONTS.PRIMARY_MEDIUM};
+        }
+    }
+
+    .chat-container {
+        width: 70%;
+        height: 100%;
+        position: relative;
 
         ${responsive.TABLET`
             width: 100%;
+            display: ${(props) => `${props?.$ChatContainerDisplay}`};
         `}
 
+        .chat-header {
+            gap: 10px;
+            padding: 10px;
+            background: ${COLORS.PRIMARY_LIGHT};
+
+            .back-icon {
+                color: ${COLORS.WHITE};
+            }
+
+            .user-avatar {
+                width: 45px;
+                height: 45px;
+            }
+
+            .user-name {
+                color: ${COLORS.WHITE};
+                font-size: 22px;
+                font-family: ${FONTS.PRIMARY_SEMI_BOLD};
+            }
+        }
+
         .msg-container {
-            height: max-content;
+            /* height: ${(props) => `calc(${props?.$windowHeight}px - 136px)`}; */
+            /* border: 1px solid green; */
+            height: 100%;
+            flex-direction: column-reverse;
             overflow-y: auto;
             gap: 10px;
             padding: 10px 10px 0 10px;
@@ -35,14 +90,14 @@ export const ChatWrapper = styled(Box)`
                 padding: 10px;
 
                 ${responsive.PHABLET`
-                    max-width: 70%;
-                `}
+                        max-width: 70%;
+                    `}
 
                 ${responsive.MOBILE`
-                    max-width: 80%;
-                `}
-    
-                &.msg-send {
+                        max-width: 80%;
+                    `}
+        
+                    &.msg-send {
                     align-self: flex-end;
                     border-radius: 10px 10px 0 10px;
                     background: ${COLORS.WHITE};
@@ -55,14 +110,14 @@ export const ChatWrapper = styled(Box)`
                     color: ${COLORS.WHITE};
                 }
             }
+        }
 
-            .scroll-to-bottom-icon {
-                position: sticky;
-                bottom: 0;
-                left: 100%;
-                width: 45px;
-                background: ${COLORS.WHITE};
-            }
+        .scroll-to-bottom-icon {
+            position: sticky;
+            bottom: 0;
+            left: 100%;
+            width: 45px;
+            background: ${COLORS.WHITE};
         }
 
         .no-chat-container {
