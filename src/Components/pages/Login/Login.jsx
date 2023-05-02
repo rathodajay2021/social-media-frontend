@@ -30,7 +30,7 @@ import Api from 'Helpers/ApiHandler';
 import { loginUser } from 'Redux/Auth/Actions';
 import { userProfileData } from 'Redux/App/Actions';
 import CODES from 'Helpers/StatusCodes';
-import { EMAIL_REGEX, PASSWORD_REGEX, PHONE_REGEX } from 'Helpers/Constants';
+import { EMAIL_REGEX, PASSWORD_REGEX } from 'Helpers/Constants';
 import CustomButton from 'Components/common/CustomBtn/CustomButton';
 
 const validationSchema = Yup.object({
@@ -38,8 +38,8 @@ const validationSchema = Yup.object({
         .required('Please enter your email address or phone number')
         .test('user-validation', 'Enter Valid email address or mobile number', function (value) {
             let isValidEmail = EMAIL_REGEX.test(value);
-            let isValidPhone = PHONE_REGEX.test(value);
-            if (!isValidEmail && !isValidPhone) {
+            // let isValidPhone = PHONE_REGEX.test(value);
+            if (!isValidEmail) {
                 return false;
             }
             return true;
